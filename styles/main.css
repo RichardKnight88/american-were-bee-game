@@ -1,0 +1,56 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background-color: skyblue;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+main {
+  width: 800px;
+  height: 800px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.grid {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+
+}
+
+.grid div {
+  box-sizing: border-box;
+  /* border: 0.1px solid white; */
+  width: 40px;
+  height: 40px;
+  
+}
+
+.grid div.bee {
+  background-image: url('../assets/bee.gif');
+  /* background-size: 80px 80px; */
+  background-size: cover;
+  filter: drop-shadow(-0.5px -0.5px 1px white);
+  z-index: 5;
+
+}
+
+.grid div.around {
+  opacity: 0;
+}
+
+.grid div.obstacle {
+  background-color: rgb(95, 53, 5);
+}
