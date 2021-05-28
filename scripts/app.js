@@ -3,6 +3,8 @@ function init() {
   console.log('linked')
 
   const grid = document.querySelector('.grid')
+  const lives = document.querySelector('#livesNum')
+  const score = document.querySelector('#scoreNum')
 
   const beePic = document.createElement('img')
   beePic.src = 'assets/bee.gif'
@@ -30,9 +32,13 @@ function init() {
   const obstacleClass = 'obstacle'
   const flowerClass = 'flower'
   let scrollTimer = 100
-  let gravityTimer = 300
+  let gravityTimer = 500
   let gravity = 0
-  let endColumns = []
+  const endColumnsUpper = []
+  let plantHeights = []
+
+  let currentScore = 0
+  score.innerText = currentScore
 
   const beeStartingPosition = width * (height / 2) + 2
   let beeCurrentPosition = width * (height / 2) + 2
@@ -43,22 +49,28 @@ function init() {
   const flowerStartingPosition = obstacleOneCurrentPosition - (width * 2)
   let flowerCurrentPosition = obstacleOneCurrentPosition - (width * 2)
 
+  let waspStartingPosition = width * height
+  let waspCurrentPosition = waspStartingPosition
+
+
   function createGrid() {
     for (let i = 0; i < cellCount; i++) {
       const cell = document.createElement('div')
-      cell.innerText = i
+      // cell.innerText = i
       grid.appendChild(cell)
       cells.push(cell)
     }
 
-    for (let j = width - 1; j < (width * height); j += width) {
-      endColumns.push(j)
-      console.log(endColumns)
+    for (let j = width - 1; j < (width * (height / 2)); j += width) {
+      endColumnsUpper.push(j)
+      console.log(endColumnsUpper)
     }
 
     addBee(beeStartingPosition)
     addObstacle(obstacleOneStartingPosition)
     addFlower(flowerStartingPosition)
+    generateWasp()
+    addWasp(waspStartingPosition)
     // addObstacle(obstacleOneStartingPosition - width)
     // addObstacle(obstacleOneStartingPosition - (width * 2))
 
@@ -67,19 +79,20 @@ function init() {
   createGrid()
   applyGravity()
 
+  
   function addBee(position) {
     cells[position].classList.add(beeClass)
     cells[position].appendChild(beePic)
     cells[position + 1].classList.add(beeClass)
-    cells[position + width].classList.add(beeClass)
-    cells[position + width + 1].classList.add(beeClass)
+    cells[position - width].classList.add(beeClass)
+    cells[position - width + 1].classList.add(beeClass)
   }
 
   function removeBee(position) {
     cells[beeCurrentPosition].classList.remove(beeClass)
     cells[beeCurrentPosition + 1].classList.remove(beeClass)
-    cells[beeCurrentPosition + width].classList.remove(beeClass)
-    cells[beeCurrentPosition + width + 1].classList.remove(beeClass)
+    cells[beeCurrentPosition - width].classList.remove(beeClass)
+    cells[beeCurrentPosition - width + 1].classList.remove(beeClass)
   }
 
   function addObstacle(position) {
@@ -105,6 +118,20 @@ function init() {
     cells[flowerCurrentPosition].classList.remove(flowerClass)
   }
 
+  function generateWasp() {
+    waspStartingPosition = endColumnsUpper[Math.floor(Math.random() * endColumnsUpper.length)]
+    console.log('WASP>>>>>', waspStartingPosition)
+    waspCurrentPosition = waspStartingPosition
+    cells[waspStartingPosition].classList.add(waspClass)
+  }
+
+  function addWasp(position) {
+    cells[position].classList.add(waspClass)
+  }
+
+  function removeWasp(position) {
+    cells[waspCurrentPosition].classList.remove(waspClass)
+  }
 
   function navigate(event) {
     const key = event.code
@@ -112,7 +139,7 @@ function init() {
     collisionDetectionNav()
     removeBee()
 
-    if (key === 'ArrowUp' && beeCurrentPosition >= width) {
+    if (key === 'ArrowUp' && (beeCurrentPosition - width) >= width) {
       if (cells[beeCurrentPosition - width].classList.contains(obstacleClass)) {
         gameOver()
       } else {
@@ -128,7 +155,7 @@ function init() {
         resetGravityTimer()
       }
 
-    } else if (key === 'ArrowDown' && (beeCurrentPosition + width) + width <= (width * height) - 1) {
+    } else if (key === 'ArrowDown' && beeCurrentPosition + width <= (width * height) - 1) {
       if (cells[beeCurrentPosition + width].classList.contains(obstacleClass)) {
         gameOver()
       } else {
@@ -145,7 +172,9 @@ function init() {
       }
 
     } else if (key === 'Escape') {
-      clearInterval(scrolling, gravity)
+      clearInterval(scrolling)
+      clearInterval(gravity)
+      clearInterval(waspFlying)
     }
     console.log(beeCurrentPosition)
     addBee(beeCurrentPosition)
@@ -163,8 +192,24 @@ function init() {
       addObstacle(obstacleOneCurrentPosition)
       addFlower(flowerCurrentPosition)
     }
-    console.log(obstacleOneCurrentPosition)
+    console.log(Math.floor(Math.random() * 5) * 1000)
   }, scrollTimer)
+
+
+  // let randomTimer = 1000
+
+  // function randomTimeNum() {
+  //   randomTimer = Math.floor(Math.random() * 5) * 1000
+  // }
+
+  // const randomGeneratorTest = setInterval(() => {
+  //   grid.style.backgroundColor = 'red'
+  //   setTimeout(() => {
+  //     grid.style.backgroundColor = 'skyblue'
+  //   },100)
+  //   randomTimeNum()
+  // }, randomTimer)
+
 
   function applyGravity() {
     gravity = setInterval(() => {
@@ -175,9 +220,19 @@ function init() {
       } else {
         gameOver()
       }
-
     }, gravityTimer)
   }
+
+
+  const waspFlying = setInterval(() => {
+    // collisionDetectionScroll()
+    removeWasp()
+    if (waspCurrentPosition % width !== 0) {
+      waspCurrentPosition--
+      addWasp(waspCurrentPosition)
+    }
+  }, scrollTimer * 0.7)
+
 
   function resetGravityTimer() {
     clearInterval(gravity)
