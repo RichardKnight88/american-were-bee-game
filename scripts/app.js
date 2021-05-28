@@ -92,6 +92,8 @@ function init() {
   function removeObstacle(position) {
     cells[obstacleOneCurrentPosition].classList.remove(obstacleClass)
     cells[obstacleOneCurrentPosition - width].classList.remove(obstacleClass)
+    cells[obstacleOneCurrentPosition - width].style.transform = 'none'
+
     // cells[obstacleOneCurrentPosition].removeChild(obstaclePic1)
   }
 
