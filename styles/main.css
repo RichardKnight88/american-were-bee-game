@@ -13,7 +13,7 @@ html {
 }
 
 main {
-  width: 800px;
+  width: 1000px;
   height: 800px;
   display: flex;
   flex-wrap: wrap;
@@ -27,24 +27,46 @@ main {
   flex-wrap: wrap;
   justify-content: center;
   align-content: center;
-
 }
 
 .grid div {
   box-sizing: border-box;
-  /* border: 0.1px solid white; */
+  border: 0.1px solid white;
   width: 40px;
   height: 40px;
   
 }
 
 .grid div.bee {
-  background-image: url('../assets/bee.gif');
-  /* background-size: 80px 80px; */
+  /* background-image: url('../assets/bee.gif');
+  background-size: 80px 80px; */
+  text-align: center;
   background-size: cover;
-  filter: drop-shadow(-0.5px -0.5px 1px white);
   z-index: 5;
 
+}
+
+.grid img.beeImage {
+  height: 200%;
+  filter: drop-shadow(-0.5px -0.5px 1px white);
+}
+
+.grid img.waspImage {
+  height: 200%;
+  filter: drop-shadow(-0.5px -0.5px 1px black);
+}
+
+.grid img.obstacleImage {
+  height: 230%;
+}
+
+.grid div.flower {
+  background-image: url('../assets/blue_flower.png');
+  background-size: cover;
+  /* background-repeat: no-repeat; */
+  z-index: 2;
+  /* transform: rotate(30deg); */
+  /* filter: drop-shadow(-0.5px -0.5px 1px black); */
 }
 
 .grid div.around {
@@ -52,5 +74,12 @@ main {
 }
 
 .grid div.obstacle {
-  background-color: rgb(95, 53, 5);
+  background-image: url('../assets/stem.png');
+  background-size: cover;
+  /* background-size: contain; */
+  /* background-repeat: no-repeat; */
+  /* display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  transform: scaleX(-1); */
 }
