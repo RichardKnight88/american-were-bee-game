@@ -50,7 +50,7 @@ header {
   justify-content: space-around;
 }
 
-.livesTile {
+.livesFull {
   width: 24%;
   background-image: url('../assets/full_life.png');
   background-size: cover;

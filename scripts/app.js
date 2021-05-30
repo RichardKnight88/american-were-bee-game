@@ -3,8 +3,11 @@ function init() {
   console.log('linked')
 
   const grid = document.querySelector('.grid')
+  const livesGraphic = document.querySelectorAll('.honeycomb')
   const lives = document.querySelector('#livesNum')
   const score = document.querySelector('#scoreNum')
+  console.log(livesGraphic)
+
 
   const beePic = document.createElement('img')
   beePic.src = 'assets/bee2.gif'
@@ -68,6 +71,7 @@ function init() {
       console.log(endColumnsUpper)
     }
 
+    livesGraphicUpdate()
     addBee(beeStartingPosition)
     addObstacle(obstacleOneStartingPosition)
     addFlower(flowerStartingPosition)
@@ -177,6 +181,7 @@ function init() {
       clearInterval(scrolling)
       clearInterval(gravity)
       clearInterval(waspFlying)
+      clearInterval(collisionTimer)
     }
     console.log(beeCurrentPosition)
     console.log('DELAY IN HOLD>>>>', new Date().getMilliseconds())
@@ -301,20 +306,38 @@ function init() {
 
   function collisionDetected() {
     currentLives--
-    console.log('LIVES>>>', currentLives)
-    console.log('COLLISION DETECTED')
-    grid.classList.toggle('collision')
-    clearInterval(collisionTimer)
-    console.log('COLLISION TIMER AFTER COLLISION', collisionTimer)
-    collisionTimer = null
-    console.log('COLLISION TIMER SHOULD BE NULL', collisionTimer)
-    setTimeout(() => {
+    livesGraphicUpdate()
+    if (currentLives <= 0) {
+      setTimeout(() => {
+        gameOver()
+      }, 20)
+    } else {
+      console.log('LIVES>>>', currentLives)
+      console.log('COLLISION DETECTED')
       grid.classList.toggle('collision')
-      console.log('......AND')
-      startCollisionCheck()
-    }, 1000)
+      clearInterval(collisionTimer)
+      console.log('COLLISION TIMER AFTER COLLISION', collisionTimer)
+      collisionTimer = null
+      console.log('COLLISION TIMER SHOULD BE NULL', collisionTimer)
+      setTimeout(() => {
+        grid.classList.toggle('collision')
+        console.log('......AND')
+        startCollisionCheck()
+      }, 1000)
+    }
   }
 
+  function livesGraphicUpdate() {
+    livesGraphic.forEach(item => {
+      console.log('LIFE>>', item)
+      if (parseInt(item.id) <= currentLives) {
+        item.classList.add('livesFull')
+      } else {
+        item.classList.add('livesEmpty')
+      }
+      // })
+    })
+  }
 
   function collisionCheck() {
     startCollisionCheck()
@@ -330,10 +353,14 @@ function init() {
 
   collisionCheck()
 
+
   function gameOver() {
     console.log('GAME OVER')
     clearInterval(gravity)
-    // window.alert('GAME OVER')
+    clearInterval(scrolling)
+    clearInterval(collisionTimer)
+    clearInterval(waspFlying)
+    window.alert('GAME OVER')
   }
 
   document.addEventListener('keydown', navigate)
