@@ -6,6 +6,10 @@ function init() {
   const livesGraphic = document.querySelectorAll('.honeycomb')
   const lives = document.querySelector('#livesNum')
   const score = document.querySelector('#scoreNum')
+  const gameOverCard = document.querySelector('#gameOver')
+  const ouch = document.querySelector('#ouch')
+  const ding = document.querySelector('#ding')
+  console.log(ouch)
   console.log(livesGraphic)
 
 
@@ -35,8 +39,9 @@ function init() {
   const waspClass = 'wasp'
   const obstacleClass = 'obstacle'
   const flowerClass = 'flower'
-  let scrollTimer = 200
+  let scrollTimer = 150
   let gravityTimer = 550
+  let collisionTimer = null
   let gravity = 0
   const endColumnsUpper = []
   let plantHeights = []
@@ -61,7 +66,7 @@ function init() {
   function createGrid() {
     for (let i = 0; i < cellCount; i++) {
       const cell = document.createElement('div')
-      cell.innerText = i
+      // cell.innerText = i
       grid.appendChild(cell)
       cells.push(cell)
     }
@@ -85,6 +90,8 @@ function init() {
   createGrid()
   applyGravity()
 
+  // const firstBeePosition = cells[position].classList
+  // console.log('TRYING TO REFACTOR>>', firstBeePosition)
 
   function addBee(position) {
     cells[position].classList.add(beeClass)
@@ -146,45 +153,25 @@ function init() {
     removeBee()
 
     if (key === 'ArrowUp' && (beeCurrentPosition - width) >= width) {
-      if (cells[beeCurrentPosition - width].classList.contains(obstacleClass)) {
-        gameOver()
-      } else {
-        beeCurrentPosition -= width
-        resetGravityTimer()
-      }
-
+      beeCurrentPosition -= width
+      resetGravityTimer()
     } else if (key === 'ArrowRight' && (beeCurrentPosition + 1) % width !== width - 1) {
-      if (cells[beeCurrentPosition + 1].classList.contains(obstacleClass)) {
-        gameOver()
-      } else {
-        beeCurrentPosition++
-        resetGravityTimer()
-      }
-
+      beeCurrentPosition++
+      resetGravityTimer()
     } else if (key === 'ArrowDown' && beeCurrentPosition + width <= (width * height) - 1) {
-      if (cells[beeCurrentPosition + width].classList.contains(obstacleClass)) {
-        gameOver()
-      } else {
-        beeCurrentPosition += width
-        resetGravityTimer()
-      }
-
+      beeCurrentPosition += width
+      resetGravityTimer()
     } else if (key === 'ArrowLeft' && beeCurrentPosition % width !== 0) {
-      if (cells[beeCurrentPosition - 1].classList.contains(obstacleClass)) {
-        gameOver()
-      } else {
-        beeCurrentPosition--
-        resetGravityTimer()
-      }
-
+      beeCurrentPosition--
+      resetGravityTimer()
     } else if (key === 'Escape') {
       clearInterval(scrolling)
       clearInterval(gravity)
       clearInterval(waspFlying)
       clearInterval(collisionTimer)
     }
-    console.log(beeCurrentPosition)
-    console.log('DELAY IN HOLD>>>>', new Date().getMilliseconds())
+    console.log('CURRENT BEE', beeCurrentPosition)
+    // console.log('DELAY IN HOLD>>>>', new Date().getMilliseconds())
     addBee(beeCurrentPosition)
   }
 
@@ -229,7 +216,9 @@ function init() {
         console.log('BANG FLOOR')
         currentLives--
         console.log('LIVES>>>', currentLives)
-        gameOver()
+        livesGraphicUpdate()
+
+        // gameOver()
       }
       console.log(beeCurrentPosition)
 
@@ -286,27 +275,30 @@ function init() {
 
   // }, 75)
 
-  let collisionTimer = null
 
-  function startCollisionCheck() {
+  function startCollisionCheck(typeOne, typeTwo, typeThree) {
     console.log('COLLISION TIMER AT START OF CHECK', collisionTimer)
     console.log('STARTING CHECK')
     if (!collisionTimer) {
       collisionTimer = setInterval(() => {
         console.log('COLLISION TIMER AFTER INITIATION', collisionTimer)
-        if (cells[beeCurrentPosition].classList.contains(waspClass) || cells[beeCurrentPosition + 1].classList.contains(waspClass) || cells[beeCurrentPosition - width].classList.contains(waspClass) || cells[beeCurrentPosition - (width + 1)].classList.contains(waspClass)) {
-          collisionDetected()
+        if (cells[beeCurrentPosition].classList.contains(typeOne) || cells[beeCurrentPosition + 1].classList.contains(typeOne) || cells[beeCurrentPosition - width].classList.contains(typeOne) || cells[beeCurrentPosition - (width + 1)].classList.contains(typeOne)) {
+          collisionDetectedBad()
         }
-        if (cells[beeCurrentPosition].classList.contains(obstacleClass) || cells[beeCurrentPosition + 1].classList.contains(obstacleClass) || cells[beeCurrentPosition - width].classList.contains(obstacleClass) || cells[beeCurrentPosition - (width + 1)].classList.contains(obstacleClass)) {
-          collisionDetected()
+        if (cells[beeCurrentPosition].classList.contains(typeTwo) || cells[beeCurrentPosition + 1].classList.contains(typeTwo) || cells[beeCurrentPosition - width].classList.contains(typeTwo) || cells[beeCurrentPosition - (width + 1)].classList.contains(typeTwo)) {
+          collisionDetectedBad()
+        }
+        if (cells[beeCurrentPosition].classList.contains(typeThree) || cells[beeCurrentPosition + 1].classList.contains(typeThree) || cells[beeCurrentPosition - width].classList.contains(typeThree) || cells[beeCurrentPosition - (width + 1)].classList.contains(typeThree)) {
+          collisionDetectedGood()
         }
       }, 75)
     }
   }
 
-  function collisionDetected() {
+  function collisionDetectedBad() {
     currentLives--
     livesGraphicUpdate()
+    ouch.play()
     if (currentLives <= 0) {
       setTimeout(() => {
         gameOver()
@@ -322,9 +314,15 @@ function init() {
       setTimeout(() => {
         grid.classList.toggle('collision')
         console.log('......AND')
-        startCollisionCheck()
+        startCollisionCheck(waspClass, obstacleClass, flowerClass)
       }, 1000)
     }
+  }
+
+  function collisionDetectedGood() {
+    currentScore += 5
+    score.innerText = currentScore
+    ding.play()
   }
 
   function livesGraphicUpdate() {
@@ -340,7 +338,7 @@ function init() {
   }
 
   function collisionCheck() {
-    startCollisionCheck()
+    startCollisionCheck(waspClass, obstacleClass, flowerClass)
     //   if (cells[beeCurrentPosition].classList.contains(obstacleClass) || cells[beeCurrentPosition + 1].classList.contains(obstacleClass) || cells[beeCurrentPosition - width].classList.contains(obstacleClass) || cells[beeCurrentPosition - (width + 1)].classList.contains(obstacleClass)) {
     //     console.log('BANG PLANT')
     //     currentLives--
@@ -360,7 +358,9 @@ function init() {
     clearInterval(scrolling)
     clearInterval(collisionTimer)
     clearInterval(waspFlying)
-    window.alert('GAME OVER')
+    gameOverCard.classList.toggle('hidden')
+    grid.classList.toggle('hidden')
+    // window.alert('GAME OVER')
   }
 
   document.addEventListener('keydown', navigate)

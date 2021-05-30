@@ -50,23 +50,25 @@ header {
   justify-content: space-around;
 }
 
+.honeycomb {
+  background-size: contain;
+  background-repeat: no-repeat;
+  flex-grow: 1;
+  background-position: center;
+}
 .livesFull {
-  width: 24%;
   background-image: url('../assets/full_life.png');
-  background-size: cover;
 }
 
 .livesEmpty {
-  width: 24%;
   background-image: url('../assets/empty_life.png');
-  background-size: cover;
 }
 
 .score {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .scoreTitle {
@@ -79,10 +81,11 @@ header {
 
 main {
   width: 1000px;
-  height: 800px;
+  height: 700px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
 }
 
 .grid {
@@ -92,6 +95,7 @@ main {
   flex-wrap: wrap;
   justify-content: center;
   align-content: center;
+  z-index: 0;
 }
 
 .grid div {
@@ -102,6 +106,7 @@ main {
   font-size: 12px;
   
 }
+
 
 .grid div.wasp {
   background-image: url('../assets/cropped_wasp.gif');
@@ -121,7 +126,7 @@ main {
   justify-content: flex-end;
   align-items: flex-start;
   background-size: cover;
-  z-index: 5;
+  z-index: 4;
 }
 
 .grid img.beeImage {
@@ -129,6 +134,7 @@ main {
   padding: 0;
   margin: 0;
   filter: drop-shadow(-0.5px -0.5px 1px white);
+  z-index: 4;
 }
 
 /* .grid img.waspImage {
@@ -149,8 +155,24 @@ main {
   /* filter: drop-shadow(-0.5px -0.5px 1px black); */
 }
 
-.grid div.around {
-  opacity: 0;
+
+
+
+.popUp {
+  width: 40%;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffd480;
+  border: 3px solid #805500;
+  margin: 10%;
+  z-index: 5;
+  position: absolute;
+}
+
+.hidden {
+  display: none;
 }
 
 .grid div.obstacle {
