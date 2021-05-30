@@ -96,25 +96,11 @@ main {
 
 .grid div {
   box-sizing: border-box;
-  /* border: 0.1px solid white; */
+  border: 0.1px solid white;
   width: 40px;
   height: 40px;
+  font-size: 12px;
   
-}
-
-.grid div.bee {
-  /* background-image: url('../assets/bee.gif');
-  background-size: 80px 80px; */
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  background-size: cover;
-  z-index: 5;
-}
-
-.grid img.beeImage {
-  height: 200%;
-  filter: drop-shadow(-0.5px -0.5px 1px white);
 }
 
 .grid div.wasp {
@@ -125,6 +111,24 @@ main {
   justify-content: center;
   align-items: flex-end;
   z-index: 4;
+}
+
+.grid div.bee {
+  /* background-image: url('../assets/bee.gif');
+  background-size: 80px 80px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  background-size: cover;
+  z-index: 5;
+}
+
+.grid img.beeImage {
+  height: 200%;
+  padding: 0;
+  margin: 0;
+  filter: drop-shadow(-0.5px -0.5px 1px white);
 }
 
 /* .grid img.waspImage {
@@ -158,4 +162,20 @@ main {
   align-items: flex-end;
   justify-content: flex-end;
   transform: scaleX(-1); */
+}
+
+.collision {
+  animation: hit 0.5s infinite;
+}
+
+@keyframes hit {
+
+  0%, 50%, 100% {
+    background-color: skyblue;
+  }
+
+  25%, 75% {
+    background-color: salmon;
+  }
+
 }
