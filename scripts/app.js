@@ -57,10 +57,10 @@ function init() {
 
   let newPlant = null
 
-  let plantOneStartingPosition = null
+  let plantOneStartingPosition = []
   let plantOneCurrentPosition = plantOneStartingPosition
 
-  let plantTwoStartingPosition = null
+  let plantTwoStartingPosition = []
   let plantTwoCurrentPosition = plantTwoStartingPosition
 
   let flowerStartingPosition = plantOneCurrentPosition - (width * 2)
@@ -98,7 +98,7 @@ function init() {
     livesGraphicUpdate()
     addBee(beeStartingPosition)
     generatePlant()
-    // addPlant(plantOneStartingPosition)
+    addPlant()
     // addFlower(flowerStartingPosition)
     generateWasp()
     addWasp(waspStartingPosition)
@@ -131,12 +131,13 @@ function init() {
 
   function generatePlant() {
     newPlant = plantHeights[Math.floor(Math.random() * plantHeights.length)]
-    if (!plantOneCurrentPosition) {
-      plantOneCurrentPosition = width * height - 1
-      cells[plantOneCurrentPosition].classList.add(plantClass)
+    console.log(plantOneCurrentPosition)
+    if (plantOneCurrentPosition.length === 0) {
+      plantOneCurrentPosition[0] = width * height - 1
       for (let p = 1; p < newPlant; p++) {
-        cells[plantOneCurrentPosition - (width * p)].classList.add(plantClass)
-      } cells[plantOneCurrentPosition - (width * newPlant)].classList.add(flowerClass)
+        plantOneCurrentPosition.push(plantOneCurrentPosition[0] - (width * p))
+        console.log(plantOneCurrentPosition)
+      }
     } else if (!plantTwoCurrentPosition) {
       plantTwoCurrentPosition = width * height - 1
       cells[plantTwoCurrentPosition].classList.add(plantClass)
@@ -144,33 +145,15 @@ function init() {
   }
 
   function addPlant(position) {
-    cells[position].classList.add(plantClass)
-    // cells[(position) - width].classList.add(plantClass)
-    // cells[(position) - width].style.transform = 'scaleX(-1)'
-    // cells[position].appendChild(plantPic1)
+    plantOneCurrentPosition.forEach(index => cells[index].classList.add(plantClass))
+    cells[plantOneCurrentPosition[plantOneCurrentPosition.length - 1] - width].classList.add(flowerClass)
   }
 
   function removePlant(position) {
-    cells[plantOneCurrentPosition].classList.remove(plantClass)
-    for (let h = 1; h <= newPlant; h++) {
-      if (cells[plantOneCurrentPosition - (width * h)].classList.contains(plantClass)) {
-        console.log('PLANT HERE >>>', cells[plantOneCurrentPosition - (width * h)])
-        // cells[plantOneCurrentPosition - (width * h)].classList.remove(plantClass)
-      } else if (cells[plantOneCurrentPosition - (width * h)].classList.contains(flowerClass)) {
-        console.log('FLOWER HERE >>>', cells[plantOneCurrentPosition - (width * h)])
-        // cells[plantOneCurrentPosition - (width * h)].classList.remove(flowerClass)
-      }
-    }
+    plantOneCurrentPosition.forEach(index => cells[index].classList.remove(plantClass))
+    cells[plantOneCurrentPosition[plantOneCurrentPosition.length - 1] - width].classList.remove(flowerClass)
   }
 
-
-  // function addFlower(position) {
-  //   cells[position].classList.add(flowerClass)
-  // }
-
-  // function removeFlower(position) {
-  //   cells[flowerCurrentPosition].classList.remove(flowerClass)
-  // }
 
   function generateWasp() {
     waspStartingPosition = endColumns[Math.floor(Math.random() * endColumns.length)]
@@ -241,10 +224,17 @@ function init() {
     removePlant()
     // removeFlower()
     removeAcorn()
-    if (plantOneCurrentPosition % width !== 0) {
-      plantOneCurrentPosition--
+
+    if (plantOneCurrentPosition[0] % width !== 0) {
+      plantOneCurrentPosition = plantOneCurrentPosition.map(value => {
+        value--
+        console.log('VALUE>>', value)
+        return value
+      })
+      console.log('NEW ARRAY>>', plantOneCurrentPosition)
+
       // flowerCurrentPosition--
-      addPlant(plantOneCurrentPosition)
+      addPlant()
       // addFlower(flowerCurrentPosition)
     }
     if (acornCurrentPosition % width !== 0) {
