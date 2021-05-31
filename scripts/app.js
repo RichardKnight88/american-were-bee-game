@@ -3,6 +3,7 @@ function init() {
   console.log('linked')
 
   const grid = document.querySelector('.grid')
+  const backgroundGrid = document.querySelector('.backgroundGrid')
   const livesGraphic = document.querySelectorAll('.honeycomb')
   const lives = document.querySelector('#livesNum')
   const score = document.querySelector('#scoreNum')
@@ -40,6 +41,10 @@ function init() {
   const plantClass = 'plant'
   const flowerClass = 'flower'
   const acornClass = 'acorn'
+  const waspPlantClass = 'waspPlant'
+  const waspFlowerClass = 'waspFlower'
+  const pollenClass = 'pollen'
+  const honeyClass = 'honey'
   let scrollTimer = 150
   let gravityTimer = 550
   let collisionTimer = null
@@ -72,6 +77,8 @@ function init() {
   let acornStartingPosition = width * height
   let acornCurrentPosition = acornStartingPosition
 
+  let honeyOneCurrentPosition = null
+
 
   function createGrid() {
     for (let i = 0; i < cellCount; i++) {
@@ -97,7 +104,7 @@ function init() {
 
     livesGraphicUpdate()
     addBee(beeStartingPosition)
-    generatePlant()
+    // generatePlant()
     addPlant()
     // addFlower(flowerStartingPosition)
     generateWasp()
@@ -108,7 +115,20 @@ function init() {
     // addplant(plantOneStartingPosition - (width * 2))
   }
 
+  let bgCells = []
+  function createBackgroundGrid() {
+    for (let i = 0; i < 5; i++) {
+      const backgroundCell = document.createElement('div')
+      // cell.innerText = i
+      backgroundGrid.appendChild(backgroundCell)
+      bgCells.push(backgroundCell)
+
+    }
+    console.log('BG GRID', bgCells)
+  }
+
   createGrid()
+  createBackgroundGrid()
   applyGravity()
 
   // const firstBeePosition = cells[position].classList
@@ -129,25 +149,30 @@ function init() {
     cells[beeCurrentPosition - width + 1].classList.remove(beeClass)
   }
 
-  function generatePlant() {
-    newPlant = plantHeights[Math.floor(Math.random() * plantHeights.length)]
+  // function plantCheck() {
+  //   if (plantOneCurrentPosition.length === 0) {
+  //     plant = plantOneCurrentPosition
+  //   }
+  // }
+
+  function addPlant() {
     console.log(plantOneCurrentPosition)
     if (plantOneCurrentPosition.length === 0) {
       plantOneCurrentPosition[0] = width * height - 1
-      for (let p = 1; p < newPlant; p++) {
+      for (let p = 1; p < plantHeights[Math.floor(Math.random() * plantHeights.length)]; p++) {
         plantOneCurrentPosition.push(plantOneCurrentPosition[0] - (width * p))
         console.log(plantOneCurrentPosition)
       }
-    } else if (!plantTwoCurrentPosition) {
-      plantTwoCurrentPosition = width * height - 1
-      cells[plantTwoCurrentPosition].classList.add(plantClass)
     }
-  }
-
-  function addPlant(position) {
     plantOneCurrentPosition.forEach(index => cells[index].classList.add(plantClass))
     cells[plantOneCurrentPosition[plantOneCurrentPosition.length - 1] - width].classList.add(flowerClass)
+
   }
+
+  // function addPlant(position) {
+  //   plantOneCurrentPosition.forEach(index => cells[index].classList.add(plantClass))
+  //   cells[plantOneCurrentPosition[plantOneCurrentPosition.length - 1] - width].classList.add(flowerClass)
+  // }
 
   function removePlant(position) {
     plantOneCurrentPosition.forEach(index => cells[index].classList.remove(plantClass))
@@ -164,11 +189,23 @@ function init() {
 
 
   function addWasp(position) {
-    cells[position].classList.add(waspClass)
+    if (cells[position].classList.contains(plantClass)) {
+      cells[position].classList.add(waspPlantClass)
+    } else if (cells[position].classList.contains(flowerClass)) {
+      cells[position].classList.add(waspFlowerClass)
+    } else {
+      cells[position].classList.add(waspClass)
+    }
   }
 
   function removeWasp(position) {
+    if (cells[waspCurrentPosition].classList.contains(waspPlantClass)) {
+      cells[waspCurrentPosition].classList.remove(waspPlantClass)
+    } else if (cells[waspCurrentPosition].classList.contains(waspFlowerClass)) {
+      cells[waspCurrentPosition].classList.remove(waspFlowerClass)
+    }
     cells[waspCurrentPosition].classList.remove(waspClass)
+
   }
 
   function generateAcorn() {
@@ -204,6 +241,9 @@ function init() {
     } else if (key === 'ArrowLeft' && beeCurrentPosition % width !== 0) {
       beeCurrentPosition--
       resetGravityTimer()
+    } else if (key === 'Space') {
+      addHoney()
+      resetGravityTimer()
     } else if (key === 'Escape') {
       clearInterval(scrolling)
       clearInterval(gravity)
@@ -220,10 +260,9 @@ function init() {
   // * nav collision detection isn't checking until key press - need to figure out a way to get the nav 
 
   const scrolling = setInterval(() => {
-    // collisionDetectionScroll()
     removePlant()
-    // removeFlower()
     removeAcorn()
+
 
     if (plantOneCurrentPosition[0] % width !== 0) {
       plantOneCurrentPosition = plantOneCurrentPosition.map(value => {
@@ -232,15 +271,26 @@ function init() {
         return value
       })
       console.log('NEW ARRAY>>', plantOneCurrentPosition)
-
-      // flowerCurrentPosition--
-      addPlant()
-      // addFlower(flowerCurrentPosition)
+    } else {
+      plantOneCurrentPosition = []
     }
+    addPlant()
+
     if (acornCurrentPosition % width !== 0) {
       acornCurrentPosition--
       addAcorn(acornCurrentPosition)
     }
+    if (honeyOneCurrentPosition) {
+      removeHoney()
+
+      if (honeyOneCurrentPosition % width !== width - 1) {
+        honeyOneCurrentPosition++
+        addHoney()
+      } else {
+        honeyOneCurrentPosition = null
+      }
+    }
+
     // console.log(Math.floor(Math.random() * 5) * 1000)
   }, scrollTimer)
 
@@ -289,18 +339,21 @@ function init() {
     } else {
       generateWasp()
     }
-  }, scrollTimer * 0.7)
+  }, scrollTimer * 0.6)
 
   const fallingAcorn = setInterval(() => {
     // collisionDetectionScroll()
     removeAcorn()
     if (acornCurrentPosition + width < width * height) {
       acornCurrentPosition += width
+      if (cells[acornCurrentPosition + width].classList.contains(flowerClass) || cells[acornCurrentPosition + width].classList.contains(waspClass)) {
+        acornCurrentPosition++
+      }
       addAcorn(acornCurrentPosition)
     } else {
       generateAcorn()
     }
-  }, gravityTimer * .5)
+  }, gravityTimer * .4)
 
   function resetGravityTimer() {
     clearInterval(gravity)
@@ -338,6 +391,17 @@ function init() {
   //   }
 
   // }, 75)
+  function addHoney() {
+    if (!honeyOneCurrentPosition) {
+      honeyOneCurrentPosition = beeCurrentPosition + 2
+      console.log('HONEY POS>>', honeyOneCurrentPosition)
+    }
+    cells[honeyOneCurrentPosition].classList.add(honeyClass)
+  }
+
+  function removeHoney() {
+    cells[honeyOneCurrentPosition].classList.remove(honeyClass)
+  }
 
 
   function startCollisionCheck(typeOne, typeTwo, typeThree, typeFour) {
@@ -373,13 +437,13 @@ function init() {
     } else {
       console.log('LIVES>>>', currentLives)
       console.log('COLLISION DETECTED')
-      grid.classList.toggle('collision')
+      beePic.classList.toggle('collision')
       clearInterval(collisionTimer)
       console.log('COLLISION TIMER AFTER COLLISION', collisionTimer)
       collisionTimer = null
       console.log('COLLISION TIMER SHOULD BE NULL', collisionTimer)
       setTimeout(() => {
-        grid.classList.toggle('collision')
+        beePic.classList.toggle('collision')
         console.log('......AND')
         startCollisionCheck(waspClass, plantClass, acornClass, flowerClass)
       }, 1000)

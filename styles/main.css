@@ -73,7 +73,7 @@ header {
 }
 
 .scoreTitle {
-  margin: 0 0 10% 0;
+  margin: 0;
 }
 
 #scoreNum {
@@ -82,7 +82,7 @@ header {
 
 main {
   width: 1000px;
-  height: 700px;
+  height: 70%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -101,15 +101,52 @@ main {
 
 .grid div {
   box-sizing: border-box;
-  border: 0.1px solid white;
+  /* border: 0.1px solid white; */
   width: 40px;
   height: 40px;
   font-size: 12px;
-  
+}
+
+.collision {
+  animation: hit 0.5s infinite;
+}
+
+.backgroundGrid {
+  width: 100%;
+  height: 700px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  z-index: -2;
+  position: absolute;
+}
+
+.backgroundGrid div {
+  box-sizing: border-box;
+  background-image: url('../assets/clouds2.gif');
+  background-size: contain;
+  background-repeat:no-repeat;
+  /* border: 0.1px solid black; */
+  margin-top: 100px;
+  width: 200px;
+  height: 200px;
 }
 
 .grid div.acorn {
   background-image: url('../assets/acorn.gif');
+  background-size: cover;
+}
+
+.grid div.pollen {
+  background-image: url('../assets/pollen3.gif');
+  background-size: 40%;
+  background-repeat: no-repeat;
+  background-position: center ;
+  filter: drop-shadow(-3px -3px 5px gold);
+}
+
+.grid div.honey {
+  background-image: url('../assets/honey_drip.png');
   background-size: cover;
 }
 
@@ -189,18 +226,31 @@ main {
   transform: scaleX(-1); */
 }
 
-.collision {
-  animation: hit 0.5s infinite;
+.grid div.waspPlant {
+  background-image: url('../assets/wasp_stem.png');
+  background-size: cover;
 }
+
+.grid div.waspFlower {
+  background-image: url('../assets/wasp_flower.png');
+  background-size: cover;
+}
+
+/* .collision {
+  animation: hit 0.5s infinite;
+} */
 
 @keyframes hit {
 
   0%, 50%, 100% {
-    background-color: skyblue;
+    filter: drop-shadow(-0.5px -0.5px 1px white);
+    display: flex;
+
   }
 
   25%, 75% {
-    background-color: salmon;
+  filter: drop-shadow(-3px -3px 0px salmon);
+  display: none;
   }
 
 }
