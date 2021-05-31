@@ -56,6 +56,7 @@ header {
   flex-grow: 1;
   background-position: center;
 }
+
 .livesFull {
   background-image: url('../assets/full_life.png');
 }
@@ -107,6 +108,10 @@ main {
   
 }
 
+.grid div.acorn {
+  background-image: url('../assets/acorn.gif');
+  background-size: cover;
+}
 
 .grid div.wasp {
   background-image: url('../assets/cropped_wasp.gif');
@@ -156,8 +161,6 @@ main {
 }
 
 
-
-
 .popUp {
   width: 40%;
   height: 70%;
@@ -175,7 +178,7 @@ main {
   display: none;
 }
 
-.grid div.obstacle {
+.grid div.plant {
   background-image: url('../assets/stem2.png');
   background-size: cover;
   /* background-size: contain; */
