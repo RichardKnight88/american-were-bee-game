@@ -47,7 +47,7 @@ function init() {
   const honeyClass = 'honey'
   const beeCurrentPosition = []
   let scrollTimer = 150
-  let gravityTimer = 550
+  let gravityTimer = 650
   let waspInterval = 1000
   let collisionTimer = null
   let gravity = 0
@@ -207,9 +207,9 @@ function init() {
 
 
   const waspArray = [waspOne, waspTwo, waspThree, waspFour, waspFive]
-  
+
   const honeyArray = [honeyOne, honeyTwo, honeyThree, honeyFour, honeyFive, honeySix, honeySeven, honeyEight, honeyNine, honeyTen]
-  
+
   const plantArray = [plantOne, plantTwo, plantThree, plantFour, plantFive, plantSix]
 
   const pollenArray = [pollenOne, pollenTwo, pollenThree, pollenFour, pollenFive]
@@ -470,8 +470,6 @@ function init() {
     } else if (key === 'Space') {
       generateHoney()
       resetGravityTimer()
-    } else if (key === 'Enter') {
-      addPollen()
     } else if (key === 'Escape') {
       clearInterval(scrolling)
       clearInterval(gravity)
@@ -499,7 +497,7 @@ function init() {
       plant.addPlant()
       console.log('--PLANT NAME--', plant.name, 'PLANT LENGTHS>>', plant.currentPosition)
     })
-  
+
 
     pollenArray.forEach(pollen => {
       pollen.removePollen()
@@ -517,10 +515,10 @@ function init() {
     // }
     // addPlant()
 
-    if (acornCurrentPosition % width !== 0) {
-      acornCurrentPosition--
-      addAcorn(acornCurrentPosition)
-    }
+    // if (acornCurrentPosition % width !== 0) {
+    //   acornCurrentPosition--
+    //   addAcorn(acornCurrentPosition)
+    // }
 
     // if (honeyOneCurrentPosition) {
     //   removeHoney()
@@ -601,7 +599,7 @@ function init() {
   }, scrollTimer * 0.6)
 
 
-  const newPlantTimer = setInterval(() => generatePlant(), scrollTimer * 5)
+  const newPlantTimer = setInterval(() => generatePlant(), scrollTimer * 7)
 
 
   const newPollenTimer = setInterval(() => generatePollen(), scrollTimer * 15)
@@ -669,24 +667,78 @@ function init() {
 
   // }, 75)
 
+  let filteredArray = []
+  let positionsArrray = []
+  let mergedArray = []
+  let uniqueArray = []
+  let duplicates = []
+
+  function beeCollision(arr1, arr2, class2) {
+
+    filteredArray = arr2.filter(item => {
+      if (item.currentPosition) {
+        return item.currentPosition
+      }
+    })
+
+    console.log('FILTERED>>>', filteredArray)
+
+    positionsArrray = filteredArray.map(item => item.currentPosition)
+
+    console.log('POSITIONS ONLY>>>', positionsArrray)
+
+    mergedArray = beeCurrentPosition.concat(positionsArrray)
+
+    console.log('MERGED>>>>', mergedArray)
 
 
-  function startCollisionCheck(typeOne, typeTwo, typeThree, typeFour, typeFive) {
+
+    mergedArray.filter(item => {
+      if (uniqueArray.indexOf(item) < 0) {
+        uniqueArray.push(item)
+      } else {
+        duplicates.push(item)
+      }
+    })
+
+    console.log('UNIQUE VALUES>>>>', uniqueArray)
+    console.log('DUPLICATE VALUES>>>>', duplicates)
+
+    duplicates.forEach(item => {
+      for (let i = 0; i < arr2.length; i++) {
+        if (arr2[i].currentPosition === item) {
+          arr2[i].currentPosition = null
+          cells[item].classList.remove(class2)
+          updateLives()
+          toggleCollision() 
+        }
+      }
+    })
+    console.log(arr2)
+
+  }
+
+
+
+  function startCollisionCheck() {
     console.log('COLLISION TIMER AT START OF CHECK', collisionTimer)
     console.log('STARTING CHECK')
 
     if (!collisionTimer) {
       collisionTimer = setInterval(() => {
-        console.log('COLLISION TIMER AFTER INITIATION', collisionTimer)
-
-        beeCurrentPosition.forEach(indexValue => {
-          if (cells[indexValue].classList.contains(typeOne) || cells[indexValue].classList.contains(typeTwo) || cells[indexValue].classList.contains(typeThree)) {
-            collisionDetectedBad()
-          } else if (cells[indexValue].classList.contains(typeFour) || cells[indexValue].classList.contains(typeFive)) {
-            collisionDetectedGood()
-          }
-        }
-        )
+        // console.log('COLLISION TIMER AFTER INITIATION', collisionTimer)
+        beeCurrentPosition.forEach(item => {
+          if (cells[item].classList.contains(waspClass))
+            beeCollision(beeCurrentPosition, waspArray, waspClass)
+        })
+        // beeCurrentPosition.forEach(indexValue => {
+        //   if (cells[indexValue].classList.contains(typeOne) || cells[indexValue].classList.contains(typeTwo) || cells[indexValue].classList.contains(typeThree)) {
+        //     collisionDetectedBad()
+        //   } else if (cells[indexValue].classList.contains(typeFour) || cells[indexValue].classList.contains(typeFive)) {
+        //     collisionDetectedGood()
+        //   }
+        // }
+        // )
 
         // beeCurrentPosition.forEach(indexValue => {
         //   if (cells[indexValue].classList.contains(typeTwo)) {
@@ -730,6 +782,27 @@ function init() {
         // }
       }, 75)
     }
+  }
+
+  function updateLives() {
+    currentLives--
+    livesGraphicUpdate()
+    ouch.play()
+    if (currentLives <= 0) {
+      setTimeout(() => {
+        gameOver()
+      }, 20)
+    }
+  }
+
+  function toggleCollision() {
+    beePic.classList.toggle('collision')
+    clearInterval(collisionTimer)
+    collisionTimer = null
+    setTimeout(() => {
+      beePic.classList.toggle('collision')
+      startCollisionCheck()
+    }, 1000)
   }
 
   function collisionDetectedBad() {
