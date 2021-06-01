@@ -10,6 +10,7 @@ function init() {
   const gameOverCard = document.querySelector('#gameOver')
   const ouch = document.querySelector('#ouch')
   const ding = document.querySelector('#ding')
+  const splat = document.querySelector('#splat')
   // console.log(ouch)
   // console.log(livesGraphic)
 
@@ -153,8 +154,8 @@ function init() {
     removePlant() {
       if (this.currentPosition.length > 0 && this.currentPosition[0] % width !== 0) {
         this.currentPosition.forEach(index => cells[index].classList.remove(plantClass))
-        console.log('THIS IS THE LENGTH', this.name, this.currentPosition.length)
-        console.log('GOING AS EXPECTED', this.name, this.currentPosition[0])
+        // console.log('THIS IS THE LENGTH', this.name, this.currentPosition.length)
+        // console.log('GOING AS EXPECTED', this.name, this.currentPosition[0])
         cells[this.currentPosition[this.currentPosition.length - 1] - width].classList.remove(flowerClass)
         this.currentPosition = this.currentPosition.map(indexValue => {
           indexValue--
@@ -162,7 +163,7 @@ function init() {
         })
       } else if (this.currentPosition.length > 0 && this.currentPosition[0] % width === 0) {
         this.currentPosition = []
-        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!HERE!!!!!!', this.currentPosition)
+        // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!HERE!!!!!!', this.currentPosition)
       }
     }
   }
@@ -263,7 +264,7 @@ function init() {
 
     for (let i = width - 1; i < width * (height / 2); i += width) {
       endColumnsUpper.push(i)
-      console.log('UPPER>>>', endColumnsUpper)
+      // console.log('UPPER>>>', endColumnsUpper)
     }
 
     console.log(plantOneCurrentPosition)
@@ -344,6 +345,7 @@ function init() {
   //   cells[plantOneCurrentPosition[plantOneCurrentPosition.length - 1] - width].classList.remove(flowerClass)
   // }
 
+
   function generateWasp() {
     firstWaspNull = waspArray.find(wasp => {
       return !wasp.currentPosition
@@ -364,9 +366,9 @@ function init() {
     firstPlantNull = plantArray.find(plant => {
       return plant.currentPosition.length === 0
     })
-    console.log('-----PLANT NULL-----', firstPlantNull.name)
+    // console.log('-----PLANT NULL-----', firstPlantNull.name)
     firstPlantNull.currentPosition[0] = width * height - 1
-    console.log('-----PLANT NULL POS-----', firstPlantNull.currentPosition[0])
+    // console.log('-----PLANT NULL POS-----', firstPlantNull.currentPosition[0])
 
     for (let p = 1; p < plantHeightOptions[Math.floor(Math.random() * plantHeightOptions.length)]; p++) {
       firstPlantNull.currentPosition.push(firstPlantNull.currentPosition[0] - (width * p))
@@ -470,6 +472,8 @@ function init() {
     } else if (key === 'Space') {
       generateHoney()
       resetGravityTimer()
+    } else if (key === 'Enter') {
+      console.log('WASPS', waspArray, 'HONEY', honeyArray)
     } else if (key === 'Escape') {
       clearInterval(scrolling)
       clearInterval(gravity)
@@ -495,7 +499,7 @@ function init() {
     plantArray.forEach(plant => {
       plant.removePlant()
       plant.addPlant()
-      console.log('--PLANT NAME--', plant.name, 'PLANT LENGTHS>>', plant.currentPosition)
+      // console.log('--PLANT NAME--', plant.name, 'PLANT LENGTHS>>', plant.currentPosition)
     })
 
 
@@ -667,15 +671,12 @@ function init() {
 
   // }, 75)
 
-  let filteredArray = []
-  let positionsArrray = []
-  let mergedArray = []
-  let uniqueArray = []
-  let duplicates = []
+
+
 
   function beeCollision(arr1, arr2, class2) {
 
-    filteredArray = arr2.filter(item => {
+    const filteredArray = arr2.filter(item => {
       if (item.currentPosition) {
         return item.currentPosition
       }
@@ -683,15 +684,16 @@ function init() {
 
     console.log('FILTERED>>>', filteredArray)
 
-    positionsArrray = filteredArray.map(item => item.currentPosition)
+    const positionsArrray = filteredArray.map(item => item.currentPosition)
 
     console.log('POSITIONS ONLY>>>', positionsArrray)
 
-    mergedArray = beeCurrentPosition.concat(positionsArrray)
+    const mergedArray = beeCurrentPosition.concat(positionsArrray)
 
     console.log('MERGED>>>>', mergedArray)
 
-
+    const uniqueArray = []
+    const duplicates = []
 
     mergedArray.filter(item => {
       if (uniqueArray.indexOf(item) < 0) {
@@ -710,27 +712,87 @@ function init() {
           arr2[i].currentPosition = null
           cells[item].classList.remove(class2)
           updateLives()
-          toggleCollision() 
+          toggleCollision()
         }
       }
     })
-    console.log(arr2)
 
   }
 
 
+  function honeyCheck(arr1, arr2, class1, class2) {
+
+    const mergedArray = arr1.concat(arr2)
+
+    console.log('MERGED>>>>', mergedArray)
+
+
+    const filteredArray = mergedArray.filter(item => {
+      if (item.currentPosition) {
+        return item.currentPosition
+      }
+    })
+
+    console.log('FILTERED>>>', filteredArray)
+
+
+    const positionsArrray = filteredArray.map(item => item.currentPosition)
+
+    console.log('POSITIONS ONLY>>>', positionsArrray)
+
+    const uniqueArray = []
+    const duplicates = []
+
+    console.log('UNIQUE VALUES>>>>', uniqueArray)
+    console.log('DUPLICATE VALUES>>>>', duplicates)
+
+
+    positionsArrray.filter(item => {
+      if (uniqueArray.indexOf(item) < 0) {
+        uniqueArray.push(item)
+      } else {
+        duplicates.push(item)
+      }
+    })
+
+
+    duplicates.forEach(item => {
+      for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i].currentPosition === item) {
+          arr1[i].currentPosition = null
+          cells[item].classList.remove(class1)
+        }
+      }
+      for (let i = 0; i < arr2.length; i++) {
+        if (arr2[i].currentPosition === item) {
+          arr2[i].currentPosition = null
+          cells[item].classList.remove(class2)
+        }
+      }
+      splat.play()
+    })
+
+  }
 
   function startCollisionCheck() {
-    console.log('COLLISION TIMER AT START OF CHECK', collisionTimer)
-    console.log('STARTING CHECK')
+    // console.log('COLLISION TIMER AT START OF CHECK', collisionTimer)
+    // console.log('STARTING CHECK')
 
     if (!collisionTimer) {
       collisionTimer = setInterval(() => {
         // console.log('COLLISION TIMER AFTER INITIATION', collisionTimer)
         beeCurrentPosition.forEach(item => {
-          if (cells[item].classList.contains(waspClass))
+          if (cells[item].classList.contains(waspClass)) 
             beeCollision(beeCurrentPosition, waspArray, waspClass)
         })
+
+        honeyArray.forEach(item => {
+          if (item.currentPosition && cells[item.currentPosition].classList.contains(waspClass)) {
+            console.log('<<<<<<<<<<<<<<<<<<<SPLAT>>>>>>>>>>>>>>>>')
+            honeyCheck(honeyArray, waspArray, honeyClass, waspClass)
+          }
+        })
+
         // beeCurrentPosition.forEach(indexValue => {
         //   if (cells[indexValue].classList.contains(typeOne) || cells[indexValue].classList.contains(typeTwo) || cells[indexValue].classList.contains(typeThree)) {
         //     collisionDetectedBad()
@@ -780,7 +842,7 @@ function init() {
         //   collisionDetectedGood()
         //   cells[beeCurrentPosition - width + 1].classList.remove(typeFive)
         // }
-      }, 75)
+      }, 10)
     }
   }
 
