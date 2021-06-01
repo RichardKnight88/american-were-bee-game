@@ -54,7 +54,7 @@ function init() {
   const endColumns = []
   const endColumnsUpper = []
   const topRow = []
-  let plantHeights = [1, 2, 3, 4, 5, 6]
+  const plantHeightOptions = [1, 2, 3, 4, 5]
   let currentLives = 3
 
   let currentScore = 0
@@ -82,7 +82,7 @@ function init() {
       if (this.currentPosition && this.currentPosition % width !== 0) {
         cells[this.currentPosition].classList.remove(waspClass)
         this.currentPosition--
-      } else if (this.currentPosition && this.currentPosition % width === 0) {
+      } else if (this.currentPosition % width === 0) {
         this.currentPosition = null
       }
     }
@@ -114,7 +114,7 @@ function init() {
       if (this.currentPosition && this.currentPosition % width !== width - 1) {
         cells[this.currentPosition].classList.remove(honeyClass)
         this.currentPosition++
-      } else if (this.currentPosition && this.currentPosition % width === width - 1) {
+      } else if (this.currentPosition % width === width - 1) {
         this.currentPosition = null
       }
     }
@@ -131,13 +131,68 @@ function init() {
   const honeyNine = new Honey('honeyNinePosition', null)
   const honeyTen = new Honey('honeyTenPosition', null)
 
+  class Plant {
+
+    constructor(name, currentPosition) {
+
+      this.name = name
+      this.currentPosition = currentPosition
+
+    }
+
+    addPlant() {
+      if (this.currentPosition.length > 0 && this.currentPosition[0] % width !== 0) {
+        this.currentPosition.forEach(index => cells[index].classList.add(plantClass))
+
+        cells[this.currentPosition[this.currentPosition.length - 1] - width].classList.add(flowerClass)
+
+      }
+
+    }
+
+    // plantOneCurrentPosition.forEach(index => cells[index].classList.remove(plantClass))
+    // cells[plantOneCurrentPosition[plantOneCurrentPosition.length - 1] - width].classList.remove(flowerClass)
+
+
+    // this.plantHeight.forEach(index => cells[index].classList.remove(plantClass))
+    // cells[plantOneCurrentPosition[plantOneCurrentPosition.length - 1] - width].classList.remove(flowerClass)
+
+    removePlant() {
+      if (this.currentPosition.length > 0 && this.currentPosition[0] % width !== 0) {
+        this.currentPosition.forEach(index => cells[index].classList.remove(plantClass))
+        console.log('THIS IS THE LENGTH', this.name, this.currentPosition.length)
+        console.log('GOING AS EXPECTED', this.name, this.currentPosition[0])
+        cells[this.currentPosition[this.currentPosition.length - 1] - width].classList.remove(flowerClass)
+        this.currentPosition = this.currentPosition.map(indexValue => {
+          indexValue--
+          return indexValue
+        })
+      } else if (this.currentPosition.length > 0 && this.currentPosition[0] % width === 0) {
+        this.currentPosition = []
+        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!HERE!!!!!!', this.currentPosition)
+      }
+    }
+  }
+
+  const plantOne = new Plant('plantOnePosition', [])
+  const plantTwo = new Plant('plantTwoPosition', [])
+  const plantThree = new Plant('plantThreePosition', [])
+  const plantFour = new Plant('plantFourPosition', [])
+  const plantFive = new Plant('plantFivePosition', [])
+  const plantSix = new Plant('plantSixPosition', [])
+
+  const plantArray = [plantOne, plantTwo, plantThree, plantFour, plantFive, plantSix]
+
+
   const waspArray = [waspOne, waspTwo, waspThree, waspFour, waspFive]
+
   const honeyArray = [honeyOne, honeyTwo, honeyThree, honeyFour, honeyFive, honeySix, honeySeven, honeyEight, honeyNine, honeyTen]
 
   console.log(honeyArray)
 
   let firstWaspNull = null
   let firstHoneyNull = null
+  let firstPlantNull = null
 
   let newPlant = null
 
@@ -164,7 +219,7 @@ function init() {
   function createGrid() {
     for (let i = 0; i < cellCount; i++) {
       const cell = document.createElement('div')
-      // cell.innerText = i
+      cell.innerText = i
       grid.appendChild(cell)
       cells.push(cell)
     }
@@ -185,13 +240,12 @@ function init() {
     }
 
     console.log(plantOneCurrentPosition)
-    console.log(plantHeights[Math.floor(Math.random() * plantHeights.length)])
 
 
     livesGraphicUpdate()
     addBee()
     // generatePlant()
-    addPlant()
+    // addPlant()
     // addFlower(flowerStartingPosition)
     // generateWasp()
     // addWasp(waspStartingPosition)
@@ -239,29 +293,29 @@ function init() {
   //   }
   // }
 
-  function addPlant() {
-    console.log(plantOneCurrentPosition)
-    if (plantOneCurrentPosition.length === 0) {
-      plantOneCurrentPosition[0] = width * height - 1
-      for (let p = 1; p < plantHeights[Math.floor(Math.random() * plantHeights.length)]; p++) {
-        plantOneCurrentPosition.push(plantOneCurrentPosition[0] - (width * p))
-        console.log(plantOneCurrentPosition)
-      }
-    }
-    plantOneCurrentPosition.forEach(index => cells[index].classList.add(plantClass))
-    cells[plantOneCurrentPosition[plantOneCurrentPosition.length - 1] - width].classList.add(flowerClass)
-
-  }
-
-  // function addPlant(position) {
+  // function addPlant() {
+  //   console.log(plantOneCurrentPosition)
+  //   if (plantOneCurrentPosition.length === 0) {
+  //     plantOneCurrentPosition[0] = width * height - 1
+  //     for (let p = 1; p < plantHeights[Math.floor(Math.random() * plantHeights.length)]; p++) {
+  //       plantOneCurrentPosition.push(plantOneCurrentPosition[0] - (width * p))
+  //       console.log(plantOneCurrentPosition)
+  //     }
+  //   }
   //   plantOneCurrentPosition.forEach(index => cells[index].classList.add(plantClass))
   //   cells[plantOneCurrentPosition[plantOneCurrentPosition.length - 1] - width].classList.add(flowerClass)
+
   // }
 
-  function removePlant(position) {
-    plantOneCurrentPosition.forEach(index => cells[index].classList.remove(plantClass))
-    cells[plantOneCurrentPosition[plantOneCurrentPosition.length - 1] - width].classList.remove(flowerClass)
-  }
+  // // function addPlant(position) {
+  // //   plantOneCurrentPosition.forEach(index => cells[index].classList.add(plantClass))
+  // //   cells[plantOneCurrentPosition[plantOneCurrentPosition.length - 1] - width].classList.add(flowerClass)
+  // // }
+
+  // function removePlant(position) {
+  //   plantOneCurrentPosition.forEach(index => cells[index].classList.remove(plantClass))
+  //   cells[plantOneCurrentPosition[plantOneCurrentPosition.length - 1] - width].classList.remove(flowerClass)
+  // }
 
   function generateWasp() {
     firstWaspNull = waspArray.find(wasp => {
@@ -278,6 +332,22 @@ function init() {
     })
     firstHoneyNull.currentPosition = beeCurrentPosition[1] + 1
   }
+
+  function generatePlant() {
+    firstPlantNull = plantArray.find(plant => {
+      return plant.currentPosition.length === 0
+    })
+    console.log('-----PLANT NULL-----', firstPlantNull.name)
+    firstPlantNull.currentPosition[0] = width * height - 1
+    console.log('-----PLANT NULL POS-----', firstPlantNull.currentPosition[0])
+
+    for (let p = 1; p < plantHeightOptions[Math.floor(Math.random() * plantHeightOptions.length)]; p++) {
+      firstPlantNull.currentPosition.push(firstPlantNull.currentPosition[0] - (width * p))
+    }
+  }
+
+
+
 
   // function generateWasp() {
   //   waspStartingPosition = endColumns[Math.floor(Math.random() * endColumns.length)]
@@ -322,17 +392,17 @@ function init() {
     cells[acornCurrentPosition].classList.remove(acornClass)
   }
 
-  function addHoney() {
-    if (!honeyOneCurrentPosition) {
-      honeyOneCurrentPosition = beeCurrentPosition[1] + 1
-      console.log('HONEY POS>>', honeyOneCurrentPosition)
-    }
-    cells[honeyOneCurrentPosition].classList.add(honeyClass)
-  }
+  // function addHoney() {
+  //   if (!honeyOneCurrentPosition) {
+  //     honeyOneCurrentPosition = beeCurrentPosition[1] + 1
+  //     console.log('HONEY POS>>', honeyOneCurrentPosition)
+  //   }
+  //   cells[honeyOneCurrentPosition].classList.add(honeyClass)
+  // }
 
-  function removeHoney() {
-    cells[honeyOneCurrentPosition].classList.remove(honeyClass)
-  }
+  // function removeHoney() {
+  //   cells[honeyOneCurrentPosition].classList.remove(honeyClass)
+  // }
 
 
   function addPollen() {
@@ -376,6 +446,7 @@ function init() {
       clearInterval(gravity)
       clearInterval(waspFlying)
       clearInterval(newWaspTimer)
+      clearInterval(newPlantTimer)
       clearInterval(honeyFiring)
       clearInterval(collisionTimer)
       clearInterval(fallingAcorn)
@@ -388,21 +459,26 @@ function init() {
 
 
   const scrolling = setInterval(() => {
-    removePlant()
+    // removePlant()
     removeAcorn()
 
-
-    if (plantOneCurrentPosition[0] % width !== 0) {
-      plantOneCurrentPosition = plantOneCurrentPosition.map(value => {
-        value--
-        console.log('VALUE>>', value)
-        return value
-      })
-      console.log('NEW ARRAY>>', plantOneCurrentPosition)
-    } else {
-      plantOneCurrentPosition = []
-    }
-    addPlant()
+    plantArray.forEach(plant => {
+      plant.removePlant()
+      plant.addPlant()
+      console.log('--PLANT NAME--', plant.name, 'PLANT LENGTHS>>', plant.currentPosition)
+    })
+  
+    // if (plantOneCurrentPosition[0] % width !== 0) {
+    //   plantOneCurrentPosition = plantOneCurrentPosition.map(value => {
+    //     value--
+    //     console.log('VALUE>>', value)
+    //     return value
+    //   })
+    //   console.log('NEW ARRAY>>', plantOneCurrentPosition)
+    // } else {
+    //   plantOneCurrentPosition = []
+    // }
+    // addPlant()
 
     if (acornCurrentPosition % width !== 0) {
       acornCurrentPosition--
@@ -486,6 +562,9 @@ function init() {
     })
 
   }, scrollTimer * 0.6)
+
+
+  const newPlantTimer = setInterval(() => generatePlant(), scrollTimer * 5)
 
 
   // const waspFlying = setInterval(() => {
@@ -673,13 +752,17 @@ function init() {
 
   function gameOver() {
     console.log('GAME OVER')
-    clearInterval(gravity)
     clearInterval(scrolling)
-    clearInterval(collisionTimer)
+    clearInterval(gravity)
     clearInterval(waspFlying)
+    clearInterval(newWaspTimer)
+    clearInterval(newPlantTimer)
+    clearInterval(honeyFiring)
+    clearInterval(collisionTimer)
     clearInterval(fallingAcorn)
     gameOverCard.classList.toggle('hidden')
     grid.classList.toggle('hidden')
+    backgroundGrid.classList.toggle('hidden')
     // window.alert('GAME OVER')
   }
 
