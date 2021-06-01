@@ -137,18 +137,7 @@ main {
   background-size: cover;
 }
 
-.grid div.pollen {
-  background-image: url('../assets/pollen3.gif');
-  background-size: 40%;
-  background-repeat: no-repeat;
-  background-position: center ;
-  filter: drop-shadow(-3px -3px 5px gold);
-}
 
-.grid div.honey {
-  background-image: url('../assets/honey_drip.png');
-  background-size: cover;
-}
 
 .grid div.wasp {
   background-image: url('../assets/cropped_wasp.gif');
@@ -183,6 +172,18 @@ main {
   height: 200%;
   filter: drop-shadow(-0.5px -0.5px 1px black);
 } */
+.grid div.pollen {
+  background-image: url('../assets/pollen3.gif');
+  background-size: 40%;
+  background-repeat: no-repeat;
+  background-position: center ;
+  filter: drop-shadow(-3px -3px 10px gold);
+}
+
+.grid div.honey {
+  background-image: url('../assets/honey_drip.png');
+  background-size: cover;
+}
 
 .grid img.obstacleImage {
   height: 230%;

@@ -45,11 +45,13 @@ function init() {
   const waspFlowerClass = 'waspFlower'
   const pollenClass = 'pollen'
   const honeyClass = 'honey'
+  const beeCurrentPosition = []
   let scrollTimer = 150
   let gravityTimer = 550
   let collisionTimer = null
   let gravity = 0
   const endColumns = []
+  const endColumnsUpper = []
   const topRow = []
   let plantHeights = [1, 2, 3, 4, 5, 6]
   let currentLives = 3
@@ -57,8 +59,8 @@ function init() {
   let currentScore = 0
   score.innerText = currentScore
 
-  const beeStartingPosition = width * (height / 4) + 2
-  let beeCurrentPosition = width * (height / 4) + 2
+  beeCurrentPosition[0] = width * (height / 4) + 2
+
 
   let newPlant = null
 
@@ -79,6 +81,8 @@ function init() {
 
   let honeyOneCurrentPosition = null
 
+  let pollenOneCurrentPosition = null
+
 
   function createGrid() {
     for (let i = 0; i < cellCount; i++) {
@@ -88,14 +92,19 @@ function init() {
       cells.push(cell)
     }
 
-    for (let j = width - 1; j < width * height; j += width) {
-      endColumns.push(j)
+    for (let i = width - 1; i < width * height; i += width) {
+      endColumns.push(i)
       // console.log(endColumns)
     }
 
-    for (let k = 1; k < width; k++) {
-      topRow.push(k)
+    for (let i = 8; i < width; i++) {
+      topRow.push(i)
       // console.log(topRow)
+    }
+
+    for (let i = width - 1; i < width * (height / 2); i += width) {
+      endColumnsUpper.push(i)
+      console.log('UPPER>>>', endColumnsUpper)
     }
 
     console.log(plantOneCurrentPosition)
@@ -103,7 +112,7 @@ function init() {
 
 
     livesGraphicUpdate()
-    addBee(beeStartingPosition)
+    addBee()
     // generatePlant()
     addPlant()
     // addFlower(flowerStartingPosition)
@@ -135,18 +144,16 @@ function init() {
   // console.log('TRYING TO REFACTOR>>', firstBeePosition)
 
   function addBee(position) {
-    cells[position].classList.add(beeClass)
-    cells[position].appendChild(beePic)
-    cells[position + 1].classList.add(beeClass)
-    cells[position - width].classList.add(beeClass)
-    cells[position - width + 1].classList.add(beeClass)
+
+    beeCurrentPosition[1] = (beeCurrentPosition[0] + 1)
+    beeCurrentPosition[2] = (beeCurrentPosition[0] - width)
+    beeCurrentPosition[3] = (beeCurrentPosition[2] + 1)
+    beeCurrentPosition.forEach(indexValue => cells[indexValue].classList.add(beeClass))
+    cells[beeCurrentPosition[0]].appendChild(beePic)
   }
 
   function removeBee(position) {
-    cells[beeCurrentPosition].classList.remove(beeClass)
-    cells[beeCurrentPosition + 1].classList.remove(beeClass)
-    cells[beeCurrentPosition - width].classList.remove(beeClass)
-    cells[beeCurrentPosition - width + 1].classList.remove(beeClass)
+    beeCurrentPosition.forEach(indexValue => cells[indexValue].classList.remove(beeClass))
   }
 
   // function plantCheck() {
@@ -223,27 +230,55 @@ function init() {
     cells[acornCurrentPosition].classList.remove(acornClass)
   }
 
+  function addHoney() {
+    if (!honeyOneCurrentPosition) {
+      honeyOneCurrentPosition = beeCurrentPosition + 2
+      console.log('HONEY POS>>', honeyOneCurrentPosition)
+    }
+    cells[honeyOneCurrentPosition].classList.add(honeyClass)
+  }
+
+  function removeHoney() {
+    cells[honeyOneCurrentPosition].classList.remove(honeyClass)
+  }
+
+
+  function addPollen() {
+    if (!pollenOneCurrentPosition) {
+      pollenOneCurrentPosition = endColumnsUpper[Math.floor(Math.random() * endColumnsUpper.length)]
+    }
+    cells[pollenOneCurrentPosition].classList.add(pollenClass)
+
+
+  }
+
+  function removePollen(position) {
+    cells[pollenOneCurrentPosition].classList.remove(pollenClass)
+  }
+
   function navigate(event) {
     const key = event.code
     console.log(key)
     // collisionDetectionNav()
     removeBee()
 
-    if (key === 'ArrowUp' && (beeCurrentPosition - width) >= width) {
-      beeCurrentPosition -= width
+    if (key === 'ArrowUp' && (beeCurrentPosition[0] - width) >= width) {
+      beeCurrentPosition[0] -= width
       resetGravityTimer()
-    } else if (key === 'ArrowRight' && (beeCurrentPosition + 1) % width !== width - 1) {
-      beeCurrentPosition++
+    } else if (key === 'ArrowRight' && (beeCurrentPosition[1]) % width !== width - 1) {
+      beeCurrentPosition[0]++
       resetGravityTimer()
-    } else if (key === 'ArrowDown' && beeCurrentPosition + width <= (width * height) - 1) {
-      beeCurrentPosition += width
+    } else if (key === 'ArrowDown' && beeCurrentPosition[0] + width <= (width * height) - 1) {
+      beeCurrentPosition[0] += width
       resetGravityTimer()
-    } else if (key === 'ArrowLeft' && beeCurrentPosition % width !== 0) {
-      beeCurrentPosition--
+    } else if (key === 'ArrowLeft' && beeCurrentPosition[0] % width !== 0) {
+      beeCurrentPosition[0]--
       resetGravityTimer()
     } else if (key === 'Space') {
       addHoney()
       resetGravityTimer()
+    } else if (key === 'Enter') {
+      addPollen()
     } else if (key === 'Escape') {
       clearInterval(scrolling)
       clearInterval(gravity)
@@ -257,7 +292,6 @@ function init() {
     addBee(beeCurrentPosition)
   }
 
-  // * nav collision detection isn't checking until key press - need to figure out a way to get the nav 
 
   const scrolling = setInterval(() => {
     removePlant()
@@ -280,6 +314,7 @@ function init() {
       acornCurrentPosition--
       addAcorn(acornCurrentPosition)
     }
+
     if (honeyOneCurrentPosition) {
       removeHoney()
 
@@ -291,6 +326,16 @@ function init() {
       }
     }
 
+    if (pollenOneCurrentPosition) {
+      removePollen()
+
+      if (pollenOneCurrentPosition % width !== 0) {
+        pollenOneCurrentPosition--
+        addPollen()
+      } else {
+        pollenOneCurrentPosition = null
+      }
+    }
     // console.log(Math.floor(Math.random() * 5) * 1000)
   }, scrollTimer)
 
@@ -313,9 +358,9 @@ function init() {
   function applyGravity() {
     gravity = setInterval(() => {
       removeBee()
-      if ((beeCurrentPosition + width) < (width * height)) {
-        beeCurrentPosition += width
-        addBee(beeCurrentPosition)
+      if ((beeCurrentPosition[0] + width) < (width * height)) {
+        beeCurrentPosition[0] += width
+        addBee()
       } else {
         console.log('BANG FLOOR')
         currentLives--
@@ -344,6 +389,7 @@ function init() {
   const fallingAcorn = setInterval(() => {
     // collisionDetectionScroll()
     removeAcorn()
+
     if (acornCurrentPosition + width < width * height) {
       acornCurrentPosition += width
       if (cells[acornCurrentPosition + width].classList.contains(flowerClass) || cells[acornCurrentPosition + width].classList.contains(waspClass)) {
@@ -391,37 +437,66 @@ function init() {
   //   }
 
   // }, 75)
-  function addHoney() {
-    if (!honeyOneCurrentPosition) {
-      honeyOneCurrentPosition = beeCurrentPosition + 2
-      console.log('HONEY POS>>', honeyOneCurrentPosition)
-    }
-    cells[honeyOneCurrentPosition].classList.add(honeyClass)
-  }
-
-  function removeHoney() {
-    cells[honeyOneCurrentPosition].classList.remove(honeyClass)
-  }
 
 
-  function startCollisionCheck(typeOne, typeTwo, typeThree, typeFour) {
+
+  function startCollisionCheck(typeOne, typeTwo, typeThree, typeFour, typeFive) {
     console.log('COLLISION TIMER AT START OF CHECK', collisionTimer)
     console.log('STARTING CHECK')
+
     if (!collisionTimer) {
       collisionTimer = setInterval(() => {
         console.log('COLLISION TIMER AFTER INITIATION', collisionTimer)
-        if (cells[beeCurrentPosition].classList.contains(typeOne) || cells[beeCurrentPosition + 1].classList.contains(typeOne) || cells[beeCurrentPosition - width].classList.contains(typeOne) || cells[beeCurrentPosition - (width + 1)].classList.contains(typeOne)) {
-          collisionDetectedBad()
+
+        beeCurrentPosition.forEach(indexValue => {
+          if (cells[indexValue].classList.contains(typeOne) || cells[indexValue].classList.contains(typeTwo) || cells[indexValue].classList.contains(typeThree)) {
+            collisionDetectedBad()
+          } else if (cells[indexValue].classList.contains(typeFour) || cells[indexValue].classList.contains(typeFive)) {
+            collisionDetectedGood()
+          }
         }
-        if (cells[beeCurrentPosition].classList.contains(typeTwo) || cells[beeCurrentPosition + 1].classList.contains(typeTwo) || cells[beeCurrentPosition - width].classList.contains(typeTwo) || cells[beeCurrentPosition - (width + 1)].classList.contains(typeTwo)) {
-          collisionDetectedBad()
-        }
-        if (cells[beeCurrentPosition].classList.contains(typeThree) || cells[beeCurrentPosition + 1].classList.contains(typeThree) || cells[beeCurrentPosition - width].classList.contains(typeThree) || cells[beeCurrentPosition - (width + 1)].classList.contains(typeThree)) {
-          collisionDetectedBad()
-        }
-        if (cells[beeCurrentPosition].classList.contains(typeFour) || cells[beeCurrentPosition + 1].classList.contains(typeFour) || cells[beeCurrentPosition - width].classList.contains(typeFour) || cells[beeCurrentPosition - (width + 1)].classList.contains(typeFour)) {
-          collisionDetectedGood()
-        }
+        )
+
+        // beeCurrentPosition.forEach(indexValue => {
+        //   if (cells[indexValue].classList.contains(typeTwo)) {
+        //   collisionDetectedBad()
+        // }
+
+        // beeCurrentPosition.forEach(indexValue => {
+        //   if (cells[indexValue].classList.contains(typeThree)) {
+        //   collisionDetectedBad()
+        // }
+
+        // if (cells[beeCurrentPosition].classList.contains(typeTwo) || cells[beeCurrentPosition + 1].classList.contains(typeTwo) || cells[beeCurrentPosition - width].classList.contains(typeTwo) || cells[beeCurrentPosition - (width + 1)].classList.contains(typeTwo)) {
+        //   collisionDetectedBad()
+        // }
+
+        // if (cells[beeCurrentPosition].classList.contains(typeThree) || cells[beeCurrentPosition + 1].classList.contains(typeThree) || cells[beeCurrentPosition - width].classList.contains(typeThree) || cells[beeCurrentPosition - (width + 1)].classList.contains(typeThree)) {
+        //   collisionDetectedBad()
+        // }
+
+        // if (cells[beeCurrentPosition].classList.contains(typeFour) || cells[beeCurrentPosition + 1].classList.contains(typeFour) || cells[beeCurrentPosition - width].classList.contains(typeFour) || cells[beeCurrentPosition - (width + 1)].classList.contains(typeFour)) {
+        //   collisionDetectedGood()
+        // }
+
+
+        // if (cells[beeCurrentPosition].classList.contains(typeFive)) {
+        //   console.log('YES POLLEN!')
+        //   collisionDetectedGood()
+        //   cells[beeCurrentPosition].classList.remove(typeFive)
+        // } else if (cells[beeCurrentPosition + 1].classList.contains(typeFive)) {
+        //   console.log('YES POLLEN!')
+        //   collisionDetectedGood()
+        //   cells[beeCurrentPosition + 1].classList.remove(typeFive)
+        // } else if (cells[beeCurrentPosition - width].classList.contains(typeFive)) {
+        //   console.log('YES POLLEN!')
+        //   collisionDetectedGood()
+        //   cells[beeCurrentPosition - width].classList.remove(typeFive)
+        // } else if (cells[beeCurrentPosition - width + 1].classList.contains(typeFive)) {
+        //   console.log('YES POLLEN!')
+        //   collisionDetectedGood()
+        //   cells[beeCurrentPosition - width + 1].classList.remove(typeFive)
+        // }
       }, 75)
     }
   }
@@ -445,7 +520,7 @@ function init() {
       setTimeout(() => {
         beePic.classList.toggle('collision')
         console.log('......AND')
-        startCollisionCheck(waspClass, plantClass, acornClass, flowerClass)
+        startCollisionCheck(waspClass, plantClass, acornClass, flowerClass, pollenClass)
       }, 1000)
     }
   }
@@ -469,7 +544,7 @@ function init() {
   }
 
   function collisionCheck() {
-    startCollisionCheck(waspClass, plantClass, acornClass, flowerClass)
+    startCollisionCheck(waspClass, plantClass, acornClass, flowerClass, pollenClass)
     //   if (cells[beeCurrentPosition].classList.contains(plantClass) || cells[beeCurrentPosition + 1].classList.contains(plantClass) || cells[beeCurrentPosition - width].classList.contains(plantClass) || cells[beeCurrentPosition - (width + 1)].classList.contains(plantClass)) {
     //     console.log('BANG PLANT')
     //     currentLives--
