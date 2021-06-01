@@ -80,8 +80,7 @@ function init() {
       if (this.currentPosition && this.currentPosition % width !== 0) {
         cells[this.currentPosition].classList.remove(waspClass)
         this.currentPosition--
-      } else {
-        cells[this.currentPosition].classList.remove(waspClass)
+      } else if (this.currentPosition % width === 0){
         this.currentPosition = null
       }
     }
@@ -326,6 +325,7 @@ function init() {
       clearInterval(scrolling)
       clearInterval(gravity)
       clearInterval(waspFlying)
+      clearInterval(newWaspTimer)
       clearInterval(collisionTimer)
       clearInterval(fallingAcorn)
 
