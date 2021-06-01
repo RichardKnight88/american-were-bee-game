@@ -48,6 +48,7 @@ function init() {
   const beeCurrentPosition = []
   let scrollTimer = 150
   let gravityTimer = 550
+  let waspInterval = 1000
   let collisionTimer = null
   let gravity = 0
   const endColumns = []
@@ -68,6 +69,7 @@ function init() {
 
       this.name = name
       this.currentPosition = currentPosition
+
     }
 
     addWasp() {
@@ -80,7 +82,7 @@ function init() {
       if (this.currentPosition && this.currentPosition % width !== 0) {
         cells[this.currentPosition].classList.remove(waspClass)
         this.currentPosition--
-      } else if (this.currentPosition % width === 0){
+      } else if (this.currentPosition && this.currentPosition % width === 0) {
         this.currentPosition = null
       }
     }
@@ -92,9 +94,50 @@ function init() {
   const waspFour = new Wasp('waspFourPosition', null)
   const waspFive = new Wasp('waspFivePosition', null)
 
+
+  class Honey {
+
+    constructor(name, currentPosition) {
+
+      this.name = name
+      this.currentPosition = currentPosition
+
+    }
+
+    addHoney() {
+      if (this.currentPosition && this.currentPosition % width !== width - 1) {
+        cells[this.currentPosition].classList.add(honeyClass)
+      }
+    }
+
+    removeHoney() {
+      if (this.currentPosition && this.currentPosition % width !== width - 1) {
+        cells[this.currentPosition].classList.remove(honeyClass)
+        this.currentPosition++
+      } else if (this.currentPosition && this.currentPosition % width === width - 1) {
+        this.currentPosition = null
+      }
+    }
+  }
+
+  const honeyOne = new Honey('honeyOnePosition', null)
+  const honeyTwo = new Honey('honeyTwoPosition', null)
+  const honeyThree = new Honey('honeyThreePosition', null)
+  const honeyFour = new Honey('honeyFourPosition', null)
+  const honeyFive = new Honey('honeyFivePosition', null)
+  const honeySix = new Honey('honeySixPosition', null)
+  const honeySeven = new Honey('honeySevenPosition', null)
+  const honeyEight = new Honey('honeyEightPosition', null)
+  const honeyNine = new Honey('honeyNinePosition', null)
+  const honeyTen = new Honey('honeyTenPosition', null)
+
   const waspArray = [waspOne, waspTwo, waspThree, waspFour, waspFive]
+  const honeyArray = [honeyOne, honeyTwo, honeyThree, honeyFour, honeyFive, honeySix, honeySeven, honeyEight, honeyNine, honeyTen]
+
+  console.log(honeyArray)
 
   let firstWaspNull = null
+  let firstHoneyNull = null
 
   let newPlant = null
 
@@ -229,6 +272,13 @@ function init() {
     console.log('FIRST NULL CURRENT POSITION', firstWaspNull.currentPosition)
   }
 
+  function generateHoney() {
+    firstHoneyNull = honeyArray.find(honey => {
+      return !honey.currentPosition
+    })
+    firstHoneyNull.currentPosition = beeCurrentPosition[1] + 1
+  }
+
   // function generateWasp() {
   //   waspStartingPosition = endColumns[Math.floor(Math.random() * endColumns.length)]
   //   console.log('WASP>>>>>', waspStartingPosition)
@@ -274,7 +324,7 @@ function init() {
 
   function addHoney() {
     if (!honeyOneCurrentPosition) {
-      honeyOneCurrentPosition = beeCurrentPosition + 2
+      honeyOneCurrentPosition = beeCurrentPosition[1] + 1
       console.log('HONEY POS>>', honeyOneCurrentPosition)
     }
     cells[honeyOneCurrentPosition].classList.add(honeyClass)
@@ -317,7 +367,7 @@ function init() {
       beeCurrentPosition[0]--
       resetGravityTimer()
     } else if (key === 'Space') {
-      addHoney()
+      generateHoney()
       resetGravityTimer()
     } else if (key === 'Enter') {
       addPollen()
@@ -326,6 +376,7 @@ function init() {
       clearInterval(gravity)
       clearInterval(waspFlying)
       clearInterval(newWaspTimer)
+      clearInterval(honeyFiring)
       clearInterval(collisionTimer)
       clearInterval(fallingAcorn)
 
@@ -358,16 +409,16 @@ function init() {
       addAcorn(acornCurrentPosition)
     }
 
-    if (honeyOneCurrentPosition) {
-      removeHoney()
+    // if (honeyOneCurrentPosition) {
+    //   removeHoney()
 
-      if (honeyOneCurrentPosition % width !== width - 1) {
-        honeyOneCurrentPosition++
-        addHoney()
-      } else {
-        honeyOneCurrentPosition = null
-      }
-    }
+    //   if (honeyOneCurrentPosition % width !== width - 1) {
+    //     honeyOneCurrentPosition++
+    //     addHoney()
+    //   } else {
+    //     honeyOneCurrentPosition = null
+    //   }
+    // }
 
     if (pollenOneCurrentPosition) {
       removePollen()
@@ -417,13 +468,21 @@ function init() {
     }, gravityTimer)
   }
 
-  const newWaspTimer = setInterval(() => generateWasp(), 1000)
+  const newWaspTimer = setInterval(() => generateWasp(), waspInterval)
 
   const waspFlying = setInterval(() => {
     // collisionDetectionScroll()
     waspArray.forEach(wasp => {
       wasp.removeWasp()
       wasp.addWasp()
+    })
+  }, scrollTimer * 0.6)
+
+
+  const honeyFiring = setInterval(() => {
+    honeyArray.forEach(honey => {
+      honey.removeHoney()
+      honey.addHoney()
     })
 
   }, scrollTimer * 0.6)
