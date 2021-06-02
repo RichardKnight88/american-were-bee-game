@@ -781,7 +781,6 @@ function init() {
           cells[item].classList.remove(class2)
           
           if (class2 === waspClass) {
-            updateLives()
             toggleCollision()
           } else if (class2 === pollenClass) {
             scoreUpdate(class2)
@@ -874,6 +873,10 @@ function init() {
             scoreUpdate(flowerClass)
         })
 
+        beeCurrentPosition.forEach(item => {
+          if (cells[item].classList.contains(plantClass)) 
+            toggleCollision()
+        })
 
         honeyArray.forEach(item => {
           if (item.currentPosition && cells[item.currentPosition].classList.contains(waspClass)) {
@@ -948,6 +951,7 @@ function init() {
 
   function toggleCollision() {
     beePic.classList.toggle('collision')
+    updateLives()
     clearInterval(collisionTimer)
     collisionTimer = null
     setTimeout(() => {
