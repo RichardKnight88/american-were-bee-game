@@ -48,6 +48,8 @@ function init() {
   const pollenClass = 'pollen'
   const honeyClass = 'honey'
   const honeySplatClass = 'honeySplat'
+  const livesFullClass = 'livesFull'
+  const livesEmptyClass = 'livesEmpty'
   const beeCurrentPosition = []
   let scrollTimer = 150
   let gravityTimer = 650
@@ -58,7 +60,7 @@ function init() {
   const endColumnsUpper = []
   const topRow = []
   const plantHeightOptions = [1, 2, 3, 4, 5]
-  let currentLives = 3
+  let currentLives = ['life', 'life', 'life']
 
   let currentScore = 0
   score.innerText = currentScore
@@ -129,15 +131,15 @@ function init() {
       }
     }
 
-    addPollen() {
+    addLeftMoving(classType) {
       if (this.currentPosition && this.currentPosition % width !== 0) {
-        cells[this.currentPosition].classList.add(pollenClass)
+        cells[this.currentPosition].classList.add(classType)
       }
     }
 
-    removePollen() {
+    removeLeftMoving(classType) {
       if (this.currentPosition && this.currentPosition % width !== 0) {
-        cells[this.currentPosition].classList.remove(pollenClass)
+        cells[this.currentPosition].classList.remove(classType)
         this.currentPosition--
       } else if (this.currentPosition % width === 0) {
         this.currentPosition = null
@@ -148,7 +150,7 @@ function init() {
   }
 
   // * Old Classes
-  
+
   // class Honey {
 
   //   constructor(name, currentPosition) {
@@ -254,9 +256,9 @@ function init() {
   const honeyEight = new GeneratedItem('honeyEightPosition', null)
   const honeyNine = new GeneratedItem('honeyNinePosition', null)
   const honeyTen = new GeneratedItem('honeyTenPosition', null)
-  
 
-  
+
+
   const plantOne = new GeneratedItem('plantOnePosition', [])
   const plantTwo = new GeneratedItem('plantTwoPosition', [])
   const plantThree = new GeneratedItem('plantThreePosition', [])
@@ -272,6 +274,9 @@ function init() {
   const pollenFour = new GeneratedItem('pollenFourPosition', null)
   const pollenFive = new GeneratedItem('pollenFivePosition', null)
 
+  const lifeOne = new GeneratedItem('lifeOnePosition', null)
+  const lifeTwo = new GeneratedItem('lifeTwoPosition', null)
+
 
   const waspArray = [waspOne, waspTwo, waspThree, waspFour, waspFive]
 
@@ -281,12 +286,15 @@ function init() {
 
   const pollenArray = [pollenOne, pollenTwo, pollenThree, pollenFour, pollenFive]
 
+  const lifeArray = [lifeOne, lifeTwo]
+
   console.log(honeyArray)
 
   let firstWaspNull = null
   let firstHoneyNull = null
   let firstPlantNull = null
   let firstPollenNull = null
+  let firstLifeNull = null
 
   let newPlant = null
 
@@ -448,6 +456,13 @@ function init() {
     firstPollenNull.currentPosition = endColumnsUpper[Math.floor(Math.random() * endColumns.length)]
   }
 
+  function generateLeftMoving(nullType, arrayType) {
+    nullType = arrayType.find(item => {
+      return !item.currentPosition
+    })
+    nullType.currentPosition = endColumnsUpper[Math.floor(Math.random() * endColumns.length)]
+  }
+
 
   // function generateWasp() {
   //   waspStartingPosition = endColumns[Math.floor(Math.random() * endColumns.length)]
@@ -550,6 +565,7 @@ function init() {
       clearInterval(honeyFiring)
       clearInterval(collisionTimer)
       clearInterval(fallingAcorn)
+      clearInterval(newLifeTimer)
 
     }
     console.log('CURRENT BEE', beeCurrentPosition)
@@ -570,10 +586,15 @@ function init() {
 
 
     pollenArray.forEach(pollen => {
-      pollen.removePollen()
-      pollen.addPollen()
+      pollen.removeLeftMoving(pollenClass)
+      pollen.addLeftMoving(pollenClass)
     })
 
+
+    lifeArray.forEach(life => {
+      life.removeLeftMoving(livesFullClass)
+      life.addLeftMoving(livesFullClass)
+    })
 
     // if (plantOneCurrentPosition[0] % width !== 0) {
     //   plantOneCurrentPosition = plantOneCurrentPosition.map(value => {
@@ -640,7 +661,7 @@ function init() {
         addBee()
       } else {
         console.log('BANG FLOOR')
-        currentLives--
+        currentLives.pop()
         console.log('LIVES>>>', currentLives)
         livesGraphicUpdate()
 
@@ -675,6 +696,11 @@ function init() {
 
 
   const newPollenTimer = setInterval(() => generatePollen(), scrollTimer * 15)
+
+
+  const newLifeTimer = setInterval(() => generateLeftMoving(firstLifeNull, lifeArray), scrollTimer * 15)
+
+
 
   // const waspFlying = setInterval(() => {
   //   // collisionDetectionScroll()
@@ -779,10 +805,13 @@ function init() {
         if (arr2[i].currentPosition === item) {
           arr2[i].currentPosition = null
           cells[item].classList.remove(class2)
-          
+
           if (class2 === waspClass) {
-            toggleCollision()
+            toggleCollision(class2)
           } else if (class2 === pollenClass) {
+            scoreUpdate(class2)
+          } else if (class2 === livesFullClass) {
+            toggleCollision(class2)
             scoreUpdate(class2)
           }
         }
@@ -859,23 +888,28 @@ function init() {
       collisionTimer = setInterval(() => {
         // console.log('COLLISION TIMER AFTER INITIATION', collisionTimer)
         beeCurrentPosition.forEach(item => {
-          if (cells[item].classList.contains(waspClass)) 
+          if (cells[item].classList.contains(waspClass))
             beeCollision(beeCurrentPosition, waspArray, waspClass)
         })
 
         beeCurrentPosition.forEach(item => {
-          if (cells[item].classList.contains(pollenClass)) 
+          if (cells[item].classList.contains(pollenClass))
             beeCollision(beeCurrentPosition, pollenArray, pollenClass)
         })
 
         beeCurrentPosition.forEach(item => {
-          if (cells[item].classList.contains(flowerClass)) 
+          if (cells[item].classList.contains(livesFullClass))
+            beeCollision(beeCurrentPosition, lifeArray, livesFullClass)
+        })
+
+        beeCurrentPosition.forEach(item => {
+          if (cells[item].classList.contains(flowerClass))
             scoreUpdate(flowerClass)
         })
 
         beeCurrentPosition.forEach(item => {
-          if (cells[item].classList.contains(plantClass)) 
-            toggleCollision()
+          if (cells[item].classList.contains(plantClass))
+            toggleCollision(waspClass)
         })
 
         honeyArray.forEach(item => {
@@ -938,26 +972,34 @@ function init() {
     }
   }
 
-  function updateLives() {
-    currentLives--
-    livesGraphicUpdate()
-    ouch.play()
-    if (currentLives <= 0) {
-      setTimeout(() => {
-        gameOver()
-      }, 20)
+  function updateLives(classType) {
+    if (classType === waspClass || classType === plantClass) {
+      currentLives.pop()
+      ouch.play()
+      if (currentLives.length <= 0) {
+        setTimeout(() => {
+          gameOver()
+        }, 20)
+      }
+    } else if (classType === livesFullClass && currentLives.length < 4) {
+      currentLives.push('life')
     }
+    livesGraphicUpdate()
   }
 
-  function toggleCollision() {
-    beePic.classList.toggle('collision')
-    updateLives()
-    clearInterval(collisionTimer)
-    collisionTimer = null
-    setTimeout(() => {
+  function toggleCollision(classType) {
+    if (classType === waspClass || classType === plantClass) {
       beePic.classList.toggle('collision')
-      startCollisionCheck()
-    }, 1000)
+      updateLives(classType)
+      clearInterval(collisionTimer)
+      collisionTimer = null
+      setTimeout(() => {
+        beePic.classList.toggle('collision')
+        startCollisionCheck()
+      }, 1000)
+    } else {
+      updateLives(classType)
+    }
   }
 
   function collisionDetectedBad() {
@@ -995,26 +1037,32 @@ function init() {
       currentScore++
       ding.play()
     } else if (itemClass === waspClass) {
-      currentScore += 40
+      currentScore += 20
       splat.play()
     } else if (itemClass === pollenClass) {
-      currentScore += 20
+      currentScore += 10
+      ding.play()
+    } else if (itemClass === livesFullClass) {
+      currentScore += 50
       ding.play()
     }
     score.innerText = currentScore
   }
 
+
   function livesGraphicUpdate() {
+    console.log('CURRENT LIFE', currentLives)
     livesGraphic.forEach(item => {
-      console.log('LIFE>>', item)
-      if (parseInt(item.id) <= currentLives) {
-        item.classList.add('livesFull')
-      } else {
-        item.classList.add('livesEmpty')
+      if (item.classList.contains(livesFullClass)) {
+        item.classList.remove(livesFullClass)
       }
-      // })
+      item.classList.add(livesEmptyClass)
     })
+    for (let i = 0; i < currentLives.length; i++) {
+      livesGraphic[i].classList.add(livesFullClass)
+    }
   }
+
 
   function collisionCheck() {
     startCollisionCheck(waspClass, plantClass, acornClass, flowerClass, pollenClass)
@@ -1041,6 +1089,7 @@ function init() {
     clearInterval(honeyFiring)
     clearInterval(collisionTimer)
     clearInterval(fallingAcorn)
+    clearInterval(newLifeTimer)
     gameOverCard.classList.toggle('hidden')
     grid.classList.toggle('hidden')
     backgroundGrid.classList.toggle('hidden')

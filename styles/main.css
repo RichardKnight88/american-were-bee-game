@@ -57,12 +57,15 @@ header {
   background-position: center;
 }
 
-.livesFull {
-  background-image: url('../assets/full_life.png');
-}
-
 .livesEmpty {
   background-image: url('../assets/empty_life.png');
+}
+
+.livesFull {
+  background-image: url('../assets/full_life.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+
 }
 
 .score {
