@@ -779,8 +779,13 @@ function init() {
         if (arr2[i].currentPosition === item) {
           arr2[i].currentPosition = null
           cells[item].classList.remove(class2)
-          updateLives()
-          toggleCollision()
+          
+          if (class2 === waspClass) {
+            updateLives()
+            toggleCollision()
+          } else if (class2 === pollenClass) {
+            scoreUpdate(class2)
+          }
         }
       }
     })
@@ -859,6 +864,10 @@ function init() {
             beeCollision(beeCurrentPosition, waspArray, waspClass)
         })
 
+        beeCurrentPosition.forEach(item => {
+          if (cells[item].classList.contains(pollenClass)) 
+            beeCollision(beeCurrentPosition, pollenArray, pollenClass)
+        })
 
         beeCurrentPosition.forEach(item => {
           if (cells[item].classList.contains(flowerClass)) 
