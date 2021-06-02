@@ -15,8 +15,8 @@ function init() {
   const splat = document.querySelector('#splat')
 
 
-  const startScreen = document.querySelector('#startScreen')
-  const startButton = document.querySelector('#startButton')
+  const startScreen = document.querySelector('.startScreen')
+  const startButton = document.querySelector('.startButton')
   const gameOverCard = document.querySelector('#gameOver')
 
 
@@ -48,6 +48,7 @@ function init() {
   const cellCount = width * height
   const cells = []
   const hiddenClass = 'hidden'
+  const fadeOutClass = 'fadeOut'
   const beeClass = 'bee'
   const waspClass = 'wasp'
   const plantClass = 'plant'
@@ -1091,11 +1092,14 @@ function init() {
 
   function openMain() {
 
+    startButton.classList.add(fadeOutClass)
     header.classList.toggle(hiddenClass)
     main.classList.toggle(hiddenClass)
-    startScreen.classList.toggle(hiddenClass)
-    
-
+    startScreen.classList.toggle(fadeOutClass)
+    setTimeout(() => {
+      startScreen.classList.toggle(hiddenClass)
+      startScreen.classList.toggle(fadeOutClass)
+    }, 1000)
   }
 
 

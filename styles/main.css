@@ -273,22 +273,24 @@ main {
 
 .hidden {
   display: none;
-  animation: close .5s none;
 }
 
-#startScreen {
+.fadeOut {
+  animation: close .5s none;
+  animation-fill-mode : forwards;
+  /* opacity: 0; */
+}
+
+.startScreen {
   background-image: none;
   animation: open .5s none;
 }
 
-#startScreen img {
+.startScreen img {
   height: 100%;
-  /* animation: open .5s none; */
 }
 
-#startButton {
-  border: none;
-  font-family: 'Righteous', cursive;
+.startButton {
   font-size: 20px;
   background-color: #ffcc66;
   color: #996600;
@@ -296,6 +298,7 @@ main {
   position: absolute;
   margin-top: 80px;
   padding: 2px;
+  animation: button 1s none;
 }
 
 @keyframes hit {
@@ -316,6 +319,21 @@ main {
 @keyframes open {
 
   0% {
+    height: 0%;
+    opacity: 0;
+  }
+  
+
+  100% {
+    height: 90%;
+    opacity: 1;
+  }
+
+}
+
+@keyframes button {
+
+  0%, 40% {
     opacity: 0;
   }
   
@@ -329,12 +347,12 @@ main {
 @keyframes close {
 
   0% {
-    opacity: 0;
+    opacity: 1;
   }
   
 
   100% {
-    opacity: 1;
+    opacity: 0;
   }
 
 }
