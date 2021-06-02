@@ -698,7 +698,7 @@ function init() {
   const newPollenTimer = setInterval(() => generatePollen(), scrollTimer * 15)
 
 
-  const newLifeTimer = setInterval(() => generateLeftMoving(firstLifeNull, lifeArray), scrollTimer * 15)
+  const newLifeTimer = setInterval(() => generateLeftMoving(firstLifeNull, lifeArray), scrollTimer * 60)
 
 
 
