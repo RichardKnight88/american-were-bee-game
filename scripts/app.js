@@ -8,6 +8,7 @@ function init() {
   const lives = document.querySelector('#livesNum')
   const score = document.querySelector('#scoreNum')
   const gameOverCard = document.querySelector('#gameOver')
+  const themeTune = document.querySelector('#themeTune').play()
   const ouch = document.querySelector('#ouch')
   const ding = document.querySelector('#ding')
   const splat = document.querySelector('#splat')
@@ -64,7 +65,7 @@ function init() {
   beeCurrentPosition[0] = width * (height / 4) + 2
 
 
-  class Wasp {
+  class GeneratedItem {
 
     constructor(name, currentPosition) {
 
@@ -87,23 +88,6 @@ function init() {
         this.currentPosition = null
       }
     }
-  }
-
-  const waspOne = new Wasp('waspOnePosition', null)
-  const waspTwo = new Wasp('waspTwoPosition', null)
-  const waspThree = new Wasp('waspThreePosition', null)
-  const waspFour = new Wasp('waspFourPosition', null)
-  const waspFive = new Wasp('waspFivePosition', null)
-
-
-  class Honey {
-
-    constructor(name, currentPosition) {
-
-      this.name = name
-      this.currentPosition = currentPosition
-
-    }
 
     addHoney() {
       if (this.currentPosition && this.currentPosition % width !== width - 1) {
@@ -119,36 +103,13 @@ function init() {
         this.currentPosition = null
       }
     }
-  }
-
-  const honeyOne = new Honey('honeyOnePosition', null)
-  const honeyTwo = new Honey('honeyTwoPosition', null)
-  const honeyThree = new Honey('honeyThreePosition', null)
-  const honeyFour = new Honey('honeyFourPosition', null)
-  const honeyFive = new Honey('honeyFivePosition', null)
-  const honeySix = new Honey('honeySixPosition', null)
-  const honeySeven = new Honey('honeySevenPosition', null)
-  const honeyEight = new Honey('honeyEightPosition', null)
-  const honeyNine = new Honey('honeyNinePosition', null)
-  const honeyTen = new Honey('honeyTenPosition', null)
-
-  class Plant {
-
-    constructor(name, currentPosition) {
-
-      this.name = name
-      this.currentPosition = currentPosition
-
-    }
 
     addPlant() {
       if (this.currentPosition.length > 0 && this.currentPosition[0] % width !== 0) {
         this.currentPosition.forEach(index => cells[index].classList.add(plantClass))
 
         cells[this.currentPosition[this.currentPosition.length - 1] - width].classList.add(flowerClass)
-
       }
-
     }
 
     removePlant() {
@@ -166,23 +127,6 @@ function init() {
         // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!HERE!!!!!!', this.currentPosition)
       }
     }
-  }
-
-  const plantOne = new Plant('plantOnePosition', [])
-  const plantTwo = new Plant('plantTwoPosition', [])
-  const plantThree = new Plant('plantThreePosition', [])
-  const plantFour = new Plant('plantFourPosition', [])
-  const plantFive = new Plant('plantFivePosition', [])
-  const plantSix = new Plant('plantSixPosition', [])
-
-  class Pollen {
-
-    constructor(name, currentPosition) {
-
-      this.name = name
-      this.currentPosition = currentPosition
-
-    }
 
     addPollen() {
       if (this.currentPosition && this.currentPosition % width !== 0) {
@@ -198,13 +142,134 @@ function init() {
         this.currentPosition = null
       }
     }
+
+
   }
 
-  const pollenOne = new Pollen('pollenOnePosition', null)
-  const pollenTwo = new Pollen('pollenTwoPosition', null)
-  const pollenThree = new Pollen('pollenThreePosition', null)
-  const pollenFour = new Pollen('pollenFourPosition', null)
-  const pollenFive = new Pollen('pollenFivePosition', null)
+  // * Old Classes
+  
+  // class Honey {
+
+  //   constructor(name, currentPosition) {
+
+  //     this.name = name
+  //     this.currentPosition = currentPosition
+
+  //   }
+
+  //   addHoney() {
+  //     if (this.currentPosition && this.currentPosition % width !== width - 1) {
+  //       cells[this.currentPosition].classList.add(honeyClass)
+  //     }
+  //   }
+
+  //   removeHoney() {
+  //     if (this.currentPosition && this.currentPosition % width !== width - 1) {
+  //       cells[this.currentPosition].classList.remove(honeyClass)
+  //       this.currentPosition++
+  //     } else if (this.currentPosition % width === width - 1) {
+  //       this.currentPosition = null
+  //     }
+  //   }
+  // }
+
+
+  // class Plant {
+
+  //   constructor(name, currentPosition) {
+
+  //     this.name = name
+  //     this.currentPosition = currentPosition
+
+  //   }
+
+  //   addPlant() {
+  //     if (this.currentPosition.length > 0 && this.currentPosition[0] % width !== 0) {
+  //       this.currentPosition.forEach(index => cells[index].classList.add(plantClass))
+
+  //       cells[this.currentPosition[this.currentPosition.length - 1] - width].classList.add(flowerClass)
+
+  //     }
+
+  //   }
+
+  //   removePlant() {
+  //     if (this.currentPosition.length > 0 && this.currentPosition[0] % width !== 0) {
+  //       this.currentPosition.forEach(index => cells[index].classList.remove(plantClass))
+  //       // console.log('THIS IS THE LENGTH', this.name, this.currentPosition.length)
+  //       // console.log('GOING AS EXPECTED', this.name, this.currentPosition[0])
+  //       cells[this.currentPosition[this.currentPosition.length - 1] - width].classList.remove(flowerClass)
+  //       this.currentPosition = this.currentPosition.map(indexValue => {
+  //         indexValue--
+  //         return indexValue
+  //       })
+  //     } else if (this.currentPosition.length > 0 && this.currentPosition[0] % width === 0) {
+  //       this.currentPosition = []
+  //       // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!HERE!!!!!!', this.currentPosition)
+  //     }
+  //   }
+  // }
+
+
+  // class Pollen {
+
+  //   constructor(name, currentPosition) {
+
+  //     this.name = name
+  //     this.currentPosition = currentPosition
+
+  //   }
+
+  //   addPollen() {
+  //     if (this.currentPosition && this.currentPosition % width !== 0) {
+  //       cells[this.currentPosition].classList.add(pollenClass)
+  //     }
+  //   }
+
+  //   removePollen() {
+  //     if (this.currentPosition && this.currentPosition % width !== 0) {
+  //       cells[this.currentPosition].classList.remove(pollenClass)
+  //       this.currentPosition--
+  //     } else if (this.currentPosition % width === 0) {
+  //       this.currentPosition = null
+  //     }
+  //   }
+  // }
+
+  const waspOne = new GeneratedItem('waspOnePosition', null)
+  const waspTwo = new GeneratedItem('waspTwoPosition', null)
+  const waspThree = new GeneratedItem('waspThreePosition', null)
+  const waspFour = new GeneratedItem('waspFourPosition', null)
+  const waspFive = new GeneratedItem('waspFivePosition', null)
+
+
+  const honeyOne = new GeneratedItem('honeyOnePosition', null)
+  const honeyTwo = new GeneratedItem('honeyTwoPosition', null)
+  const honeyThree = new GeneratedItem('honeyThreePosition', null)
+  const honeyFour = new GeneratedItem('honeyFourPosition', null)
+  const honeyFive = new GeneratedItem('honeyFivePosition', null)
+  const honeySix = new GeneratedItem('honeySixPosition', null)
+  const honeySeven = new GeneratedItem('honeySevenPosition', null)
+  const honeyEight = new GeneratedItem('honeyEightPosition', null)
+  const honeyNine = new GeneratedItem('honeyNinePosition', null)
+  const honeyTen = new GeneratedItem('honeyTenPosition', null)
+  
+
+  
+  const plantOne = new GeneratedItem('plantOnePosition', [])
+  const plantTwo = new GeneratedItem('plantTwoPosition', [])
+  const plantThree = new GeneratedItem('plantThreePosition', [])
+  const plantFour = new GeneratedItem('plantFourPosition', [])
+  const plantFive = new GeneratedItem('plantFivePosition', [])
+  const plantSix = new GeneratedItem('plantSixPosition', [])
+
+
+
+  const pollenOne = new GeneratedItem('pollenOnePosition', null)
+  const pollenTwo = new GeneratedItem('pollenTwoPosition', null)
+  const pollenThree = new GeneratedItem('pollenThreePosition', null)
+  const pollenFour = new GeneratedItem('pollenFourPosition', null)
+  const pollenFive = new GeneratedItem('pollenFivePosition', null)
 
 
   const waspArray = [waspOne, waspTwo, waspThree, waspFour, waspFive]
@@ -507,6 +572,8 @@ function init() {
       pollen.removePollen()
       pollen.addPollen()
     })
+
+
     // if (plantOneCurrentPosition[0] % width !== 0) {
     //   plantOneCurrentPosition = plantOneCurrentPosition.map(value => {
     //     value--
@@ -591,7 +658,7 @@ function init() {
       wasp.removeWasp()
       wasp.addWasp()
     })
-  }, scrollTimer * 0.6)
+  }, scrollTimer * 0.65)
 
 
   const honeyFiring = setInterval(() => {
@@ -769,7 +836,8 @@ function init() {
           cells[item].classList.remove(class2)
         }
       }
-      splat.play()
+
+      scoreUpdate(waspClass)
     })
 
   }
@@ -785,6 +853,13 @@ function init() {
           if (cells[item].classList.contains(waspClass)) 
             beeCollision(beeCurrentPosition, waspArray, waspClass)
         })
+
+
+        beeCurrentPosition.forEach(item => {
+          if (cells[item].classList.contains(flowerClass)) 
+            scoreUpdate(flowerClass)
+        })
+
 
         honeyArray.forEach(item => {
           if (item.currentPosition && cells[item.currentPosition].classList.contains(waspClass)) {
@@ -895,6 +970,20 @@ function init() {
     currentScore += 5
     score.innerText = currentScore
     ding.play()
+  }
+
+  function scoreUpdate(itemClass) {
+    if (itemClass === flowerClass) {
+      currentScore++
+      ding.play()
+    } else if (itemClass === waspClass) {
+      currentScore += 40
+      splat.play()
+    } else if (itemClass === pollenClass) {
+      currentScore += 20
+      ding.play()
+    }
+    score.innerText = currentScore
   }
 
   function livesGraphicUpdate() {
