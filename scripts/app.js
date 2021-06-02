@@ -318,7 +318,7 @@ function init() {
       cells.push(cell)
     }
 
-    for (let i = width - 1; i < width * height; i += width) {
+    for (let i = (width * 2) - 1; i < width * (height - 1); i += width) {
       endColumns.push(i)
       // console.log(endColumns)
     }
