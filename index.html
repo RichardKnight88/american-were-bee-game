@@ -8,16 +8,23 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
   <script src="scripts/app.js" charset="utf-8" ></script>
-  <title>Let's Go Bay-Bee!</title>
+  <title>American Were-Bee in London</title>
 </head>
+
+
+
 <body>
+
+
   <audio id = 'themeTune' autoplay>
     <source src = 'assets/bensound-littleidea.mp3'>
   </audio>
   <audio id = 'ouch' src = 'assets/ouch.mp3'></audio>
   <audio id = 'ding' src = 'assets/ding.mp3'></audio>
   <audio id = 'splat' src = 'assets/splat.mp3'></audio>
-  <header>
+
+
+  <header class = 'hidden'>
 
     <div class = 'lives'>LIVES
 
@@ -35,7 +42,10 @@
       <div id = scoreNum></div>
     </div>
   </header>
-  <main>
+
+
+
+  <main class = 'hidden'>
     
 
     <img class = 'border' src = 'assets/border2.png'>
@@ -50,15 +60,13 @@
     </div>
   
 
-    <div class = 'popUp hidden' id = 'startScreen'> 
-      <div>GAME NAME</div>
-      <img id = 'startScreenImage' src =>
-      <button id = 'startButton'>START GAME</button>
-    </div>
-    <div class = 'popUp hidden' id = 'gameOver'> GAME OVER</div>
-
   </main>
 
+  <div class = 'popUp' id = 'startScreen'>
+    <img src = 'assets/opening-screen.png'>
+    <div id = 'startButton'>START GAME</button>
+  </div>
+  <div class = 'popUp hidden' id = 'gameOver'> GAME OVER</div>
   
 </body>
 </html>

@@ -14,6 +14,8 @@ html {
 }
 
 body {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -223,24 +225,6 @@ main {
   /* filter: drop-shadow(-0.5px -0.5px 1px black); */
 }
 
-
-.popUp {
-  width: 40%;
-  height: 70%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #ffd480;
-  border: 3px solid #805500;
-  margin: 10%;
-  z-index: 5;
-  position: absolute;
-}
-
-.hidden {
-  display: none;
-}
-
 .grid div.plant {
   background-image: url('../assets/stem2.png');
   background-size: cover;
@@ -271,6 +255,49 @@ main {
   animation: hit 0.5s infinite;
 }
 
+.popUp {
+  width: 60%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../assets/blank-popup.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: 10%;
+  animation: open .5s none;
+
+  /* z-index: 5;
+  position: absolute; */
+}
+
+.hidden {
+  display: none;
+  animation: close .5s none;
+}
+
+#startScreen {
+  background-image: none;
+  animation: open .5s none;
+}
+
+#startScreen img {
+  height: 100%;
+  /* animation: open .5s none; */
+}
+
+#startButton {
+  border: none;
+  font-family: 'Righteous', cursive;
+  font-size: 20px;
+  background-color: #ffcc66;
+  color: #996600;
+  z-index: 1;
+  position: absolute;
+  margin-top: 80px;
+  padding: 2px;
+}
+
 @keyframes hit {
 
   0%, 50%, 100% {
@@ -282,6 +309,32 @@ main {
   25%, 75% {
   filter: drop-shadow(-3px -3px 0px salmon);
   opacity: .1;
+  }
+
+}
+
+@keyframes open {
+
+  0% {
+    opacity: 0;
+  }
+  
+
+  100% {
+    opacity: 1;
+  }
+
+}
+
+@keyframes close {
+
+  0% {
+    opacity: 0;
+  }
+  
+
+  100% {
+    opacity: 1;
   }
 
 }

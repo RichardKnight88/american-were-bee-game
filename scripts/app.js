@@ -2,16 +2,24 @@ function init() {
 
   console.log('linked')
 
+  const header = document.querySelector('header')
+  const main = document.querySelector('main')
   const grid = document.querySelector('.grid')
   const backgroundGrid = document.querySelector('.backgroundGrid')
   const livesGraphic = document.querySelectorAll('.honeycomb')
   const lives = document.querySelector('#livesNum')
   const score = document.querySelector('#scoreNum')
-  const gameOverCard = document.querySelector('#gameOver')
   const themeTune = document.querySelector('#themeTune').play()
   const ouch = document.querySelector('#ouch')
   const ding = document.querySelector('#ding')
   const splat = document.querySelector('#splat')
+
+
+  const startScreen = document.querySelector('#startScreen')
+  const startButton = document.querySelector('#startButton')
+  const gameOverCard = document.querySelector('#gameOver')
+
+
   // console.log(ouch)
   // console.log(livesGraphic)
 
@@ -34,10 +42,12 @@ function init() {
 
 
 
+
   const width = 25
   const height = 12
   const cellCount = width * height
   const cells = []
+  const hiddenClass = 'hidden'
   const beeClass = 'bee'
   const waspClass = 'wasp'
   const plantClass = 'plant'
@@ -1079,6 +1089,16 @@ function init() {
   collisionCheck()
 
 
+  function openMain() {
+
+    header.classList.toggle(hiddenClass)
+    main.classList.toggle(hiddenClass)
+    startScreen.classList.toggle(hiddenClass)
+    
+
+  }
+
+
   function gameOver() {
     console.log('GAME OVER')
     clearInterval(scrolling)
@@ -1090,13 +1110,15 @@ function init() {
     clearInterval(collisionTimer)
     clearInterval(fallingAcorn)
     clearInterval(newLifeTimer)
-    gameOverCard.classList.toggle('hidden')
-    grid.classList.toggle('hidden')
-    backgroundGrid.classList.toggle('hidden')
+    gameOverCard.classList.toggle(hiddenClass)
+    main.classList.toggle(hiddenClass)
+    header.classList.toggle(hiddenClass)
     // window.alert('GAME OVER')
   }
 
   document.addEventListener('keydown', navigate)
+
+  startButton.addEventListener('click', openMain)
 }
 
 window.addEventListener('DOMContentLoaded', init)
