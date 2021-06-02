@@ -237,6 +237,11 @@ main {
   background-size: cover;
 }
 
+.grid div.honeySplat {
+  background-image: url('../assets/splat.png');
+  background-size: cover;
+}
+
 .collision {
   animation: hit 0.5s infinite;
 }

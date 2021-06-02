@@ -47,6 +47,7 @@ function init() {
   const waspFlowerClass = 'waspFlower'
   const pollenClass = 'pollen'
   const honeyClass = 'honey'
+  const honeySplatClass = 'honeySplat'
   const beeCurrentPosition = []
   let scrollTimer = 150
   let gravityTimer = 650
@@ -828,6 +829,10 @@ function init() {
         if (arr1[i].currentPosition === item) {
           arr1[i].currentPosition = null
           cells[item].classList.remove(class1)
+          cells[item].classList.add(honeySplatClass)
+          setTimeout(() => {
+            cells[item].classList.remove(honeySplatClass)
+          }, 80)
         }
       }
       for (let i = 0; i < arr2.length; i++) {
