@@ -9,7 +9,7 @@ function init() {
   const livesGraphic = document.querySelectorAll('.honeycomb')
   const lives = document.querySelector('#livesNum')
   const score = document.querySelector('#scoreNum')
-  const themeTune = document.querySelector('#themeTune').play()
+  const themeTune = document.querySelector('#themeTune')
   const ouch = document.querySelector('#ouch')
   const ding = document.querySelector('#ding')
   const splat = document.querySelector('#splat')
@@ -17,6 +17,20 @@ function init() {
 
   const startScreen = document.querySelector('.startScreen')
   const startButton = document.querySelector('.startButton')
+
+  const mainMenu = document.querySelector('.mainMenu')
+
+  const mainMenuToggle = document.querySelector('.menuTextContainer')
+
+  const howToPlay = document.querySelector('#howToPlay')
+  const leaderboard = document.querySelector('#leaderboard')
+  const startGame = document.querySelector('#startGame')
+
+  const rules = document.querySelector('.rules')
+  const rulesBackButton = document.querySelector('#rulesBackButton')
+
+
+
   const gameOverCard = document.querySelector('#gameOver')
 
 
@@ -1093,15 +1107,53 @@ function init() {
   function openMain() {
 
     startButton.classList.add(fadeOutClass)
-    header.classList.toggle(hiddenClass)
-    main.classList.toggle(hiddenClass)
     startScreen.classList.toggle(fadeOutClass)
+
     setTimeout(() => {
       startScreen.classList.toggle(hiddenClass)
       startScreen.classList.toggle(fadeOutClass)
+      mainMenu.classList.toggle(hiddenClass)
     }, 1000)
+
+
+
   }
 
+  function openHowToPlay() {
+
+    mainMenuToggle.classList.toggle(hiddenClass)
+    setTimeout(() => {
+      rules.classList.toggle(hiddenClass)
+    }, 500)
+
+  }
+
+  function backToMain() {
+
+    rules.classList.toggle(hiddenClass)
+    setTimeout(() => {
+      mainMenuToggle.classList.toggle(hiddenClass)
+    }, 500)
+
+  }
+
+
+  function openLeaderboard() {
+
+    
+
+  }
+
+  function runStartGame() {
+
+    mainMenu.classList.toggle(hiddenClass)
+    themeTune.play()
+    setTimeout(() => {
+      header.classList.toggle(hiddenClass)
+      main.classList.toggle(hiddenClass)
+    }, 500)
+
+  }
 
   function gameOver() {
     console.log('GAME OVER')
@@ -1123,6 +1175,17 @@ function init() {
   document.addEventListener('keydown', navigate)
 
   startButton.addEventListener('click', openMain)
+
+  howToPlay.addEventListener('click', openHowToPlay)
+
+  leaderboard.addEventListener('click', openLeaderboard)
+
+  startGame.addEventListener('click', runStartGame)
+  
+  rulesBackButton.addEventListener('click', backToMain)
+
+
+
 }
 
 window.addEventListener('DOMContentLoaded', init)
