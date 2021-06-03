@@ -13,6 +13,7 @@ function init() {
   const ouch = document.querySelector('#ouch')
   const ding = document.querySelector('#ding')
   const splat = document.querySelector('#splat')
+  const howl = document.querySelector('#howl')
 
 
   const startScreen = document.querySelector('.startScreen')
@@ -1106,15 +1107,17 @@ function init() {
 
   function openMain() {
 
-    startButton.classList.add(fadeOutClass)
-    startScreen.classList.toggle(fadeOutClass)
-
+    howl.play()
     setTimeout(() => {
-      startScreen.classList.toggle(hiddenClass)
+      startButton.classList.add(fadeOutClass)
       startScreen.classList.toggle(fadeOutClass)
-      mainMenu.classList.toggle(hiddenClass)
+    
+      setTimeout(() => {
+       startScreen.classList.toggle(hiddenClass)
+       startScreen.classList.toggle(fadeOutClass)
+        mainMenu.classList.toggle(hiddenClass)
+      }, 1000)
     }, 1000)
-
 
 
   }
