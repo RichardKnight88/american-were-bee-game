@@ -83,7 +83,7 @@ function init() {
 
   score.innerText = currentScore
 
-  beeCurrentPosition[0] = width * (height / 4) + 2
+  beeCurrentPosition[0] = width * (height / 4) + 3
 
 
   class GeneratedItem {
@@ -94,21 +94,6 @@ function init() {
       this.currentPosition = currentPosition
 
     }
-
-    // addWasp() {
-    //   if (this.currentPosition && this.currentPosition % width !== 0) {
-    //     cells[this.currentPosition].classList.add(waspClass)
-    //   }
-    // }
-
-    // removeWasp() {
-    //   if (this.currentPosition && this.currentPosition % width !== 0) {
-    //     cells[this.currentPosition].classList.remove(waspClass)
-    //     this.currentPosition--
-    //   } else if (this.currentPosition % width === 0) {
-    //     this.currentPosition = null
-    //   }
-    // }
 
     addHoney() {
       if (this.currentPosition && this.currentPosition % width !== width - 1) {
@@ -164,6 +149,20 @@ function init() {
       }
     }
 
+    addAcorn() {
+      if (this.currentPosition && this.currentPosition + width < width * height) {
+        cells[this.currentPosition].classList.add(acornClass)
+      }
+    }
+
+    removeAcorn() {
+      if (this.currentPosition && this.currentPosition + width < width * height) {
+        cells[this.currentPosition].classList.remove(acornClass)
+        this.currentPosition += width
+      } else if (this.currentPosition + width >= width * height) {
+        this.currentPosition = null
+      }
+    }
 
   }
 
@@ -205,6 +204,13 @@ function init() {
   const pollenFive = new GeneratedItem('pollenFivePosition', null)
 
 
+  const acornOne = new GeneratedItem('acornOnePosition', null)
+  const acornTwo = new GeneratedItem('acornTwoPosition', null)
+  const acornThree = new GeneratedItem('acornThreePosition', null)
+  const acornFour = new GeneratedItem('acornFourPosition', null)
+  const acornFive = new GeneratedItem('acornFivePosition', null)
+
+
 
   const lifeOne = new GeneratedItem('lifeOnePosition', null)
   const lifeTwo = new GeneratedItem('lifeTwoPosition', null)
@@ -223,6 +229,9 @@ function init() {
   const pollenArray = [pollenOne, pollenTwo, pollenThree, pollenFour, pollenFive]
 
 
+  const acornArray = [acornOne, acornTwo, acornThree, acornFour, acornFive]
+
+
   const lifeArray = [lifeOne, lifeTwo]
 
 
@@ -230,6 +239,7 @@ function init() {
   let firstHoneyNull = null
   let firstPlantNull = null
   let firstPollenNull = null
+  let firstAcornNull = null
   let firstLifeNull = null
 
   let newPlant = null
@@ -257,7 +267,7 @@ function init() {
 
     for (let i = 8; i < width; i++) {
       topRow.push(i)
-      // console.log(topRow)
+      console.log(topRow)
     }
 
     for (let i = width - 1; i < width * (height / 2); i += width) {
@@ -268,8 +278,8 @@ function init() {
     livesGraphicUpdate()
     addBee()
 
-    generateAcorn()
-    addAcorn(acornStartingPosition)
+    // generateAcorn()
+    // addAcorn(acornStartingPosition)
 
   }
 
@@ -328,27 +338,29 @@ function init() {
     })
     if (arrayType === waspArray) {
       nullType.currentPosition = endColumns[Math.floor(Math.random() * endColumns.length)]
+    } else if (arrayType === acornArray) {
+      nullType.currentPosition = topRow[Math.floor(Math.random() * topRow.length)]
     } else {
-      nullType.currentPosition = endColumnsUpper[Math.floor(Math.random() * endColumns.length)]
+      nullType.currentPosition = endColumnsUpper[Math.floor(Math.random() * endColumnsUpper.length)]
     }
   }
 
 
 
-  function generateAcorn() {
-    acornStartingPosition = topRow[Math.floor(Math.random() * topRow.length)]
-    console.log('ACORN', acornStartingPosition)
-    acornCurrentPosition = acornStartingPosition
-    cells[acornStartingPosition].classList.add(acornClass)
-  }
+  // function generateAcorn() {
+  //   acornStartingPosition = topRow[Math.floor(Math.random() * topRow.length)]
+  //   console.log('ACORN', acornStartingPosition)
+  //   acornCurrentPosition = acornStartingPosition
+  //   cells[acornStartingPosition].classList.add(acornClass)
+  // }
 
-  function addAcorn(position) {
-    cells[position].classList.add(acornClass)
-  }
+  // function addAcorn(position) {
+  //   cells[position].classList.add(acornClass)
+  // }
 
-  function removeAcorn(position) {
-    cells[acornCurrentPosition].classList.remove(acornClass)
-  }
+  // function removeAcorn(position) {
+  //   cells[acornCurrentPosition].classList.remove(acornClass)
+  // }
 
 
   function navigate(event) {
@@ -393,15 +405,16 @@ function init() {
     clearInterval(newWaspTimer)
     clearInterval(newPlantTimer)
     clearInterval(newPollenTimer)
+    clearInterval(newAcornTimer)
+    clearInterval(newLifeTimer)
     clearInterval(honeyFiring)
     clearInterval(collisionTimer)
     clearInterval(fallingAcorn)
-    clearInterval(newLifeTimer)
   }
 
   const scrolling = setInterval(() => {
 
-    removeAcorn()
+    // removeAcorn()
 
     plantArray.forEach(plant => {
       plant.removePlant()
@@ -421,6 +434,7 @@ function init() {
       life.addLeftMoving(livesFullClass)
     })
 
+  
 
   }, scrollTimer)
 
@@ -469,6 +483,7 @@ function init() {
 
   const newPollenTimer = setInterval(() => generateLeftMoving(firstPollenNull, pollenArray), scrollTimer * 15)
 
+  const newAcornTimer = setInterval(() => generateLeftMoving(firstAcornNull, acornArray), scrollTimer * 11)
 
   const newLifeTimer = setInterval(() => generateLeftMoving(firstLifeNull, lifeArray), scrollTimer * 60)
 
@@ -486,18 +501,12 @@ function init() {
   // }, scrollTimer * 0.6)
 
   const fallingAcorn = setInterval(() => {
-    // collisionDetectionScroll()
-    removeAcorn()
-
-    if (acornCurrentPosition + width < width * height) {
-      acornCurrentPosition += width
-      if (cells[acornCurrentPosition + width].classList.contains(flowerClass) || cells[acornCurrentPosition + width].classList.contains(waspClass)) {
-        acornCurrentPosition++
-      }
-      addAcorn(acornCurrentPosition)
-    } else {
-      generateAcorn()
-    }
+  
+    acornArray.forEach(acorn => {
+      acorn.removeAcorn()
+      acorn.addAcorn()
+    })
+    
   }, gravityTimer * .4)
 
   function resetGravityTimer() {
@@ -545,7 +554,7 @@ function init() {
           arr2[i].currentPosition = null
           cells[item].classList.remove(class2)
 
-          if (class2 === waspClass) {
+          if (class2 === waspClass || class2 === acornClass) {
             toggleCollision(class2)
           } else if (class2 === pollenClass) {
             scoreUpdate(class2)
@@ -633,6 +642,8 @@ function init() {
             beeCollision(beeCurrentPosition, pollenArray, pollenClass)
           } else if (cells[item].classList.contains(livesFullClass)) {
             beeCollision(beeCurrentPosition, lifeArray, livesFullClass)
+          } else if (cells[item].classList.contains(acornClass)) {
+            beeCollision(beeCurrentPosition, acornArray, acornClass)
           } else if (cells[item].classList.contains(flowerClass)) {
             scoreUpdate(flowerClass)
           } else if (cells[item].classList.contains(plantClass)) {
@@ -655,7 +666,7 @@ function init() {
   }
 
   function updateLives(classType) {
-    if (classType === waspClass || classType === plantClass) {
+    if (classType === waspClass || classType === plantClass || classType === acornClass) {
       currentLives.pop()
       ouch.play()
       if (currentLives.length <= 0) {
@@ -670,7 +681,7 @@ function init() {
   }
 
   function toggleCollision(classType) {
-    if (classType === waspClass || classType === plantClass) {
+    if (classType === waspClass || classType === plantClass || classType === acornClass) {
       beePic.classList.toggle('collision')
       updateLives(classType)
       clearInterval(collisionTimer)
