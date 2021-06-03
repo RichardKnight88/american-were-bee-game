@@ -10,6 +10,7 @@ function init() {
   const lives = document.querySelector('#livesNum')
   const score = document.querySelector('#scoreNum')
   const themeTune = document.querySelector('#themeTune')
+  themeTune.volume = 0.4
   const ouch = document.querySelector('#ouch')
   const ding = document.querySelector('#ding')
   const splat = document.querySelector('#splat')
@@ -32,9 +33,11 @@ function init() {
   const rulesBackButton = document.querySelector('#rulesBackButton')
 
 
-
   const gameOverCard = document.querySelector('#gameOver')
-
+  
+  const resultsScoreFromDOM = document.querySelector('#resultsScoreFromDOM')
+  
+  const gameOverReturnButton = document.querySelector('#gameOverReturnButton')
 
   // console.log(ouch)
   // console.log(livesGraphic)
@@ -583,6 +586,8 @@ function init() {
       resetGravityTimer()
     } else if (key === 'Enter') {
       console.log('WASPS', waspArray, 'HONEY', honeyArray)
+    } else if (key === 'KeyG') {
+      gameOver()
     } else if (key === 'Escape') {
       clearInterval(scrolling)
       clearInterval(gravity)
@@ -1154,13 +1159,21 @@ function init() {
   function runStartGame() {
 
     mainMenu.classList.toggle(hiddenClass)
-    themeTune.play()
+    mainMenuToggle.classList.toggle(hiddenClass)
     setTimeout(() => {
       header.classList.toggle(hiddenClass)
       main.classList.toggle(hiddenClass)
+      themeTune.play()
     }, 500)
 
   }
+
+  function returnToMainMenu() {
+    gameOverCard.classList.toggle(hiddenClass)
+    mainMenu.classList.toggle(hiddenClass)
+    mainMenuToggle.classList.toggle(hiddenClass)
+  }
+  
 
   function gameOver() {
     console.log('GAME OVER')
@@ -1176,6 +1189,9 @@ function init() {
     gameOverCard.classList.toggle(hiddenClass)
     main.classList.toggle(hiddenClass)
     header.classList.toggle(hiddenClass)
+    themeTune.pause()
+    resultsScoreFromDOM.innerText = currentScore
+
     // window.alert('GAME OVER')
   }
 
@@ -1190,6 +1206,8 @@ function init() {
   startGame.addEventListener('click', runStartGame)
 
   rulesBackButton.addEventListener('click', backToMain)
+
+  gameOverReturnButton.addEventListener('click', returnToMainMenu)
 
 
 
