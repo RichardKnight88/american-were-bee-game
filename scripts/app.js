@@ -95,20 +95,20 @@ function init() {
 
     }
 
-    addWasp() {
-      if (this.currentPosition && this.currentPosition % width !== 0) {
-        cells[this.currentPosition].classList.add(waspClass)
-      }
-    }
+    // addWasp() {
+    //   if (this.currentPosition && this.currentPosition % width !== 0) {
+    //     cells[this.currentPosition].classList.add(waspClass)
+    //   }
+    // }
 
-    removeWasp() {
-      if (this.currentPosition && this.currentPosition % width !== 0) {
-        cells[this.currentPosition].classList.remove(waspClass)
-        this.currentPosition--
-      } else if (this.currentPosition % width === 0) {
-        this.currentPosition = null
-      }
-    }
+    // removeWasp() {
+    //   if (this.currentPosition && this.currentPosition % width !== 0) {
+    //     cells[this.currentPosition].classList.remove(waspClass)
+    //     this.currentPosition--
+    //   } else if (this.currentPosition % width === 0) {
+    //     this.currentPosition = null
+    //   }
+    // }
 
     addHoney() {
       if (this.currentPosition && this.currentPosition % width !== width - 1) {
@@ -302,15 +302,6 @@ function init() {
   }
 
 
-  function generateWasp() {
-    firstWaspNull = waspArray.find(wasp => {
-      return !wasp.currentPosition
-    })
-    // console.log('FIRST NULL', firstWaspNull)
-    firstWaspNull.currentPosition = endColumns[Math.floor(Math.random() * endColumns.length)]
-    // console.log('FIRST NULL CURRENT POSITION', firstWaspNull.currentPosition)
-  }
-
   function generateHoney() {
     firstHoneyNull = honeyArray.find(honey => {
       return !honey.currentPosition
@@ -331,18 +322,15 @@ function init() {
     }
   }
 
-  function generatePollen() {
-    firstPollenNull = pollenArray.find(pollen => {
-      return !pollen.currentPosition
-    })
-    firstPollenNull.currentPosition = endColumnsUpper[Math.floor(Math.random() * endColumns.length)]
-  }
-
   function generateLeftMoving(nullType, arrayType) {
     nullType = arrayType.find(item => {
       return !item.currentPosition
     })
-    nullType.currentPosition = endColumnsUpper[Math.floor(Math.random() * endColumns.length)]
+    if (arrayType === waspArray) {
+      nullType.currentPosition = endColumns[Math.floor(Math.random() * endColumns.length)]
+    } else {
+      nullType.currentPosition = endColumnsUpper[Math.floor(Math.random() * endColumns.length)]
+    }
   }
 
 
@@ -412,7 +400,7 @@ function init() {
   }
 
   const scrolling = setInterval(() => {
-    
+
     removeAcorn()
 
     plantArray.forEach(plant => {
@@ -456,13 +444,13 @@ function init() {
     }, gravityTimer)
   }
 
-  const newWaspTimer = setInterval(() => generateWasp(), waspInterval)
+  const newWaspTimer = setInterval(() => generateLeftMoving(firstWaspNull, waspArray), waspInterval)
 
   const waspFlying = setInterval(() => {
     // collisionDetectionScroll()
     waspArray.forEach(wasp => {
-      wasp.removeWasp()
-      wasp.addWasp()
+      wasp.removeLeftMoving(waspClass)
+      wasp.addLeftMoving(waspClass)
     })
   }, scrollTimer * 0.65)
 
@@ -479,7 +467,7 @@ function init() {
   const newPlantTimer = setInterval(() => generatePlant(), scrollTimer * 7)
 
 
-  const newPollenTimer = setInterval(() => generatePollen(), scrollTimer * 15)
+  const newPollenTimer = setInterval(() => generateLeftMoving(firstPollenNull, pollenArray), scrollTimer * 15)
 
 
   const newLifeTimer = setInterval(() => generateLeftMoving(firstLifeNull, lifeArray), scrollTimer * 60)
@@ -661,7 +649,7 @@ function init() {
           }
         })
 
-        
+
       }, 10)
     }
   }
@@ -730,7 +718,7 @@ function init() {
   }
 
 
-  
+
   startCollisionCheck()
 
   function openMain() {
