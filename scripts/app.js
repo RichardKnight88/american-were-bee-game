@@ -13,6 +13,7 @@ function init() {
   themeTune.volume = 0.4
   const ouch = document.querySelector('#ouch')
   const ding = document.querySelector('#ding')
+  const oneUp = document.querySelector('#oneUp')
   const splat = document.querySelector('#splat')
   const hadouken = document.querySelector('#hadouken')
   const howl = document.querySelector('#howl')
@@ -638,28 +639,19 @@ function init() {
       collisionTimer = setInterval(() => {
         // console.log('COLLISION TIMER AFTER INITIATION', collisionTimer)
         beeCurrentPosition.forEach(item => {
-          if (cells[item].classList.contains(waspClass))
+          if (cells[item].classList.contains(waspClass)) {
             beeCollision(beeCurrentPosition, waspArray, waspClass)
-        })
-
-        beeCurrentPosition.forEach(item => {
-          if (cells[item].classList.contains(pollenClass))
+          } else if (cells[item].classList.contains(pollenClass)) {
             beeCollision(beeCurrentPosition, pollenArray, pollenClass)
-        })
-
-        beeCurrentPosition.forEach(item => {
-          if (cells[item].classList.contains(livesFullClass))
+          } else if (cells[item].classList.contains(livesFullClass)) {
             beeCollision(beeCurrentPosition, lifeArray, livesFullClass)
-        })
-
-        beeCurrentPosition.forEach(item => {
-          if (cells[item].classList.contains(flowerClass))
+          } else if (cells[item].classList.contains(flowerClass)) {
             scoreUpdate(flowerClass)
-        })
-
-        beeCurrentPosition.forEach(item => {
-          if (cells[item].classList.contains(plantClass))
+          } else if (cells[item].classList.contains(plantClass)) {
             toggleCollision(waspClass)
+          }
+
+
         })
 
         honeyArray.forEach(item => {
@@ -704,13 +696,7 @@ function init() {
     }
   }
 
-  
 
-  function collisionDetectedGood() {
-    currentScore += 5
-    score.innerText = currentScore
-    ding.play()
-  }
 
   function scoreUpdate(itemClass) {
     if (itemClass === flowerClass) {
@@ -724,7 +710,7 @@ function init() {
       ding.play()
     } else if (itemClass === livesFullClass) {
       currentScore += 50
-      ding.play()
+      oneUp.play()
     }
     score.innerText = currentScore
   }
