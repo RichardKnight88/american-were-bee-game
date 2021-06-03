@@ -76,9 +76,23 @@ function init() {
   let pollenCount = 0
 
 
+  let scrolling = null
+  let newWaspTimer = null
+  let waspFlying = null
+  let honeyFiring = null
+  let newPlantTimer = null
+  let newPollenTimer = null
+  let newAcornTimer = null
+  let newLifeTimer = null
+  let fallingAcorn = null
+
+
   let scrollTimer = 150
   let gravityTimer = 650
-  let waspInterval = 1000
+  let waspInterval = scrollTimer * 10
+  let pollenInterval = scrollTimer * 15
+  let acornInterval = scrollTimer * 11
+  let lifeInterval = scrollTimer * 100
   let collisionTimer = null
   let gravity = 0
 
@@ -246,12 +260,6 @@ function init() {
   let newPlant = null
 
 
-  // * I have no idea why, but when I delete this variable even though nothing active is attached to it
-  const plantOneStartingPosition = []
-
-
-  // const plantOneCurrentPosition = plantOneStartingPosition
-
 
   function createGrid() {
     for (let i = 0; i < cellCount; i++) {
@@ -275,8 +283,13 @@ function init() {
       endColumnsUpper.push(i)
     }
 
+    createBackgroundGrid()
     livesGraphicUpdate()
     addBee()
+    applyGravity()
+    startTimers()
+    startCollisionCheck()
+
 
   }
 
@@ -292,8 +305,7 @@ function init() {
 
 
   createGrid()
-  createBackgroundGrid()
-  applyGravity()
+
 
 
   function addBee() {
@@ -372,7 +384,7 @@ function init() {
     } else if (key === 'KeyG') {
       gameOver()
     } else if (key === 'Escape') {
-      clearTimers()
+      startTimers()
     }
     // console.log('CURRENT BEE', beeCurrentPosition)
     // console.log('DELAY IN HOLD>>>>', new Date().getMilliseconds())
@@ -393,31 +405,37 @@ function init() {
     clearInterval(fallingAcorn)
   }
 
-  const scrolling = setInterval(() => {
+  function scrollStart() {
+    if (!scrolling) {
+      scrolling = setInterval(() => {
 
-    // removeAcorn()
-
-    plantArray.forEach(plant => {
-      plant.removePlant()
-      plant.addPlant()
-      // console.log('--PLANT NAME--', plant.name, 'PLANT LENGTHS>>', plant.currentPosition)
-    })
-
-
-    pollenArray.forEach(pollen => {
-      pollen.removeLeftMoving(pollenClass)
-      pollen.addLeftMoving(pollenClass)
-    })
+        plantArray.forEach(plant => {
+          plant.removePlant()
+          plant.addPlant()
+          // console.log('--PLANT NAME--', plant.name, 'PLANT LENGTHS>>', plant.currentPosition)
+        })
 
 
-    lifeArray.forEach(life => {
-      life.removeLeftMoving(livesFullClass)
-      life.addLeftMoving(livesFullClass)
-    })
+        pollenArray.forEach(pollen => {
+          pollen.removeLeftMoving(pollenClass)
+          pollen.addLeftMoving(pollenClass)
+        })
 
-  
 
-  }, scrollTimer)
+        lifeArray.forEach(life => {
+          life.removeLeftMoving(livesFullClass)
+          life.addLeftMoving(livesFullClass)
+        })
+
+      }, scrollTimer)
+    } else {
+      clearInterval(scrolling)
+      scrolling = null
+    }
+  }
+
+
+
 
 
 
@@ -439,51 +457,184 @@ function init() {
     }, gravityTimer)
   }
 
-  const newWaspTimer = setInterval(() => generateLeftMoving(firstWaspNull, waspArray, waspClass), waspInterval)
+  function leftTimer(timerName, firstNull, arrayType, classType, intervalLength) {
+    if (!timerName) {
+      timerName = setInterval(() => generateLeftMoving(firstNull, arrayType, classType), intervalLength)
+    } else {
+      clearInterval(timerName)
+      timerName = null
+    }
+  }
 
-  const waspFlying = setInterval(() => {
-    // collisionDetectionScroll()
-    waspArray.forEach(wasp => {
-      wasp.removeLeftMoving(waspClass)
-      wasp.addLeftMoving(waspClass)
-    })
-  }, scrollTimer * 0.65)
+  function waspFlyingTimer() {
+    if (!waspFlying) {
+      waspFlying = setInterval(() => {
+        waspArray.forEach(wasp => {
+          wasp.removeLeftMoving(waspClass)
+          wasp.addLeftMoving(waspClass)
+        })
+      }, scrollTimer * 0.65)
+    } else {
+      clearInterval(waspFlying)
+      waspFlying = null
+    }
+  }
+
+  function honeyFiringTimer() {
+    if (!honeyFiring) {
+      honeyFiring = setInterval(() => {
+        honeyArray.forEach(honey => {
+          honey.removeHoney()
+          honey.addHoney()
+        })
+      }, scrollTimer * 0.6)
+    } else {
+      clearInterval(honeyFiring)
+      honeyFiring = null
+    }
+  }
+
+  function fallingAcornTimer() {
+    if (!fallingAcorn) {
+      fallingAcorn = setInterval(() => {
+        acornArray.forEach(acorn => {
+          acorn.removeAcorn()
+          acorn.addAcorn()
+        })
+      }, gravityTimer * 0.4)
+    } else {
+      clearInterval(fallingAcorn)
+      fallingAcorn = null
+    }
+  }
 
 
-  const honeyFiring = setInterval(() => {
-    honeyArray.forEach(honey => {
-      honey.removeHoney()
-      honey.addHoney()
-    })
-
-  }, scrollTimer * 0.6)
-
-
-  const newPlantTimer = setInterval(() => generatePlant(), scrollTimer * 7)
-
-
-  const newPollenTimer = setInterval(() => generateLeftMoving(firstPollenNull, pollenArray, pollenClass), scrollTimer * 15)
-
-  const newAcornTimer = setInterval(() => generateLeftMoving(firstAcornNull, acornArray, acornClass), scrollTimer * 11)
-
-  const newLifeTimer = setInterval(() => generateLeftMoving(firstLifeNull, lifeArray, livesFullClass), scrollTimer * 60)
+  function newPlantTimerStart() {
+    if (!newPlantTimer) {
+      newPlantTimer = setInterval(() => {
+        generatePlant()
+      }, scrollTimer * 7)
+    } else {
+      clearInterval(newPlantTimer)
+      newPlantTimer = null
+    }
+  }
 
 
+  function newWaspTimerStart() {
+    if (!newWaspTimer) {
+      newWaspTimer = setInterval(() => generateLeftMoving(firstWaspNull, waspArray, waspClass), scrollTimer * 10)
+    } else {
+      clearInterval(newWaspTimer)
+      newWaspTimer = null
+    }
+  }
 
-  const fallingAcorn = setInterval(() => {
+  function newPollenTimerStart() {
+    if (!newPollenTimer) {
+      newPollenTimer = setInterval(() => generateLeftMoving(firstPollenNull, pollenArray, pollenClass), scrollTimer * 15)
+    } else {
+      clearInterval(newPollenTimer)
+      newPollenTimer = null
+    }
+  }
+
+  function newAcornTimerStart() {
+    if (!newAcornTimer) {
+      newAcornTimer = setInterval(() => generateLeftMoving(firstAcornNull, acornArray, acornClass), scrollTimer * 11)
+    } else {
+      clearInterval(newAcornTimer)
+      newAcornTimer = null
+    }
+  }
+
+  function newLifeTimerStart() {
+    if (!newLifeTimer) {
+      newLifeTimer = setInterval(() => generateLeftMoving(firstLifeNull, lifeArray, livesFullClass), scrollTimer * 100)
+    } else {
+      clearInterval(newLifeTimer)
+      newLifeTimer = null
+    }
+  }
   
-    acornArray.forEach(acorn => {
-      acorn.removeAcorn()
-      acorn.addAcorn()
-    })
+
+
+
+  function startTimers() {
+
+    scrollStart()
+
+    newWaspTimerStart()
+    newPollenTimerStart()
+    newAcornTimerStart()
+    newLifeTimerStart()
+    waspFlyingTimer()
+    honeyFiringTimer()
+    fallingAcornTimer()
+    newPlantTimerStart()
+
+    // leftTimer(newWaspTimer, firstWaspNull, waspArray, waspClass, waspInterval)
+
+    // leftTimer(newPollenTimer, firstPollenNull, pollenArray, pollenClass, pollenInterval)
+
+    // leftTimer(newAcornTimer, firstAcornNull, acornArray, acornClass, acornInterval)
+
+    // leftTimer(newLifeTimer, firstLifeNull, lifeArray, livesFullClass, lifeInterval)
+
     
-  }, gravityTimer * .4)
+
+
+
+    // newWaspTimer = setInterval(() => generateLeftMoving(firstWaspNull, waspArray, waspClass), waspInterval)
+
+    // waspFlying = setInterval(() => {
+    //   // collisionDetectionScroll()
+    //   waspArray.forEach(wasp => {
+    //     wasp.removeLeftMoving(waspClass)
+    //     wasp.addLeftMoving(waspClass)
+    //   })
+    // }, scrollTimer * 0.65)
+
+
+
+
+    // honeyFiring = setInterval(() => {
+    //   honeyArray.forEach(honey => {
+    //     honey.removeHoney()
+    //     honey.addHoney()
+    //   })
+
+    // }, scrollTimer * 0.6)
+
+
+
+
+    // newPlantTimer = setInterval(() => generatePlant(), scrollTimer * 7)
+
+
+    // newPollenTimer = setInterval(() => generateLeftMoving(firstPollenNull, pollenArray, pollenClass), scrollTimer * 15)
+
+    // newAcornTimer = setInterval(() => generateLeftMoving(firstAcornNull, acornArray, acornClass), scrollTimer * 11)
+
+    // newLifeTimer = setInterval(() => generateLeftMoving(firstLifeNull, lifeArray, livesFullClass), scrollTimer * 90)
+
+    // fallingAcorn = setInterval(() => {
+
+    //   acornArray.forEach(acorn => {
+    //     acorn.removeAcorn()
+    //     acorn.addAcorn()
+    //   })
+
+    // }, gravityTimer * .4)
+
+  }
+
+
 
   function resetGravityTimer() {
     clearInterval(gravity)
     applyGravity()
   }
-
 
 
   function beeCollision(arr1, arr2, class2) {
@@ -628,7 +779,7 @@ function init() {
             // console.log('<<<<<<<<<<<<<<<<<<<SPLAT>>>>>>>>>>>>>>>>')
             honeyCheck(honeyArray, waspArray, honeyClass, waspClass)
             honeyCheck(honeyArray, acornArray, honeyClass, acornClass)
-            
+
           }
         })
 
@@ -711,7 +862,6 @@ function init() {
 
 
 
-  startCollisionCheck()
 
   function openMain() {
 
@@ -778,7 +928,7 @@ function init() {
 
   function gameOver() {
     console.log('GAME OVER')
-    clearTimers()
+    startTimers()
     gameOverCard.classList.toggle(hiddenClass)
     main.classList.toggle(hiddenClass)
     header.classList.toggle(hiddenClass)
