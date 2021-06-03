@@ -89,14 +89,10 @@ function init() {
 
   let scrollTimer = 150
   let gravityTimer = 650
-  let waspInterval = scrollTimer * 10
-  let pollenInterval = scrollTimer * 15
-  let acornInterval = scrollTimer * 11
-  let lifeInterval = scrollTimer * 100
   let collisionTimer = null
-  let gravity = 0
+  let gravity = null
 
-  score.innerText = currentScore
+
 
   beeCurrentPosition[0] = width * (height / 4) + 3
 
@@ -257,8 +253,6 @@ function init() {
   let firstAcornNull = null
   let firstLifeNull = null
 
-  let newPlant = null
-
 
 
   function createGrid() {
@@ -288,6 +282,11 @@ function init() {
     addBee()
     startTimers()
     startCollisionCheck()
+    themeTune.play()
+
+
+    score.innerText = currentScore
+
 
   }
 
@@ -302,8 +301,65 @@ function init() {
   }
 
 
+  function restartGame() {
+
+    
+    currentLives = ['life', 'life', 'life']
+    currentScore = 0
+    waspCount = 0
+    acornCount = 0
+    pollenCount = 0
+    
+    score.innerText = currentScore
+
+    firstWaspNull = null
+    firstHoneyNull = null
+    firstPlantNull = null
+    firstPollenNull = null
+    firstAcornNull = null
+    firstLifeNull = null
+
+    beeCurrentPosition[0] = width * (height / 4) + 3
+    addBee()
+
+    scrollTimer = 150
+    gravityTimer = 650
+    collisionTimer = null
+    gravity = null
+
+    livesGraphicUpdate()
+    startTimers()
+    startCollisionCheck()
+
+    wipingArrays(waspArray, waspClass)
+    wipingArrays(honeyArray, honeyClass)
+    wipingArrays(plantArray, plantClass)
+    wipingArrays(pollenArray, pollenClass)
+    wipingArrays(acornArray, acornClass)
+    wipingArrays(lifeArray, livesFullClass)
+
+    cells.forEach(cell => {
+      if (cell.classList.contains(flowerClass)) {
+        cell.classList.contains(flowerClass)
+      }
+    })
+
+    themeTune.play()
+
+  
+  }
   // createGrid()
 
+  function wipingArrays(arrayType, classType) {
+
+    arrayType.forEach(item => {
+      if (item.currentPosition) {
+        cells[item.currentPosition].classList.remove(classType)
+      }
+      item.currentPosition = null
+    })
+
+  }
 
 
   function addBee() {
@@ -855,15 +911,16 @@ function init() {
       header.classList.toggle(hiddenClass)
       main.classList.toggle(hiddenClass)
       createGrid()
-      themeTune.play()
     }, 500)
 
   }
 
   function returnToMainMenu() {
     gameOverCard.classList.toggle(hiddenClass)
-    mainMenu.classList.toggle(hiddenClass)
-    mainMenuToggle.classList.toggle(hiddenClass)
+    header.classList.toggle(hiddenClass)
+    main.classList.toggle(hiddenClass)
+    themeTune.play()
+    restartGame()
   }
 
 
