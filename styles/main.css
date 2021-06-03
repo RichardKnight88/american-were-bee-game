@@ -273,9 +273,7 @@ main {
   position: absolute; */
 }
 
-.hidden {
-  display: none;
-}
+
 
 .fadeOut {
   animation: close .5s none;
@@ -347,6 +345,97 @@ button.menuButtons {
 }
 
 
+
+
+.menuTextContainer.hidden {
+  display: none;
+  animation: open .5s none;
+}
+
+.rules.hidden {
+  display: none;
+  animation: open .5s none;
+}
+
+div .rules {
+  width: 550px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-right: 95px;
+}
+
+.rulesBullet {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 10px;
+}
+
+.bulletText {
+  width: 70%;
+  flex-grow: 0;
+  padding-right: 5px;
+}
+
+.rightColumn {
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrows {
+  display: flex;
+  align-items: flex-end;
+}
+
+.blocks {
+  width: 40px;
+  height: 40px;
+  border: .5px solid #996600;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2px;
+}
+
+.blocks.space{
+  width: 350px;
+}
+
+.blocks.icons {
+  width: 40px;
+  flex-shrink: 0;
+  background-size: cover;
+  border: none;
+}
+
+.blocks.icons.flower {
+  background-image: url('../assets/pink_flower2.png');
+}
+
+.blocks.icons.pollen {
+  background-image: url('../assets/pollen3.gif');
+}
+
+.blocks.icons.wasp {
+  background-image: url('../assets/angry_wasp.gif');
+  background-position: center;
+}
+
+.rightAlign {
+  display: flex;
+  justify-content: flex-end;
+  width: 90%;
+}
+
+
+.hidden {
+  display: none;
+}
 
 
 @keyframes hit {

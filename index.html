@@ -22,6 +22,7 @@
   <audio id = 'ouch' src = 'assets/ouch.mp3'></audio>
   <audio id = 'ding' src = 'assets/ding.mp3'></audio>
   <audio id = 'splat' src = 'assets/splat.mp3'></audio>
+  <audio id = 'hadouken' src = 'assets/hadouken.mp3'></audio>
   <audio id = 'howl' src = 'assets/howl.mp3'></audio>
 
 
@@ -87,24 +88,96 @@
       
     </div>
     
-    <div class = 'popUp rules hidden'>
+    <div class = 'rules hidden'>
 
       <h2>HOW TO PLAY</h2>
   
-      <p>You are an American Were-Bee in London. You only have two thirsts; pollen & revenge!
-  
-        Navigate around London's gardens using the arrow keys looking to quench these thirsts.
-  
-        Flowers are a great source of pollen. The longer you spend on a flower the more pollen you collect! Be careful not to touch their stems, they are dangerous to were-bees!
+      <div id = 'rulesBody'>
         
-        You will also find a great deal of pollen has been stirred up into the air at this time of year.
+        <div class = 'rulesBullet'>You are an American Were-Bee in London. You only have two thirsts; pollen & revenge!</div>
   
-        Be on the look out for the vampire wasps that slaughtered your hive. When you see them you can fire your garlic honey infusion with the SPACE bar. Let them taste your vengeance.
+    
+        <div class = 'rulesBullet'>
+          
+          <div class = 'bulletText'>
+            Navigate around London's gardens using the arrow keys looking to quench these thirsts.
+          </div>
+
+          <div class = 'rightColumn'>
+            <div class='arrows'>
+              <div class='blocks'>&#8592</div>
+              <div class = 'doubleArrow'>
+                <div class='blocks'>&#8593</div>
+                <div class='blocks'>&#8595</div>
+              </div>
+              <div class='blocks'>&#8594</div>
+            </div>
+        </div>
+        </div>
   
-        Make sure you are actively flying! You're a little chunkier than you used to be so you'll find yourself starting to drop if you stop flying. You don't want to get too low. The parks here are pretty fancy as the grass is laced with silver - instantly deadly!
-      </p>
-  
-      <button class = 'backButton' id = 'rulesBackButton'>BACK</button>
+        <div class = 'rulesBullet'>
+          
+          <div class = 'bulletText'>
+            Flowers are a great source of pollen. The longer you spend on a flower the more pollen you collect! Be careful not to touch their stems, they are dangerous to were-bees!
+          </div>
+
+          <div class = 'rightColumn'>
+            <div class = 'blocks icons flower'></div>
+          </div>
+
+        </div>
+
+        <div class = 'rulesBullet'>
+          
+          <div class = 'bulletText'>
+            You will also find a great deal of pollen has been stirred up into the air at this time of year.
+          </div>
+
+          <div class = 'rightColumn'>
+            <div class = 'blocks icons pollen'></div>
+          </div>
+          
+        </div>
+
+
+        <div class = 'rulesBullet'>
+        
+          <div class = 'bulletText'>
+            Be on the look out for the vampire wasps that massacred your colony. 
+          </div>
+
+          <div class = 'rightColumn'>
+            <div class = 'blocks icons wasp'></div>
+          </div>
+
+        </div>
+            
+        <div class = 'rulesBullet'>
+
+          <div class = 'bulletText'>
+            When you see them you can fire your garlic honey infusion with the SPACE bar. Let them taste your vengeance.
+          </div>
+
+          <div class = 'rightColumn'>
+            <div class='blocks space'>SPACE</div>
+          </div>
+
+        </div>
+          
+        <div class = 'rulesBullet'>
+
+          <div>
+            Make sure you are actively flying! You're a little chunkier than you used to be so you'll find yourself starting to drop if you stop flying.</br>
+            You don't want to get too low. The parks here are pretty fancy as the grass is laced with silver - instantly deadly!
+          </div>
+          
+        </div>
+
+      </div>
+      
+      <div class = 'rulesBullet rightAlign'>
+        <button class = 'backButton' id = 'rulesBackButton'>BACK</button>
+      </div>
   
     </div>
 

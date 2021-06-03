@@ -13,6 +13,7 @@ function init() {
   const ouch = document.querySelector('#ouch')
   const ding = document.querySelector('#ding')
   const splat = document.querySelector('#splat')
+  const hadouken = document.querySelector('#hadouken')
   const howl = document.querySelector('#howl')
 
 
@@ -577,6 +578,7 @@ function init() {
       beeCurrentPosition[0]--
       resetGravityTimer()
     } else if (key === 'Space') {
+      hadouken.play()
       generateHoney()
       resetGravityTimer()
     } else if (key === 'Enter') {
@@ -1111,13 +1113,15 @@ function init() {
     setTimeout(() => {
       startButton.classList.add(fadeOutClass)
       startScreen.classList.toggle(fadeOutClass)
-    
+
       setTimeout(() => {
-       startScreen.classList.toggle(hiddenClass)
-       startScreen.classList.toggle(fadeOutClass)
+        startScreen.classList.toggle(hiddenClass)
+        startScreen.classList.toggle(fadeOutClass)
         mainMenu.classList.toggle(hiddenClass)
+        mainMenuToggle.classList.toggle(hiddenClass)
+
       }, 1000)
-    }, 1000)
+    }, 1500)
 
 
   }
@@ -1143,7 +1147,7 @@ function init() {
 
   function openLeaderboard() {
 
-    
+
 
   }
 
@@ -1184,7 +1188,7 @@ function init() {
   leaderboard.addEventListener('click', openLeaderboard)
 
   startGame.addEventListener('click', runStartGame)
-  
+
   rulesBackButton.addEventListener('click', backToMain)
 
 
