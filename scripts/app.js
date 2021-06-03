@@ -286,10 +286,8 @@ function init() {
     createBackgroundGrid()
     livesGraphicUpdate()
     addBee()
-    applyGravity()
     startTimers()
     startCollisionCheck()
-
 
   }
 
@@ -304,7 +302,7 @@ function init() {
   }
 
 
-  createGrid()
+  // createGrid()
 
 
 
@@ -380,7 +378,7 @@ function init() {
       generateHoney()
       resetGravityTimer()
     } else if (key === 'Enter') {
-      themeTune.pause()
+      createGrid()
     } else if (key === 'KeyG') {
       gameOver()
     } else if (key === 'Escape') {
@@ -440,31 +438,27 @@ function init() {
 
 
   function applyGravity() {
-    gravity = setInterval(() => {
-      removeBee()
-      if ((beeCurrentPosition[0] + width) < (width * height)) {
-        beeCurrentPosition[0] += width
-        addBee()
-      } else {
-        // console.log('BANG FLOOR')
-        currentLives.pop()
-        console.log('LIVES>>>', currentLives)
-        livesGraphicUpdate()
-        gameOver()
-      }
-      // console.log(beeCurrentPosition)
-
-    }, gravityTimer)
-  }
-
-  function leftTimer(timerName, firstNull, arrayType, classType, intervalLength) {
-    if (!timerName) {
-      timerName = setInterval(() => generateLeftMoving(firstNull, arrayType, classType), intervalLength)
+    if (!gravity) {
+      gravity = setInterval(() => {
+        removeBee()
+        if ((beeCurrentPosition[0] + width) < (width * height)) {
+          beeCurrentPosition[0] += width
+          addBee()
+        } else {
+          // console.log('BANG FLOOR')
+          while (currentLives.length > 0) {
+            currentLives.pop()
+            console.log('LIVES>>>', currentLives)
+            updateLives()
+          }
+        }
+      }, gravityTimer)
     } else {
-      clearInterval(timerName)
-      timerName = null
+      clearInterval(gravity)
+      gravity = null
     }
   }
+
 
   function waspFlyingTimer() {
     if (!waspFlying) {
@@ -556,14 +550,14 @@ function init() {
       newLifeTimer = null
     }
   }
-  
+
 
 
 
   function startTimers() {
 
     scrollStart()
-
+    applyGravity()
     newWaspTimerStart()
     newPollenTimerStart()
     newAcornTimerStart()
@@ -573,66 +567,13 @@ function init() {
     fallingAcornTimer()
     newPlantTimerStart()
 
-    // leftTimer(newWaspTimer, firstWaspNull, waspArray, waspClass, waspInterval)
-
-    // leftTimer(newPollenTimer, firstPollenNull, pollenArray, pollenClass, pollenInterval)
-
-    // leftTimer(newAcornTimer, firstAcornNull, acornArray, acornClass, acornInterval)
-
-    // leftTimer(newLifeTimer, firstLifeNull, lifeArray, livesFullClass, lifeInterval)
-
-    
-
-
-
-    // newWaspTimer = setInterval(() => generateLeftMoving(firstWaspNull, waspArray, waspClass), waspInterval)
-
-    // waspFlying = setInterval(() => {
-    //   // collisionDetectionScroll()
-    //   waspArray.forEach(wasp => {
-    //     wasp.removeLeftMoving(waspClass)
-    //     wasp.addLeftMoving(waspClass)
-    //   })
-    // }, scrollTimer * 0.65)
-
-
-
-
-    // honeyFiring = setInterval(() => {
-    //   honeyArray.forEach(honey => {
-    //     honey.removeHoney()
-    //     honey.addHoney()
-    //   })
-
-    // }, scrollTimer * 0.6)
-
-
-
-
-    // newPlantTimer = setInterval(() => generatePlant(), scrollTimer * 7)
-
-
-    // newPollenTimer = setInterval(() => generateLeftMoving(firstPollenNull, pollenArray, pollenClass), scrollTimer * 15)
-
-    // newAcornTimer = setInterval(() => generateLeftMoving(firstAcornNull, acornArray, acornClass), scrollTimer * 11)
-
-    // newLifeTimer = setInterval(() => generateLeftMoving(firstLifeNull, lifeArray, livesFullClass), scrollTimer * 90)
-
-    // fallingAcorn = setInterval(() => {
-
-    //   acornArray.forEach(acorn => {
-    //     acorn.removeAcorn()
-    //     acorn.addAcorn()
-    //   })
-
-    // }, gravityTimer * .4)
-
   }
 
 
 
   function resetGravityTimer() {
     clearInterval(gravity)
+    gravity = null
     applyGravity()
   }
 
@@ -792,13 +733,13 @@ function init() {
     if (classType === waspClass || classType === plantClass || classType === acornClass) {
       currentLives.pop()
       ouch.play()
-      if (currentLives.length <= 0) {
-        setTimeout(() => {
-          gameOver()
-        }, 20)
-      }
     } else if (classType === livesFullClass && currentLives.length < 4) {
       currentLives.push('life')
+    }
+    if (currentLives.length <= 0) {
+      setTimeout(() => {
+        gameOver()
+      }, 20)
     }
     livesGraphicUpdate()
   }
@@ -862,7 +803,6 @@ function init() {
 
 
 
-
   function openMain() {
 
     howl.play()
@@ -914,6 +854,7 @@ function init() {
     setTimeout(() => {
       header.classList.toggle(hiddenClass)
       main.classList.toggle(hiddenClass)
+      createGrid()
       themeTune.play()
     }, 500)
 
