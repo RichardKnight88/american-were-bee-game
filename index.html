@@ -83,7 +83,6 @@
         
         <button class = 'menuButtons' id = 'howToPlay'>HOW TO PLAY</button>
         
-        <button  class = 'menuButtons' id = 'leaderboard'>LEADERBOARD</button>
         
         <button class = 'menuButtons' id = 'startGame'>START GAME</button>
         
@@ -154,11 +153,23 @@
           </div>
 
         </div>
+
+        <div class = 'rulesBullet'>
+        
+          <div class = 'bulletText'>
+            It's a well known fact that acorns sided with the vampires in the war.
+          </div>
+
+          <div class = 'rightColumn'>
+            <div class = 'blocks icons acorn'></div>
+          </div>
+
+        </div>
             
         <div class = 'rulesBullet'>
 
           <div class = 'bulletText'>
-            When you see them you can fire your garlic honey infusion with the SPACE bar. Let them taste your vengeance.
+            When you see either you can fire your garlic-honey infusion with the SPACE bar. Let them taste your vengeance.
           </div>
 
           <div class = 'rightColumn'>
@@ -187,11 +198,6 @@
   </div>
   
   
-    
-    
-      
-      
-
 
   <div class = 'popUp hidden' id = 'gameOver'>
     
@@ -199,28 +205,34 @@
     
       <h2>GAME OVER</h2>
 
-      <div class = 'resultsText'>
+      <div class = 'containerDiv'>
+
+        <div class = 'resultsText'>
+            
+          <div class = 'resultsScore'>
+            Your score was: <span id = 'resultsScoreFromDOM'></span>
+          </div>
+
+        </div>
+      
+        <div class = 'resultsText'>
+            
+          <div class = 'resultsData'>
+            You destroyed <span id = 'waspsDOM'></span> wasps and <span id = 'acornsDOM'></span> acorns
+          </div>
           
-        <div class = 'resultsScore'>
-          Your score was: <span id = 'resultsScoreFromDOM'></span>
         </div>
 
-      </div>
-    
-      <div class = 'resultsText'>
-          
-        <div class = 'resultsTime'>
-          You survived for: <span id = 'resultsTimeFromDOM'></span>
+        <div class = 'resultsText'>
+          <button class = 'backButton' id = 'gameOverReturnButton'>Return to Main Menu</button>
         </div>
 
-        
-
-      </div>
-
-      <div class = 'resultsText rightAlign'>
-        <button class = 'backButton' id = 'gameOverReturnButton'>Return to Main Menu</button>
-      </div>
+        <div class = 'resultsText'>
+          <button class = 'backButton' id = 'playAgainButton'>Play again</button>
+        </div>
   
+      </div>
+
     </div>
   </div>
 

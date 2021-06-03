@@ -36,8 +36,11 @@ function init() {
   const gameOverCard = document.querySelector('#gameOver')
 
   const resultsScoreFromDOM = document.querySelector('#resultsScoreFromDOM')
+  const waspsDOM = document.querySelector('#waspsDOM')
+  const acornsDOM = document.querySelector('#acornsDOM')
 
   const gameOverReturnButton = document.querySelector('#gameOverReturnButton')
+  const playAgainButton = document.querySelector('#playAgainButton')
 
 
   const beePic = document.createElement('img')
@@ -303,13 +306,13 @@ function init() {
 
   function restartGame() {
 
-    
+
     currentLives = ['life', 'life', 'life']
     currentScore = 0
     waspCount = 0
     acornCount = 0
     pollenCount = 0
-    
+
     score.innerText = currentScore
 
     firstWaspNull = null
@@ -333,27 +336,42 @@ function init() {
 
     wipingArrays(waspArray, waspClass)
     wipingArrays(honeyArray, honeyClass)
-    wipingArrays(plantArray, plantClass)
     wipingArrays(pollenArray, pollenClass)
     wipingArrays(acornArray, acornClass)
     wipingArrays(lifeArray, livesFullClass)
 
     cells.forEach(cell => {
       if (cell.classList.contains(flowerClass)) {
-        cell.classList.contains(flowerClass)
+        cell.classList.remove(flowerClass)
       }
     })
 
+    cells.forEach(cell => {
+      if (cell.classList.contains(plantClass)) {
+        cell.classList.remove(plantClass)
+      }
+    })
+
+    plantArray.forEach(item => item.currentPosition = [])
+
     themeTune.play()
 
-  
   }
-  // createGrid()
+
+  function startGameDecision() {
+
+    if (cells.length > 0) {
+      restartGame()
+    } else {
+      createGrid()
+    }
+  }
 
   function wipingArrays(arrayType, classType) {
 
     arrayType.forEach(item => {
       if (item.currentPosition) {
+        console.log('HERE ARE ITEMS', item)
         cells[item.currentPosition].classList.remove(classType)
       }
       item.currentPosition = null
@@ -433,10 +451,6 @@ function init() {
       hadouken.play()
       generateHoney()
       resetGravityTimer()
-    } else if (key === 'Enter') {
-      createGrid()
-    } else if (key === 'KeyG') {
-      gameOver()
     } else if (key === 'Escape') {
       startTimers()
     }
@@ -445,19 +459,6 @@ function init() {
     addBee(beeCurrentPosition)
   }
 
-  function clearTimers() {
-    clearInterval(scrolling)
-    clearInterval(gravity)
-    clearInterval(waspFlying)
-    clearInterval(newWaspTimer)
-    clearInterval(newPlantTimer)
-    clearInterval(newPollenTimer)
-    clearInterval(newAcornTimer)
-    clearInterval(newLifeTimer)
-    clearInterval(honeyFiring)
-    clearInterval(collisionTimer)
-    clearInterval(fallingAcorn)
-  }
 
   function scrollStart() {
     if (!scrolling) {
@@ -487,7 +488,6 @@ function init() {
       scrolling = null
     }
   }
-
 
 
 
@@ -625,6 +625,19 @@ function init() {
 
   }
 
+  function clearTimers() {
+    clearInterval(scrolling)
+    clearInterval(gravity)
+    clearInterval(waspFlying)
+    clearInterval(newWaspTimer)
+    clearInterval(newPlantTimer)
+    clearInterval(newPollenTimer)
+    clearInterval(newAcornTimer)
+    clearInterval(newLifeTimer)
+    clearInterval(honeyFiring)
+    clearInterval(collisionTimer)
+    clearInterval(fallingAcorn)
+  }
 
 
   function resetGravityTimer() {
@@ -731,7 +744,7 @@ function init() {
           cells[item].classList.add(honeySplatClass)
           setTimeout(() => {
             cells[item].classList.remove(honeySplatClass)
-          }, 80)
+          }, 100)
         }
       }
       for (let i = 0; i < arr2.length; i++) {
@@ -809,8 +822,12 @@ function init() {
       collisionTimer = null
       setTimeout(() => {
         beePic.classList.toggle('collision')
-        startCollisionCheck()
       }, 1000)
+      if (currentLives.length > 0) {
+        setTimeout(() => {
+          startCollisionCheck()
+        }, 1000)
+      }
     } else {
       updateLives(classType)
     }
@@ -897,20 +914,14 @@ function init() {
   }
 
 
-  function openLeaderboard() {
-
-
-
-  }
-
   function runStartGame() {
 
     mainMenu.classList.toggle(hiddenClass)
-    mainMenuToggle.classList.toggle(hiddenClass)
+    // mainMenuToggle.classList.toggle(hiddenClass)
     setTimeout(() => {
       header.classList.toggle(hiddenClass)
       main.classList.toggle(hiddenClass)
-      createGrid()
+      startGameDecision()
     }, 500)
 
   }
@@ -919,14 +930,15 @@ function init() {
     gameOverCard.classList.toggle(hiddenClass)
     header.classList.toggle(hiddenClass)
     main.classList.toggle(hiddenClass)
-    themeTune.play()
-    restartGame()
   }
 
 
   function gameOver() {
     console.log('GAME OVER')
     startTimers()
+    clearTimers()
+    waspsDOM.innerText = waspCount
+    acornsDOM.innerText = acornCount
     gameOverCard.classList.toggle(hiddenClass)
     main.classList.toggle(hiddenClass)
     header.classList.toggle(hiddenClass)
@@ -942,13 +954,13 @@ function init() {
 
   howToPlay.addEventListener('click', openHowToPlay)
 
-  leaderboard.addEventListener('click', openLeaderboard)
-
   startGame.addEventListener('click', runStartGame)
 
   rulesBackButton.addEventListener('click', backToMain)
 
   gameOverReturnButton.addEventListener('click', returnToMainMenu)
+
+  playAgainButton.addEventListener('click', startGameDecision)
 
 
 
