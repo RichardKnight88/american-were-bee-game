@@ -275,12 +275,8 @@ function init() {
       endColumnsUpper.push(i)
     }
 
-
     livesGraphicUpdate()
     addBee()
-
-    // generateAcorn()
-    // addAcorn(acornStartingPosition)
 
   }
 
@@ -333,7 +329,7 @@ function init() {
     }
   }
 
-  function generateLeftMoving(nullType, arrayType) {
+  function generateLeftMoving(nullType, arrayType, classType) {
     nullType = arrayType.find(item => {
       return !item.currentPosition
     })
@@ -344,24 +340,8 @@ function init() {
     } else {
       nullType.currentPosition = endColumnsUpper[Math.floor(Math.random() * endColumnsUpper.length)]
     }
+    cells[nullType.currentPosition].classList.add(classType)
   }
-
-
-
-  // function generateAcorn() {
-  //   acornStartingPosition = topRow[Math.floor(Math.random() * topRow.length)]
-  //   console.log('ACORN', acornStartingPosition)
-  //   acornCurrentPosition = acornStartingPosition
-  //   cells[acornStartingPosition].classList.add(acornClass)
-  // }
-
-  // function addAcorn(position) {
-  //   cells[position].classList.add(acornClass)
-  // }
-
-  // function removeAcorn(position) {
-  //   cells[acornCurrentPosition].classList.remove(acornClass)
-  // }
 
 
   function navigate(event) {
@@ -459,7 +439,7 @@ function init() {
     }, gravityTimer)
   }
 
-  const newWaspTimer = setInterval(() => generateLeftMoving(firstWaspNull, waspArray), waspInterval)
+  const newWaspTimer = setInterval(() => generateLeftMoving(firstWaspNull, waspArray, waspClass), waspInterval)
 
   const waspFlying = setInterval(() => {
     // collisionDetectionScroll()
@@ -482,24 +462,13 @@ function init() {
   const newPlantTimer = setInterval(() => generatePlant(), scrollTimer * 7)
 
 
-  const newPollenTimer = setInterval(() => generateLeftMoving(firstPollenNull, pollenArray), scrollTimer * 15)
+  const newPollenTimer = setInterval(() => generateLeftMoving(firstPollenNull, pollenArray, pollenClass), scrollTimer * 15)
 
-  const newAcornTimer = setInterval(() => generateLeftMoving(firstAcornNull, acornArray), scrollTimer * 11)
+  const newAcornTimer = setInterval(() => generateLeftMoving(firstAcornNull, acornArray, acornClass), scrollTimer * 11)
 
-  const newLifeTimer = setInterval(() => generateLeftMoving(firstLifeNull, lifeArray), scrollTimer * 60)
+  const newLifeTimer = setInterval(() => generateLeftMoving(firstLifeNull, lifeArray, livesFullClass), scrollTimer * 60)
 
 
-
-  // const waspFlying = setInterval(() => {
-  //   // collisionDetectionScroll()
-  //   removeWasp()
-  //   if (waspCurrentPosition % width !== 0) {
-  //     waspCurrentPosition--
-  //     addWasp(waspCurrentPosition)
-  //   } else {
-  //     generateWasp()
-  //   }
-  // }, scrollTimer * 0.6)
 
   const fallingAcorn = setInterval(() => {
   
@@ -682,6 +651,7 @@ function init() {
     }
     livesGraphicUpdate()
   }
+
 
   function toggleCollision(classType) {
     if (classType === waspClass || classType === plantClass || classType === acornClass) {
