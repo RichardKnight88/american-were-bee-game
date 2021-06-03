@@ -72,6 +72,7 @@ function init() {
   let currentLives = ['life', 'life', 'life']
   let currentScore = 0
   let waspCount = 0
+  let acornCount = 0
   let pollenCount = 0
 
 
@@ -267,7 +268,7 @@ function init() {
 
     for (let i = 8; i < width; i++) {
       topRow.push(i)
-      console.log(topRow)
+      // console.log(topRow)
     }
 
     for (let i = width - 1; i < width * (height / 2); i += width) {
@@ -447,13 +448,13 @@ function init() {
         beeCurrentPosition[0] += width
         addBee()
       } else {
-        console.log('BANG FLOOR')
+        // console.log('BANG FLOOR')
         currentLives.pop()
         console.log('LIVES>>>', currentLives)
         livesGraphicUpdate()
         gameOver()
       }
-      console.log(beeCurrentPosition)
+      // console.log(beeCurrentPosition)
 
     }, gravityTimer)
   }
@@ -524,15 +525,15 @@ function init() {
       }
     })
 
-    console.log('FILTERED>>>', filteredArray)
+    // console.log('FILTERED>>>', filteredArray)
 
     const positionsArrray = filteredArray.map(item => item.currentPosition)
 
-    console.log('POSITIONS ONLY>>>', positionsArrray)
+    // console.log('POSITIONS ONLY>>>', positionsArrray)
 
     const mergedArray = beeCurrentPosition.concat(positionsArrray)
 
-    console.log('MERGED>>>>', mergedArray)
+    // console.log('MERGED>>>>', mergedArray)
 
     const uniqueArray = []
     const duplicates = []
@@ -545,8 +546,8 @@ function init() {
       }
     })
 
-    console.log('UNIQUE VALUES>>>>', uniqueArray)
-    console.log('DUPLICATE VALUES>>>>', duplicates)
+    // console.log('UNIQUE VALUES>>>>', uniqueArray)
+    // console.log('DUPLICATE VALUES>>>>', duplicates)
 
     duplicates.forEach(item => {
       for (let i = 0; i < arr2.length; i++) {
@@ -573,7 +574,7 @@ function init() {
 
     const mergedArray = arr1.concat(arr2)
 
-    console.log('MERGED>>>>', mergedArray)
+    // console.log('MERGED>>>>', mergedArray)
 
 
     const filteredArray = mergedArray.filter(item => {
@@ -582,18 +583,18 @@ function init() {
       }
     })
 
-    console.log('FILTERED>>>', filteredArray)
+    // console.log('FILTERED>>>', filteredArray)
 
 
     const positionsArrray = filteredArray.map(item => item.currentPosition)
 
-    console.log('POSITIONS ONLY>>>', positionsArrray)
+    // console.log('POSITIONS ONLY>>>', positionsArrray)
 
     const uniqueArray = []
     const duplicates = []
 
-    console.log('UNIQUE VALUES>>>>', uniqueArray)
-    console.log('DUPLICATE VALUES>>>>', duplicates)
+    // console.log('UNIQUE VALUES>>>>', uniqueArray)
+    // console.log('DUPLICATE VALUES>>>>', duplicates)
 
 
     positionsArrray.filter(item => {
@@ -623,7 +624,7 @@ function init() {
         }
       }
 
-      scoreUpdate(waspClass)
+      scoreUpdate(class2)
     })
 
   }
@@ -654,9 +655,11 @@ function init() {
         })
 
         honeyArray.forEach(item => {
-          if (item.currentPosition && cells[item.currentPosition].classList.contains(waspClass)) {
-            console.log('<<<<<<<<<<<<<<<<<<<SPLAT>>>>>>>>>>>>>>>>')
+          if (item.currentPosition && cells[item.currentPosition].classList.contains(waspClass) || item.currentPosition && cells[item.currentPosition].classList.contains(acornClass)) {
+            // console.log('<<<<<<<<<<<<<<<<<<<SPLAT>>>>>>>>>>>>>>>>')
             honeyCheck(honeyArray, waspArray, honeyClass, waspClass)
+            honeyCheck(honeyArray, acornArray, honeyClass, acornClass)
+            
           }
         })
 
@@ -704,9 +707,17 @@ function init() {
     } else if (itemClass === waspClass) {
       currentScore += 20
       splat.play()
+      waspCount++
+      console.log('WASPS HIT', waspCount)
+    } else if (itemClass === acornClass) {
+      currentScore += 30
+      splat.play()
+      acornCount++
+      console.log('ACORNS HIT', acornCount)
     } else if (itemClass === pollenClass) {
       currentScore += 10
       ding.play()
+      pollenCount++
     } else if (itemClass === livesFullClass) {
       currentScore += 50
       oneUp.play()
