@@ -87,6 +87,7 @@ function init() {
   let newLifeTimer = null
   let fallingAcorn = null
   let checkingForSuccessfulHitTimer = null
+  let canCheckCollision = true
 
 
   let scrollTimer = 150
@@ -288,6 +289,7 @@ function init() {
     addBee()
     startTimers()
     startCollisionCheck()
+    themeTune.load()
     themeTune.play()
 
 
@@ -357,6 +359,7 @@ function init() {
 
     plantArray.forEach(item => item.currentPosition = [])
 
+    themeTune.load()
     themeTune.play()
 
     document.addEventListener('keydown', navigate)
@@ -457,6 +460,7 @@ function init() {
       generateHoney()
       resetGravityTimer()
     } else if (key === 'Escape') {
+      themeTune.pause()
       startTimers()
     }
     // console.log('CURRENT BEE', beeCurrentPosition)
@@ -805,23 +809,24 @@ function init() {
       collisionTimer = setInterval(() => {
         // console.log('COLLISION TIMER AFTER INITIATION', collisionTimer)
         beeCurrentPosition.forEach(item => {
-          if (cells[item].classList.contains(waspClass)) {
-            beeCollision(beeCurrentPosition, waspArray, waspClass)
-          } else if (cells[item].classList.contains(pollenClass)) {
-            beeCollision(beeCurrentPosition, pollenArray, pollenClass)
-          } else if (cells[item].classList.contains(livesFullClass)) {
-            beeCollision(beeCurrentPosition, lifeArray, livesFullClass)
-          } else if (cells[item].classList.contains(acornClass)) {
-            beeCollision(beeCurrentPosition, acornArray, acornClass)
-          } else if (cells[item].classList.contains(flowerClass)) {
-            scoreUpdate(flowerClass)
-          } else if (cells[item].classList.contains(plantClass)) {
-            toggleCollision(plantClass)
+          if (canCheckCollision) {
+            if (cells[item].classList.contains(waspClass)) {
+              beeCollision(beeCurrentPosition, waspArray, waspClass)
+            } else if (cells[item].classList.contains(pollenClass)) {
+              beeCollision(beeCurrentPosition, pollenArray, pollenClass)
+            } else if (cells[item].classList.contains(livesFullClass)) {
+              beeCollision(beeCurrentPosition, lifeArray, livesFullClass)
+            } else if (cells[item].classList.contains(acornClass)) {
+              beeCollision(beeCurrentPosition, acornArray, acornClass)
+            } else if (cells[item].classList.contains(flowerClass)) {
+              scoreUpdate(flowerClass)
+            } else if (cells[item].classList.contains(plantClass)) {
+              toggleCollision(plantClass)
+            }
           }
         })
 
-
-      }, 65)
+      }, 25)
     }
   }
 
@@ -832,6 +837,7 @@ function init() {
     } else if (classType === livesFullClass && currentLives.length < 4) {
       currentLives.push('life')
     }
+    console.log('IN CUPDATE LIVES FUNCTION', currentLives.length)
     if (currentLives.length <= 0) {
       setTimeout(() => {
         gameOver()
@@ -843,21 +849,35 @@ function init() {
 
   function toggleCollision(classType) {
     console.log('HIT BY A>>>>>>', classType)
+    console.log('HIT BY A>>>>>>', classType, plantClass)
     if (classType === waspClass || classType === plantClass || classType === acornClass) {
+      console.log('WE ARE IN THE FUNCTION')
       beePic.classList.toggle('collision')
       updateLives(classType)
-      clearInterval(collisionTimer)
-      collisionTimer = null
+      // clearInterval(collisionTimer)
+      // collisionTimer = null
+      canCheckCollision = false
       setTimeout(() => {
+        canCheckCollision = true
         beePic.classList.toggle('collision')
         startCollisionCheck()
       }, 1000)
-      // if (currentLives.length > 0) {
-      //   setTimeout(() => {
-      //   }, 1000)
-      // }
     } else {
       updateLives(classType)
+    }
+  }
+
+
+  function livesGraphicUpdate() {
+    console.log('CURRENT LIFE', currentLives)
+    livesGraphic.forEach(item => {
+      if (item.classList.contains(livesFullClass)) {
+        item.classList.remove(livesFullClass)
+      }
+      item.classList.add(livesEmptyClass)
+    })
+    for (let i = 0; i < currentLives.length; i++) {
+      livesGraphic[i].classList.add(livesFullClass)
     }
   }
 
@@ -885,20 +905,6 @@ function init() {
       oneUp.play()
     }
     score.innerText = currentScore
-  }
-
-
-  function livesGraphicUpdate() {
-    console.log('CURRENT LIFE', currentLives)
-    livesGraphic.forEach(item => {
-      if (item.classList.contains(livesFullClass)) {
-        item.classList.remove(livesFullClass)
-      }
-      item.classList.add(livesEmptyClass)
-    })
-    for (let i = 0; i < currentLives.length; i++) {
-      livesGraphic[i].classList.add(livesFullClass)
-    }
   }
 
 
