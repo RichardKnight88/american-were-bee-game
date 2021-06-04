@@ -294,6 +294,7 @@ function init() {
 
     score.innerText = currentScore
 
+    document.addEventListener('keydown', navigate)
 
   }
 
@@ -309,7 +310,6 @@ function init() {
 
 
   function restartGame() {
-
 
     currentLives = ['life', 'life', 'life']
     currentScore = 0
@@ -360,6 +360,8 @@ function init() {
     plantArray.forEach(item => item.currentPosition = [])
 
     themeTune.play()
+
+    document.addEventListener('keydown', navigate)
 
   }
 
@@ -972,10 +974,10 @@ function init() {
     header.classList.toggle(hiddenClass)
     themeTune.pause()
     resultsScoreFromDOM.innerText = currentScore
-
+    document.removeEventListener('keydown', navigate)
   }
 
-  document.addEventListener('keydown', navigate)
+  // document.addEventListener('keydown', navigate)
 
   startButton.addEventListener('click', openMain)
 
