@@ -459,9 +459,9 @@ function init() {
       hadouken.play()
       generateHoney()
       resetGravityTimer()
-    } else if (key === 'Escape') {
-      themeTune.pause()
-      startTimers()
+    // } else if (key === 'Escape') {
+    //   themeTune.pause()
+    //   startTimers()
     }
     // console.log('CURRENT BEE', beeCurrentPosition)
     // console.log('DELAY IN HOLD>>>>', new Date().getMilliseconds())
