@@ -26,7 +26,6 @@ function init() {
   const mainMenuToggle = document.querySelector('.menuTextContainer')
 
   const howToPlay = document.querySelector('#howToPlay')
-  const leaderboard = document.querySelector('#leaderboard')
   const startGame = document.querySelector('#startGame')
 
   const rules = document.querySelector('.rules')
@@ -76,7 +75,6 @@ function init() {
   let currentScore = 0
   let waspCount = 0
   let acornCount = 0
-  let pollenCount = 0
 
 
   let scrolling = null
@@ -88,6 +86,7 @@ function init() {
   let newAcornTimer = null
   let newLifeTimer = null
   let fallingAcorn = null
+  let checkingForSuccessfulHitTimer = null
 
 
   let scrollTimer = 150
@@ -315,7 +314,6 @@ function init() {
     currentScore = 0
     waspCount = 0
     acornCount = 0
-    pollenCount = 0
 
     score.innerText = currentScore
 
@@ -630,6 +628,7 @@ function init() {
     honeyFiringTimer()
     fallingAcornTimer()
     newPlantTimerStart()
+    checkingForHit()
 
   }
 
@@ -656,6 +655,8 @@ function init() {
     collisionTimer = null
     clearInterval(fallingAcorn)
     fallingAcorn = null
+    clearInterval(checkingForSuccessfulHitTimer)
+    checkingForSuccessfulHitTimer = null
   }
 
 
@@ -778,6 +779,24 @@ function init() {
 
   }
 
+  function checkingForHit() {
+
+    if (!checkingForSuccessfulHitTimer) {
+      checkingForSuccessfulHitTimer = setInterval(() => {
+        honeyArray.forEach(item => {
+          if (item.currentPosition && cells[item.currentPosition].classList.contains(waspClass) || item.currentPosition && cells[item.currentPosition].classList.contains(acornClass)) {
+            honeyCheck(honeyArray, waspArray, honeyClass, waspClass)
+            honeyCheck(honeyArray, acornArray, honeyClass, acornClass)
+          }
+        })
+      }, 10)
+    } else {
+      clearInterval(checkingForSuccessfulHitTimer)
+      checkingForSuccessfulHitTimer = null
+    }
+
+  }
+
   function startCollisionCheck() {
     // console.log('COLLISION TIMER AT START OF CHECK', collisionTimer)
     // console.log('STARTING CHECK')
@@ -797,23 +816,12 @@ function init() {
           } else if (cells[item].classList.contains(flowerClass)) {
             scoreUpdate(flowerClass)
           } else if (cells[item].classList.contains(plantClass)) {
-            toggleCollision(waspClass)
-          }
-
-
-        })
-
-        honeyArray.forEach(item => {
-          if (item.currentPosition && cells[item.currentPosition].classList.contains(waspClass) || item.currentPosition && cells[item.currentPosition].classList.contains(acornClass)) {
-            // console.log('<<<<<<<<<<<<<<<<<<<SPLAT>>>>>>>>>>>>>>>>')
-            honeyCheck(honeyArray, waspArray, honeyClass, waspClass)
-            honeyCheck(honeyArray, acornArray, honeyClass, acornClass)
-
+            toggleCollision(plantClass)
           }
         })
 
 
-      }, 10)
+      }, 65)
     }
   }
 
@@ -834,6 +842,7 @@ function init() {
 
 
   function toggleCollision(classType) {
+    console.log('HIT BY A>>>>>>', classType)
     if (classType === waspClass || classType === plantClass || classType === acornClass) {
       beePic.classList.toggle('collision')
       updateLives(classType)
@@ -871,7 +880,6 @@ function init() {
     } else if (itemClass === pollenClass) {
       currentScore += 10
       ding.play()
-      pollenCount++
     } else if (itemClass === livesFullClass) {
       currentScore += 50
       oneUp.play()
