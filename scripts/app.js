@@ -186,7 +186,11 @@ function init() {
   const waspThree = new GeneratedItem('waspThreePosition', null)
   const waspFour = new GeneratedItem('waspFourPosition', null)
   const waspFive = new GeneratedItem('waspFivePosition', null)
-
+  const waspSix = new GeneratedItem('waspSixPosition', null)
+  const waspSeven = new GeneratedItem('waspSevenPosition', null)
+  const waspEight = new GeneratedItem('waspEightPosition', null)
+  const waspNine = new GeneratedItem('waspNinePosition', null)
+  const waspTen = new GeneratedItem('waspFivePosition', null)
 
 
   const honeyOne = new GeneratedItem('honeyOnePosition', null)
@@ -231,7 +235,7 @@ function init() {
 
 
 
-  const waspArray = [waspOne, waspTwo, waspThree, waspFour, waspFive]
+  const waspArray = [waspOne, waspTwo, waspThree, waspFour, waspFive, waspSix, waspSeven, waspEight, waspNine, waspTen]
 
 
   const honeyArray = [honeyOne, honeyTwo, honeyThree, honeyFour, honeyFive, honeySix, honeySeven, honeyEight, honeyNine, honeyTen]
@@ -331,6 +335,7 @@ function init() {
     gravity = null
 
     livesGraphicUpdate()
+    clearTimers()
     startTimers()
     startCollisionCheck()
 
@@ -613,6 +618,7 @@ function init() {
   function startTimers() {
 
     scrollStart()
+    // resetGravityTimer()
     applyGravity()
     newWaspTimerStart()
     newPollenTimerStart()
@@ -627,16 +633,27 @@ function init() {
 
   function clearTimers() {
     clearInterval(scrolling)
+    scrolling = null
     clearInterval(gravity)
+    gravity = null
     clearInterval(waspFlying)
+    waspFlying = null
     clearInterval(newWaspTimer)
+    newWaspTimer = null
     clearInterval(newPlantTimer)
+    newPlantTimer = null
     clearInterval(newPollenTimer)
+    newPollenTimer = null
     clearInterval(newAcornTimer)
+    newAcornTimer = null
     clearInterval(newLifeTimer)
+    newLifeTimer = null
     clearInterval(honeyFiring)
+    honeyFiring = null
     clearInterval(collisionTimer)
+    collisionTimer = null
     clearInterval(fallingAcorn)
+    fallingAcorn = null
   }
 
 
@@ -763,7 +780,7 @@ function init() {
     // console.log('COLLISION TIMER AT START OF CHECK', collisionTimer)
     // console.log('STARTING CHECK')
 
-    if (!collisionTimer) {
+    if (!collisionTimer && currentLives.length > 0) {
       collisionTimer = setInterval(() => {
         // console.log('COLLISION TIMER AFTER INITIATION', collisionTimer)
         beeCurrentPosition.forEach(item => {
@@ -822,12 +839,12 @@ function init() {
       collisionTimer = null
       setTimeout(() => {
         beePic.classList.toggle('collision')
+        startCollisionCheck()
       }, 1000)
-      if (currentLives.length > 0) {
-        setTimeout(() => {
-          startCollisionCheck()
-        }, 1000)
-      }
+      // if (currentLives.length > 0) {
+      //   setTimeout(() => {
+      //   }, 1000)
+      // }
     } else {
       updateLives(classType)
     }
@@ -928,14 +945,25 @@ function init() {
 
   function returnToMainMenu() {
     gameOverCard.classList.toggle(hiddenClass)
-    header.classList.toggle(hiddenClass)
-    main.classList.toggle(hiddenClass)
+    mainMenu.classList.toggle(hiddenClass)
+    if (mainMenuToggle.classList.contains(hiddenClass)) {
+      mainMenuToggle.classList.remove(hiddenClass)
+    }
+  }
+
+
+  function playAgain() {
+    gameOverCard.classList.toggle(hiddenClass)
+    setTimeout(() => {
+      header.classList.toggle(hiddenClass)
+      main.classList.toggle(hiddenClass)
+      startGameDecision()
+    }, 500)
   }
 
 
   function gameOver() {
     console.log('GAME OVER')
-    startTimers()
     clearTimers()
     waspsDOM.innerText = waspCount
     acornsDOM.innerText = acornCount
@@ -945,7 +973,6 @@ function init() {
     themeTune.pause()
     resultsScoreFromDOM.innerText = currentScore
 
-    // window.alert('GAME OVER')
   }
 
   document.addEventListener('keydown', navigate)
@@ -960,7 +987,7 @@ function init() {
 
   gameOverReturnButton.addEventListener('click', returnToMainMenu)
 
-  playAgainButton.addEventListener('click', startGameDecision)
+  playAgainButton.addEventListener('click', playAgain)
 
 
 

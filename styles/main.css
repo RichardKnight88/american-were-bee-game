@@ -424,6 +424,8 @@ div .rules {
 
 .blocks.icons.acorn {
   background-image: url('../assets/acorn.gif');
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
 }
 
