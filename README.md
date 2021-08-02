@@ -1,9 +1,9 @@
 # American Were-Bee in London
 Software Engineering Immersive Course - project-1
 
-<a href="https://richardknight88.github.io/project-1/">Deployed Game</a>
+<a href="https://richardknight88.github.io/project-1/" target="_blank">Deployed Game</a>
 
-<img src="./assets/screenshots/gameplay/gameplay_gif.gif" alt="gameplay gif"/>
+<img align="center" width="100%" src="./assets/screenshots/gameplay/gameplay_gif.gif" alt="gameplay gif"/>
 
 
 # Table of Contents
