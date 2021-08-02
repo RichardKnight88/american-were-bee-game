@@ -3,8 +3,9 @@ Software Engineering Immersive Course - project-1
 
 <a href="https://richardknight88.github.io/project-1/" target="_blank">Deployed Game</a>
 
-<img align="center" width="100%" src="./assets/screenshots/gameplay/gameplay_gif_2.gif" alt="gameplay gif"/>
-
+<p align="center" >
+  <img width="80%" src="./assets/screenshots/gameplay/gameplay_gif_2.gif" alt="gameplay gif"/>
+</p>
 
 # Table of Contents
 
