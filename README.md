@@ -1,13 +1,21 @@
 # American Were-Bee in London
-project-1
+Software Engineering Immersive Course - project-1
+
+<a href="https://richardknight88.github.io/project-1/">Deployed Game</a>
+
+<img src="./assets/screenshots/gameplay/gameplay_gif.gif" alt="gameplay gif"/>
+
+
+# Table of Contents
+
 
 # The Brief
 
 The project brief was to create a game that used a grid as the environment for gameplay.
 
-Of the examples to games suggested to create, space invaders, tetris and frogger intrigued me most.
+Of the example games suggested to create, space invaders, tetris, pacman and frogger intrigued me most.
 
-I wondered if I could combine concepts from all of these into one game. Obstacle avoidance, gravity, projectiles, point scoring. Then add an autoscroll.
+I wondered if I could combine concepts from all of these into one game. Obstacle avoidance, 'gravity', projectiles, point scoring. Then add an autoscroll.
 
 
 # The Build
@@ -35,7 +43,7 @@ With this is place I could control the whole area with array methods.
 
 # Fine Tuning / Wins
 
-<img src="./assets/screenshots/Class_screenshot.png" alt="code screenshot">
+<img src="./assets/screenshots/Class_screenshot.png" alt="code screenshot" />
 
 At first my collision detection to remove lives was just 'if there is a certain CSS style class attached to any of my bee position then remove a life'.
 
