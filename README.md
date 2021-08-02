@@ -1,4 +1,5 @@
-# project-1
+# American Were-Bee in London
+project-1
 
 # The Brief
 
@@ -33,6 +34,8 @@ With this is place I could control the whole area with array methods.
 
 
 # Fine Tuning / Wins
+
+<img src="./assets/screenshots/Class_screenshot.png" alt="code screenshot">
 
 At first my collision detection to remove lives was just 'if there is a certain CSS style class attached to any of my bee position then remove a life'.
 
