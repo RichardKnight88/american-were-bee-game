@@ -379,7 +379,7 @@ function init() {
 
     arrayType.forEach(item => {
       if (item.currentPosition) {
-        console.log('HERE ARE ITEMS', item)
+        // console.log('HERE ARE ITEMS', item)
         cells[item.currentPosition].classList.remove(classType)
       }
       item.currentPosition = null
@@ -438,7 +438,7 @@ function init() {
 
   function navigate(event) {
     const key = event.code
-    console.log(key)
+    // console.log(key)
     removeBee()
 
     if (key === 'ArrowUp' && (beeCurrentPosition[0] - width) >= width) {
@@ -513,7 +513,7 @@ function init() {
           // console.log('BANG FLOOR')
           while (currentLives.length > 0) {
             currentLives.pop()
-            console.log('LIVES>>>', currentLives)
+            // console.log('LIVES>>>', currentLives)
             updateLives()
           }
         }
@@ -837,7 +837,7 @@ function init() {
     } else if (classType === livesFullClass && currentLives.length < 4) {
       currentLives.push('life')
     }
-    console.log('IN CUPDATE LIVES FUNCTION', currentLives.length)
+    // console.log('IN UPDATE LIVES FUNCTION', currentLives.length)
     if (currentLives.length <= 0) {
       setTimeout(() => {
         gameOver()
@@ -848,10 +848,10 @@ function init() {
 
 
   function toggleCollision(classType) {
-    console.log('HIT BY A>>>>>>', classType)
-    console.log('HIT BY A>>>>>>', classType, plantClass)
+    // console.log('HIT BY A>>>>>>', classType)
+    // console.log('HIT BY A>>>>>>', classType, plantClass)
     if (classType === waspClass || classType === plantClass || classType === acornClass) {
-      console.log('WE ARE IN THE FUNCTION')
+      // console.log('WE ARE IN THE FUNCTION')
       beePic.classList.toggle('collision')
       updateLives(classType)
       // clearInterval(collisionTimer)
@@ -869,7 +869,7 @@ function init() {
 
 
   function livesGraphicUpdate() {
-    console.log('CURRENT LIFE', currentLives)
+    // console.log('CURRENT LIFE', currentLives)
     livesGraphic.forEach(item => {
       if (item.classList.contains(livesFullClass)) {
         item.classList.remove(livesFullClass)
@@ -891,12 +891,12 @@ function init() {
       currentScore += 20
       splat.play()
       waspCount++
-      console.log('WASPS HIT', waspCount)
+      // console.log('WASPS HIT', waspCount)
     } else if (itemClass === acornClass) {
       currentScore += 30
       splat.play()
       acornCount++
-      console.log('ACORNS HIT', acornCount)
+      // console.log('ACORNS HIT', acornCount)
     } else if (itemClass === pollenClass) {
       currentScore += 10
       ding.play()
@@ -979,7 +979,7 @@ function init() {
 
 
   function gameOver() {
-    console.log('GAME OVER')
+    // console.log('GAME OVER')
     clearTimers()
     waspsDOM.innerText = waspCount
     acornsDOM.innerText = acornCount
