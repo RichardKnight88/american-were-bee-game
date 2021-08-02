@@ -454,8 +454,8 @@ function init() {
       hadouken.play()
       generateHoney()
       resetGravityTimer()
-    } else if (key === 'Escape') {
-      themeTune.pause()
+    // } else if (key === 'Escape') {
+    //   themeTune.pause()
     }
     addBee(beeCurrentPosition)
   }
