@@ -1,6 +1,5 @@
 function init() {
 
-  // console.log('linked')
 
   const header = document.querySelector('header')
   const main = document.querySelector('main')
@@ -59,8 +58,6 @@ function init() {
   const plantClass = 'plant'
   const flowerClass = 'flower'
   const acornClass = 'acorn'
-  // const waspPlantClass = 'waspPlant'
-  // const waspFlowerClass = 'waspFlower'
   const pollenClass = 'pollen'
   const honeyClass = 'honey'
   const honeySplatClass = 'honeySplat'
@@ -109,11 +106,13 @@ function init() {
 
     }
 
+
     addHoney() {
       if (this.currentPosition && this.currentPosition % width !== width - 1) {
         cells[this.currentPosition].classList.add(honeyClass)
       }
     }
+
 
     removeHoney() {
       if (this.currentPosition && this.currentPosition % width !== width - 1) {
@@ -124,6 +123,7 @@ function init() {
       }
     }
 
+
     addPlant() {
       if (this.currentPosition.length > 0 && this.currentPosition[0] % width !== 0) {
         this.currentPosition.forEach(index => cells[index].classList.add(plantClass))
@@ -132,11 +132,10 @@ function init() {
       }
     }
 
+
     removePlant() {
       if (this.currentPosition.length > 0 && this.currentPosition[0] % width !== 0) {
         this.currentPosition.forEach(index => cells[index].classList.remove(plantClass))
-        // console.log('THIS IS THE LENGTH', this.name, this.currentPosition.length)
-        // console.log('GOING AS EXPECTED', this.name, this.currentPosition[0])
         cells[this.currentPosition[this.currentPosition.length - 1] - width].classList.remove(flowerClass)
         this.currentPosition = this.currentPosition.map(indexValue => {
           indexValue--
@@ -144,15 +143,16 @@ function init() {
         })
       } else if (this.currentPosition.length > 0 && this.currentPosition[0] % width === 0) {
         this.currentPosition = []
-        // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!HERE!!!!!!', this.currentPosition)
       }
     }
+
 
     addLeftMoving(classType) {
       if (this.currentPosition && this.currentPosition % width !== 0) {
         cells[this.currentPosition].classList.add(classType)
       }
     }
+
 
     removeLeftMoving(classType) {
       if (this.currentPosition && this.currentPosition % width !== 0) {
@@ -163,11 +163,13 @@ function init() {
       }
     }
 
+
     addAcorn() {
       if (this.currentPosition && this.currentPosition + width < width * height) {
         cells[this.currentPosition].classList.add(acornClass)
       }
     }
+
 
     removeAcorn() {
       if (this.currentPosition && this.currentPosition + width < width * height) {
@@ -272,12 +274,10 @@ function init() {
 
     for (let i = (width * 2) - 1; i < width * (height - 1); i += width) {
       endColumns.push(i)
-      // console.log(endColumns)
     }
 
     for (let i = 8; i < width; i++) {
       topRow.push(i)
-      // console.log(topRow)
     }
 
     for (let i = width - 1; i < width * (height / 2); i += width) {
@@ -306,7 +306,6 @@ function init() {
       backgroundGrid.appendChild(backgroundCell)
       bgCells.push(backgroundCell)
     }
-    // console.log('BG GRID', bgCells)
   }
 
 
@@ -379,7 +378,6 @@ function init() {
 
     arrayType.forEach(item => {
       if (item.currentPosition) {
-        // console.log('HERE ARE ITEMS', item)
         cells[item.currentPosition].classList.remove(classType)
       }
       item.currentPosition = null
@@ -412,9 +410,7 @@ function init() {
     firstPlantNull = plantArray.find(plant => {
       return plant.currentPosition.length === 0
     })
-    // console.log('-----PLANT NULL-----', firstPlantNull.name)
     firstPlantNull.currentPosition[0] = width * height - 1
-    // console.log('-----PLANT NULL POS-----', firstPlantNull.currentPosition[0])
 
     for (let p = 1; p < plantHeightOptions[Math.floor(Math.random() * plantHeightOptions.length)]; p++) {
       firstPlantNull.currentPosition.push(firstPlantNull.currentPosition[0] - (width * p))
@@ -438,7 +434,6 @@ function init() {
 
   function navigate(event) {
     const key = event.code
-    // console.log(key)
     removeBee()
 
     if (key === 'ArrowUp' && (beeCurrentPosition[0] - width) >= width) {
@@ -459,12 +454,9 @@ function init() {
       hadouken.play()
       generateHoney()
       resetGravityTimer()
-    // } else if (key === 'Escape') {
-    //   themeTune.pause()
-    //   startTimers()
+    } else if (key === 'Escape') {
+      themeTune.pause()
     }
-    // console.log('CURRENT BEE', beeCurrentPosition)
-    // console.log('DELAY IN HOLD>>>>', new Date().getMilliseconds())
     addBee(beeCurrentPosition)
   }
 
@@ -476,7 +468,6 @@ function init() {
         plantArray.forEach(plant => {
           plant.removePlant()
           plant.addPlant()
-          // console.log('--PLANT NAME--', plant.name, 'PLANT LENGTHS>>', plant.currentPosition)
         })
 
 
@@ -510,10 +501,8 @@ function init() {
           beeCurrentPosition[0] += width
           addBee()
         } else {
-          // console.log('BANG FLOOR')
           while (currentLives.length > 0) {
             currentLives.pop()
-            // console.log('LIVES>>>', currentLives)
             updateLives()
           }
         }
@@ -679,15 +668,12 @@ function init() {
       }
     })
 
-    // console.log('FILTERED>>>', filteredArray)
 
     const positionsArrray = filteredArray.map(item => item.currentPosition)
 
-    // console.log('POSITIONS ONLY>>>', positionsArrray)
 
     const mergedArray = beeCurrentPosition.concat(positionsArrray)
 
-    // console.log('MERGED>>>>', mergedArray)
 
     const uniqueArray = []
     const duplicates = []
@@ -700,8 +686,6 @@ function init() {
       }
     })
 
-    // console.log('UNIQUE VALUES>>>>', uniqueArray)
-    // console.log('DUPLICATE VALUES>>>>', duplicates)
 
     duplicates.forEach(item => {
       for (let i = 0; i < arr2.length; i++) {
@@ -728,7 +712,6 @@ function init() {
 
     const mergedArray = arr1.concat(arr2)
 
-    // console.log('MERGED>>>>', mergedArray)
 
 
     const filteredArray = mergedArray.filter(item => {
@@ -737,18 +720,14 @@ function init() {
       }
     })
 
-    // console.log('FILTERED>>>', filteredArray)
 
 
     const positionsArrray = filteredArray.map(item => item.currentPosition)
 
-    // console.log('POSITIONS ONLY>>>', positionsArrray)
 
     const uniqueArray = []
     const duplicates = []
 
-    // console.log('UNIQUE VALUES>>>>', uniqueArray)
-    // console.log('DUPLICATE VALUES>>>>', duplicates)
 
 
     positionsArrray.filter(item => {
@@ -802,12 +781,9 @@ function init() {
   }
 
   function startCollisionCheck() {
-    // console.log('COLLISION TIMER AT START OF CHECK', collisionTimer)
-    // console.log('STARTING CHECK')
 
     if (!collisionTimer && currentLives.length > 0) {
       collisionTimer = setInterval(() => {
-        // console.log('COLLISION TIMER AFTER INITIATION', collisionTimer)
         beeCurrentPosition.forEach(item => {
           if (canCheckCollision) {
             if (cells[item].classList.contains(waspClass)) {
@@ -837,7 +813,6 @@ function init() {
     } else if (classType === livesFullClass && currentLives.length < 4) {
       currentLives.push('life')
     }
-    // console.log('IN UPDATE LIVES FUNCTION', currentLives.length)
     if (currentLives.length <= 0) {
       setTimeout(() => {
         gameOver()
@@ -848,14 +823,9 @@ function init() {
 
 
   function toggleCollision(classType) {
-    // console.log('HIT BY A>>>>>>', classType)
-    // console.log('HIT BY A>>>>>>', classType, plantClass)
     if (classType === waspClass || classType === plantClass || classType === acornClass) {
-      // console.log('WE ARE IN THE FUNCTION')
       beePic.classList.toggle('collision')
       updateLives(classType)
-      // clearInterval(collisionTimer)
-      // collisionTimer = null
       canCheckCollision = false
       setTimeout(() => {
         canCheckCollision = true
@@ -891,12 +861,10 @@ function init() {
       currentScore += 20
       splat.play()
       waspCount++
-      // console.log('WASPS HIT', waspCount)
     } else if (itemClass === acornClass) {
       currentScore += 30
       splat.play()
       acornCount++
-      // console.log('ACORNS HIT', acornCount)
     } else if (itemClass === pollenClass) {
       currentScore += 10
       ding.play()
