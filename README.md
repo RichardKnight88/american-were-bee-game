@@ -7,10 +7,13 @@ Software Engineering Immersive Course - project-1
   <img width="80%" src="./assets/screenshots/gameplay/gameplay_gif_2.gif" alt="gameplay gif"/>
 </p>
 
-# Table of Contents
+## Table of Contents
+[The Brief] (#the_brief)
+[How To Play] (#how_to_play)
 
 
-# The Brief
+<a name="the_brief"/>
+## The Brief
 
 The project brief was to create a game that used a grid as the environment for gameplay.
 
@@ -19,7 +22,7 @@ Of the example games suggested to create, space invaders, tetris, pacman and fro
 I wondered if I could combine concepts from all of these into one game. Obstacle avoidance, 'gravity', projectiles, point scoring. Then add an autoscroll.
 
 
-# The Build
+## The Build
 
 Creating a grid was the first step. Defining a width and height in Javascript and using a for loop to add divs through the DOM means a quick change to size can be applied in javascript instead of hard coding individual divs in html.
 With this built all divs ('cells') are accessed with arguements related to the width/height.
@@ -42,7 +45,7 @@ With building and testing individual components it became clear that each moving
 With this is place I could control the whole area with array methods.
 
 
-# Fine Tuning / Wins
+## Fine Tuning / Wins
 
 ```js
 
@@ -140,7 +143,7 @@ To add complexity and apply the same principles to remove 'enemies' when hit by 
  I used array methods to cycle through the arrays of each extract the duplicates and remove the specific enemy.
 
 
-# Styling
+## Styling
 
 The style is deliberately cartoonish as I felt attempting to apply realistic visual could detract from the game.
 
@@ -148,7 +151,7 @@ The title and story explained in the how to are an amusing step away from the jo
 
 For the screens/cards Html elements are accessed through the DOM - styled in CSS and have a 'hidden' class toggled as needed.
 
-# Future Improvements
+## Future Improvements
 
 With more time I would have liked to add a leaderboard using the localStorage.
 
@@ -156,7 +159,8 @@ I would like to have gradually increased the speed of scroll to increase difficu
 
 A 'boss' character that enters after a certain period of time, needs to be struck a set number of times and who moves in 2 dimensions - similar to the main character.
 
-# How to Play
+<a name="how_to_play"/>
+## How to Play
 
 You are an American Were-Bee in London. You only have two thirsts; pollen & revenge!
 
