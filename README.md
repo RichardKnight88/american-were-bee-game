@@ -39,100 +39,118 @@ One of the big initial steps was to create the 'plants' - stems topped by a flow
 
 ### Our Protaganist || The Were-Bee
 With a gameplay environment and some moving components there was an issue with the scale of the main character. The lessons learned in fine-tuning control of a 'plant' could be applied here. An ```<img>``` element of the bee applied to the first index of the position array meant the bee could be much larger and be the focus of the game.
-
-
-With building and testing individual components it became clear that each moving element had the same key features to control it. I built a new Class for generated components, created a number of each and applied them to arrays.
-
-With this is place I could control the whole area with array methods.
 <br>
 
 
-## Fine Tuning / Wins
+## Code Examples
+By creating a new Object Class for the automatically generated components, different functions could be defined to update the position of each item based on the relevant movement of that item through the game play environment.
+
+As an example, 'wasps', 'pollen' and 'lives' all move right-to-left through the gameplay environment. Building the functions as below allowed me to reuse these functions.
 
 ```js
 
-  class GeneratedItem {
-
-    constructor(name, currentPosition) {
-
-      this.name = name
-      this.currentPosition = currentPosition
-
+  addLeftMoving(classType) {
+    if (this.currentPosition && this.currentPosition % width !== 0) {
+      cells[this.currentPosition].classList.add(classType)
     }
+  }
 
 
-    addHoney() {
-      if (this.currentPosition && this.currentPosition % width !== width - 1) {
-        cells[this.currentPosition].classList.add(honeyClass)
+  removeLeftMoving(classType) {
+    if (this.currentPosition && this.currentPosition % width !== 0) {
+      cells[this.currentPosition].classList.remove(classType)
+      this.currentPosition--
+    } else if (this.currentPosition % width === 0) {
+      this.currentPosition = null
+    }
+  }
+
+```
+
+At set intervals new items would be generated and added to arrays. The movement of all of these items could be controlled with array methods like below.
+
+```js
+
+function scrollStart() {
+  if (!scrolling) {
+    scrolling = setInterval(() => {
+
+      plantArray.forEach(plant => {
+        plant.removePlant()
+        plant.addPlant()
+      })
+
+
+      pollenArray.forEach(pollen => {
+        pollen.removeLeftMoving(pollenClass)
+        pollen.addLeftMoving(pollenClass)
+      })
+
+
+      lifeArray.forEach(life => {
+        life.removeLeftMoving(livesFullClass)
+        life.addLeftMoving(livesFullClass)
+      })
+
+    }, scrollTimer)
+  } else {
+    clearInterval(scrolling)
+    scrolling = null
+  }
+}
+
+```
+<br>
+
+
+## Wins
+
+```js
+
+  function beeCollision(arr1, arr2, class2) {
+
+    const filteredArray = arr2.filter(item => {
+      if (item.currentPosition) {
+        return item.currentPosition
       }
-    }
+    })
 
 
-    removeHoney() {
-      if (this.currentPosition && this.currentPosition % width !== width - 1) {
-        cells[this.currentPosition].classList.remove(honeyClass)
-        this.currentPosition++
-      } else if (this.currentPosition % width === width - 1) {
-        this.currentPosition = null
+    const positionsArrray = filteredArray.map(item => item.currentPosition)
+
+
+    const mergedArray = beeCurrentPosition.concat(positionsArrray)
+
+
+    const uniqueArray = []
+    const duplicates = []
+
+    mergedArray.filter(item => {
+      if (uniqueArray.indexOf(item) < 0) {
+        uniqueArray.push(item)
+      } else {
+        duplicates.push(item)
       }
-    }
+    })
 
 
-    addPlant() {
-      if (this.currentPosition.length > 0 && this.currentPosition[0] % width !== 0) {
-        this.currentPosition.forEach(index => cells[index].classList.add(plantClass))
+    duplicates.forEach(item => {
+      for (let i = 0; i < arr2.length; i++) {
+        if (arr2[i].currentPosition === item) {
+          arr2[i].currentPosition = null
+          cells[item].classList.remove(class2)
 
-        cells[this.currentPosition[this.currentPosition.length - 1] - width].classList.add(flowerClass)
+          if (class2 === waspClass || class2 === acornClass) {
+            toggleCollision(class2)
+          } else if (class2 === pollenClass) {
+            scoreUpdate(class2)
+          } else if (class2 === livesFullClass) {
+            toggleCollision(class2)
+            scoreUpdate(class2)
+          }
+        }
       }
-    }
-
-
-    removePlant() {
-      if (this.currentPosition.length > 0 && this.currentPosition[0] % width !== 0) {
-        this.currentPosition.forEach(index => cells[index].classList.remove(plantClass))
-        cells[this.currentPosition[this.currentPosition.length - 1] - width].classList.remove(flowerClass)
-        this.currentPosition = this.currentPosition.map(indexValue => {
-          indexValue--
-          return indexValue
-        })
-      } else if (this.currentPosition.length > 0 && this.currentPosition[0] % width === 0) {
-        this.currentPosition = []
-      }
-    }
-
-
-    addLeftMoving(classType) {
-      if (this.currentPosition && this.currentPosition % width !== 0) {
-        cells[this.currentPosition].classList.add(classType)
-      }
-    }
-
-
-    removeLeftMoving(classType) {
-      if (this.currentPosition && this.currentPosition % width !== 0) {
-        cells[this.currentPosition].classList.remove(classType)
-        this.currentPosition--
-      } else if (this.currentPosition % width === 0) {
-        this.currentPosition = null
-      }
-    }
-
-
-    addAcorn() {
-      if (this.currentPosition && this.currentPosition + width < width * height) {
-        cells[this.currentPosition].classList.add(acornClass)
-      }
-    }
-
-
-    removeAcorn() {
-      if (this.currentPosition && this.currentPosition + width < width * height) {
-        cells[this.currentPosition].classList.remove(acornClass)
-        this.currentPosition += width
-      } else if (this.currentPosition + width >= width * height) {
-        this.currentPosition = null
-      }
-    }
+    })
 
   }
 
