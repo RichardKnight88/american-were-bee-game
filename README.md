@@ -8,10 +8,9 @@ Software Engineering Immersive Course - project-1
 </p>
 
 ## Table of Contents
-- [Table of Contents](#table-of-contents)
-- [The Brief](#the-brief)
-- [The Build](#the-build)
-- [How To Play](#how-to-play)
+ [The Brief](#the-brief)
+ [The Build](#the-build)
+ [How To Play](#how-to-play)
 
 
 ## The Brief
@@ -160,7 +159,7 @@ I would like to have gradually increased the speed of scroll to increase difficu
 
 A 'boss' character that enters after a certain period of time, needs to be struck a set number of times and who moves in 2 dimensions - similar to the main character.
 
-<a name="how_to_play"/>
+
 ## How to Play
 
 You are an American Were-Bee in London. You only have two thirsts; pollen & revenge!
