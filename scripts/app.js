@@ -148,7 +148,7 @@ function init() {
 
 
     addLeftMoving(classType) {
-      if (this.currentPosition && this.currentPosition % width !== 0) {
+      if (this.currentPosition) {
         cells[this.currentPosition].classList.add(classType)
       }
     }
