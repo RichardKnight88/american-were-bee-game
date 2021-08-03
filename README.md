@@ -44,7 +44,92 @@ With this is place I could control the whole area with array methods.
 
 # Fine Tuning / Wins
 
-<img src="./assets/screenshots/Class_screenshot.png" alt="code screenshot" />
+'''
+  class GeneratedItem {
+
+    constructor(name, currentPosition) {
+
+      this.name = name
+      this.currentPosition = currentPosition
+
+    }
+
+
+    addHoney() {
+      if (this.currentPosition && this.currentPosition % width !== width - 1) {
+        cells[this.currentPosition].classList.add(honeyClass)
+      }
+    }
+
+
+    removeHoney() {
+      if (this.currentPosition && this.currentPosition % width !== width - 1) {
+        cells[this.currentPosition].classList.remove(honeyClass)
+        this.currentPosition++
+      } else if (this.currentPosition % width === width - 1) {
+        this.currentPosition = null
+      }
+    }
+
+
+    addPlant() {
+      if (this.currentPosition.length > 0 && this.currentPosition[0] % width !== 0) {
+        this.currentPosition.forEach(index => cells[index].classList.add(plantClass))
+
+        cells[this.currentPosition[this.currentPosition.length - 1] - width].classList.add(flowerClass)
+      }
+    }
+
+
+    removePlant() {
+      if (this.currentPosition.length > 0 && this.currentPosition[0] % width !== 0) {
+        this.currentPosition.forEach(index => cells[index].classList.remove(plantClass))
+        cells[this.currentPosition[this.currentPosition.length - 1] - width].classList.remove(flowerClass)
+        this.currentPosition = this.currentPosition.map(indexValue => {
+          indexValue--
+          return indexValue
+        })
+      } else if (this.currentPosition.length > 0 && this.currentPosition[0] % width === 0) {
+        this.currentPosition = []
+      }
+    }
+
+
+    addLeftMoving(classType) {
+      if (this.currentPosition && this.currentPosition % width !== 0) {
+        cells[this.currentPosition].classList.add(classType)
+      }
+    }
+
+
+    removeLeftMoving(classType) {
+      if (this.currentPosition && this.currentPosition % width !== 0) {
+        cells[this.currentPosition].classList.remove(classType)
+        this.currentPosition--
+      } else if (this.currentPosition % width === 0) {
+        this.currentPosition = null
+      }
+    }
+
+
+    addAcorn() {
+      if (this.currentPosition && this.currentPosition + width < width * height) {
+        cells[this.currentPosition].classList.add(acornClass)
+      }
+    }
+
+
+    removeAcorn() {
+      if (this.currentPosition && this.currentPosition + width < width * height) {
+        cells[this.currentPosition].classList.remove(acornClass)
+        this.currentPosition += width
+      } else if (this.currentPosition + width >= width * height) {
+        this.currentPosition = null
+      }
+    }
+
+  }
+'''
 
 At first my collision detection to remove lives was just 'if there is a certain CSS style class attached to any of my bee position then remove a life'.
 
