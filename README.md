@@ -8,11 +8,12 @@ Software Engineering Immersive Course - project-1
 </p>
 
 ## Table of Contents
-[The Brief] (#the_brief)
-[How To Play] (#how_to_play)
+- [Table of Contents](#table-of-contents)
+- [The Brief](#the-brief)
+- [The Build](#the-build)
+- [How To Play](#how-to-play)
 
 
-<a name="the_brief"/>
 ## The Brief
 
 The project brief was to create a game that used a grid as the environment for gameplay.
