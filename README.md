@@ -1,16 +1,17 @@
 # American Were-Bee in London
-Software Engineering Immersive Course - project-1
+Software Engineering Immersive Course - Project-1
 
-<a href="https://richardknight88.github.io/project-1/" target="_blank">Deployed Game</a>
+[American Were-Bee in London - Deployed Game](https://richardknight88.github.io/project-1/){:target="_blank" rel="noopener"}
+<!-- <a href="https://richardknight88.github.io/project-1/" target="_blank">American Were-Bee in London - Deployed Game</a> -->
 
 <p align="center" >
   <img width="80%" src="./assets/screenshots/gameplay/gameplay_gif_2.gif" alt="gameplay gif"/>
 </p>
 
 ## Table of Contents
- [The Brief](#the-brief)
- [The Build](#the-build)
- [How To Play](#how-to-play)
+ [The Brief](#the-brief) <br>
+ [The Build](#the-build) <br>
+ [How To Play](#how-to-play) <br>
 
 
 ## The Brief
@@ -19,25 +20,25 @@ The project brief was to create a game that used a grid as the environment for g
 
 Of the example games suggested to create, space invaders, tetris, pacman and frogger intrigued me most.
 
-I wondered if I could combine concepts from all of these into one game. Obstacle avoidance, 'gravity', projectiles, point scoring. Then add an autoscroll.
+I wondered if I could combine concepts from all of these into one game. Obstacle avoidance, 'gravity', projectiles, point scoring. 
+
+Then add an autoscroll.
 
 
 ## The Build
 
 Creating a grid was the first step. Defining a width and height in Javascript and using a for loop to add divs through the DOM means a quick change to size can be applied in javascript instead of hard coding individual divs in html.
-With this built all divs ('cells') are accessed with arguements related to the width/height.
+With this built all divs ('cells') are accessed with arguments related to the width and/or height variables.
 
-By adding and removing classes with different background images it can look like an item is moving through the grid.
+By adding and removing classes with different background images it gives the impression that an item is moving through the gameplay environment.
 
-With this in place I conceptualised rough ideas and noted ways it might be possible to realise that idea.
+My process was to add individual components to test the theory before expanding on this. Starting from making one thing autoscroll very quickly changes to multiple components and automation.
 
-My process was to add individual pieces to test the theory then expand on it. Starting from making one thing autoscroll very quickly changes to multiples.
-
-One of the big initial steps was to create the plants. These span a number of 'cells' and need to be accessed as a single unit. Dropping them into arrays was no problem. It was just a little trickier to move them than a single cell.
+One of the big initial steps was to create the 'plants' - stems topped by a flower. These span a number of 'cells' and need to be accessed as a single unit. Dropping them into arrays was no problem and after this it was just a little trickier to move them as a single cell.
 
 
-The Protaganist
-With a grid built and some classes to test the method my main character scale seemed a little off. With the method of controlling an array fine-tuned from my plant test I changed the main character from a single cell to an array and added an img element to position[0].
+#### Our Protaganist || The Were-Bee
+With a gameplay environment and some moving components there was an issue with the scale of the main character. The lessons learned in fine-tuning control of a 'plant' could be applied here. An ```<img>``` element of the bee applied to the first index of the position array meant the bee could be much larger and be the focus of the game.
 
 
 With building and testing individual components it became clear that each moving element had the same key features to control it. I built a new Class for generated components, created a number of each and applied them to arrays.
