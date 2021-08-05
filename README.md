@@ -242,7 +242,9 @@ When firing honey at the far right hand side of the gameplay environment the hon
  
 As the game is original I styled and coded the functionality concurrently.
  
-I created the plant stems, flowers, honey and lives myself in Adobe illustrator as well as adding a honey/wasp combined class for when an 'enemy' is hit with honey.
+I created the plant stems, flowers, honey and lives myself in Adobe illustrator along with the addition of a honey/wasp combined class for when an 'enemy' is hit with honey.
+
+As well as this I created the title screen and backgrounds for the other screens.
  
 The style is deliberately cartoonish as I felt attempting to apply a realistic representation of a movie or tv show could detract from the game if poorly executed.
  
@@ -256,10 +258,12 @@ For the screens/cards HTML elements are accessed through the DOM - styled in CSS
 The first step would be to implement a mute button.
  
 In revisiting the code to write this readme I have noticed a number of improvements I would make to reduce repetition.
+
+I would create a combined honey/acorn class as currently it uses the honey/wasp class.
  
 With more time I would have liked to add a leaderboard using the localStorage.
  
-I would like to have gradually increased the speed of scroll to increase difficulty as time progressed and add random bursts of wasps.
+I would like to have gradually increased the speed of scroll to increase difficulty as time progressed and add random bursts of wasps in groups.
  
 A 'boss' character that enters after a certain period of time, needs to be struck a set number of times and who moves in 2 dimensions - similar to the main character - would also be an interesting challenge.
  
