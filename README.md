@@ -267,17 +267,13 @@ A 'boss' character that enters after a certain period of time, needs to be struc
 ## How to Play
  
 <p align="center" >
- <img width="50%" src="./assets/screenshots/gameplay/main_menu.png" alt="American Were-Bee in London Main Menu"/>
+ <img width="80%" src="./assets/screenshots/gameplay/main_menu.png" alt="American Were-Bee in London Main Menu"/>
  
- <img width="50%" src="./assets/screenshots/gameplay/how_to_play.png" alt="American Were-Bee in London How to Play"/>
-</p>
+ <img width="80%" src="./assets/screenshots/gameplay/how_to_play.png" alt="American Were-Bee in London How to Play"/>
  
-<p align="center" >
  <img width="80%" src="./assets/screenshots/gameplay/game_play.png" alt="American Were-Bee in London Game play screen"/>
-</p>
- 
-<p align="center" >
- <img width="60%" src="./assets/screenshots/gameplay/game_over.png" alt="American Were-Bee in London Gameover Screen"/>
+
+ <img width="80%" src="./assets/screenshots/gameplay/game_over.png" alt="American Were-Bee in London Gameover Screen"/>
 </p>
 
 
