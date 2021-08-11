@@ -20,6 +20,7 @@ Software Engineering Immersive Course || Project-1 || Individual Project || 1 we
 [Bugs](#bugs) <br>
 [Styling](#styling) <br>
 [Future Improvements](#future-improvements) <br>
+[Key Learnings](#key-learnings) <br>
 [How To Play](#how-to-play) <br>
 
  
@@ -36,7 +37,11 @@ Then add an autoscroll.
 <br>
  
 ## The Build
- 
+
+I started by pseudo-coding a rough plan detailing components of the game and how I might implement these.
+
+I decided that the grid and main character were the initial pieces of the puzzle before working up to adding point scorers and life takers.
+
 Creating a grid was the first step. Defining a width and height in JavaScript and using a for loop to add divs through the DOM means a quick change to size can be applied in JavaScript instead of hard coding individual divs in HTML.
 With this built all divs ('cells') are accessed with arguments related to the width and/or height variables.
  
@@ -273,6 +278,11 @@ With more time I would have liked to add a leaderboard using the localStorage.
 I would like to have gradually increased the speed of scroll to increase difficulty as time progressed and add random bursts of wasps in groups.
  
 A 'boss' character that enters after a certain period of time, needs to be struck a set number of times and who moves in 2 dimensions - similar to the main character - would also be an interesting challenge.
+
+
+## Key Learnings
+
+The most striking realisation was that iterative, methodical building can create a reasonably complex game. By breaking a game into fundamental components and understanding these I was able to think more abstractly about how I could solve problems.
  
  
 ## How to Play
