@@ -14,7 +14,14 @@ Software Engineering Immersive Course || Project-1 || Individual Project || 1 we
 ## Table of Contents
 [The Brief](#the-brief) <br>
 [The Build](#the-build) <br>
+[Code Examples](#code-examples) <br>
+[Wins](#wins) <br>
+[Challenges](#challenges) <br>
+[Bugs](#bugs) <br>
+[Styling](#styling) <br>
+[Future Improvements](#future-improvements) <br>
 [How To Play](#how-to-play) <br>
+
  
  
 ## The Brief
