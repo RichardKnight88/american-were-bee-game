@@ -29,7 +29,7 @@ Software Engineering Immersive Course || Project-1 || Individual Project || 1 we
  
 The project brief was to create a game that used a grid as the environment for gameplay.
  
-Of the example games suggested to create, space invaders, tetris, pacman and frogger intrigued me most.
+Of the example games suggested to create, Space invaders, Tetris, Pacman and Frogger intrigued me most.
  
 I wondered if I could combine concepts from all of these into one game. Obstacle avoidance, 'gravity', projectiles, point scoring.
  
