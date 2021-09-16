@@ -5,7 +5,7 @@ Software Engineering Immersive Course || Project-1 || Individual Project || 1 we
  <img width="80%" src="./assets/screenshots/gameplay/title_screen.png" alt="American Were-Bee in London Title Screen"/>
 </p>
  
-[American Were-Bee in London - Deployed Game](https://richardknight88.github.io/project-1/)
+[American Were-Bee in London - Deployed Game](https://bit.ly/were-bee-game)
  
 <p align="center" >
  <img width="80%" src="./assets/screenshots/gameplay/gameplay_gif_2.gif" alt="gameplay gif"/>
